@@ -8,3 +8,4 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 mylib = { path = "../mylib" }
+rand = "0.8.5"
