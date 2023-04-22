@@ -1,5 +1,7 @@
 # RustOps Blueprint
 
+[![CI Status](https://github.com/elasticdog/rustops-blueprint/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/elasticdog/rustops-blueprint/actions/workflows/ci.yml)
+
 ## License
 
 Licensed under either of
