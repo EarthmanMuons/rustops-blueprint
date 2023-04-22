@@ -1,6 +1,6 @@
 # RustOps Blueprint
 
-[![CI Status](https://github.com/elasticdog/rustops-blueprint/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/elasticdog/rustops-blueprint/actions/workflows/ci.yml?query=branch%3Amain)
+[![Test Status](https://github.com/elasticdog/rustops-blueprint/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/elasticdog/rustops-blueprint/actions/workflows/test.yml?query=branch%3Amain)
 
 ## License
 
