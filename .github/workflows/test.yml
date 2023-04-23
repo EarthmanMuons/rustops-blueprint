@@ -14,15 +14,25 @@ env:
   CARGO_TERM_COLOR: always
   CI: 1
   RUSTFLAGS: "-D warnings"
+  RUST_BACKTRACE: 1
 
 jobs:
   required:
-    name: ubuntu / stable
+    name: linux / stable
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Install stable Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
+
       - name: Compile tests
         run: cargo test --locked --no-run
+
       - name: Run tests
         run: cargo test --locked
 
@@ -33,6 +43,6 @@ jobs:
     needs:
       - required
     steps:
-      - name: Check `ubuntu / stable` job status
+      - name: Check `linux / stable` job status
         run: |
           [[ "${{ needs.required.result }}" = "success" ]] && exit 0 || exit 1
