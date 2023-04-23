@@ -23,12 +23,13 @@ jobs:
       - name: Run tests
         run: cargo test --locked
 
-  test-success:
-    name: test workflow
-    if: github.event.pusher.name == 'bors[bot]' && success()
+  workflow_status:
+    name: test workflow status
+    if: always()
     runs-on: ubuntu-latest
     needs:
       - required
     steps:
-      - name: Test workflow succeeded
-        run: exit 0
+      - name: Check `ubuntu / stable` job status
+        run: |
+          [[ "${{ needs.required.result }}" = "success" ]] && exit 0 || exit 1
