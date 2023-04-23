@@ -1,16 +1,21 @@
-# RustOps Blueprint
+# RustOps Blueprint &emsp; [![CI Status]][actions]
 
-[![Test Status](https://github.com/elasticdog/rustops-blueprint/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/elasticdog/rustops-blueprint/actions/workflows/test.yml?query=branch%3Amain)
+[CI Status]:
+  https://img.shields.io/github/checks-status/elasticdog/rustops-blueprint/main?label=CI&logo=github
+[actions]:
+  https://github.com/elasticdog/rustops-blueprint/actions?query=branch%3Amain
+
+**RustOps Blueprint is code repository template for a polished Rust development
+experience.**
+
+---
 
 ## License
 
-Licensed under either of
+RustOps Blueprint is distributed under the terms of both the Apache License
+(Version 2.0) and the MIT license.
 
-- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
-  http://www.apache.org/licenses/LICENSE-2.0)
-- MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
-
-at your option.
+See [LICENSE-APACHE](LICENSE-APACHE) and [LICENSE-MIT](LICENSE-MIT) for details.
 
 ## Contribution
 
