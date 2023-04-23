@@ -20,9 +20,15 @@ jobs:
     name: ubuntu / stable
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Install stable Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
       - name: Compile tests
         run: cargo test --locked --no-run
+
       - name: Run tests
         run: cargo test --locked
 
