@@ -1,0 +1,70 @@
+name: check
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - staging
+      - trying
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CI: 1
+
+jobs:
+  format:
+    name: stable / format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Install stable Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: "clippy,rustfmt"
+
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
+
+      - name: Check formatting
+        run: cargo fmt --check
+
+  lint:
+    name: stable / lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Install stable Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: "clippy,rustfmt"
+
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
+
+      - name: Check lints
+        run: cargo clippy -- -D warnings
+
+  workflow_status:
+    name: check workflow status
+    if: always()
+    runs-on: ubuntu-latest
+    needs:
+      - format
+      - lint
+    steps:
+      - name: Check `stable / format` job status
+        run: |
+          [[ "${{ needs.format.result }}" = "success" ]] && exit 0 || exit 1
+      - name: Check `stable / lint` job status
+        run: |
+          [[ "${{ needs.lint.result }}" = "success" ]] && exit 0 || exit 1
