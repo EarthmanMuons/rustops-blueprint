@@ -1,4 +1,4 @@
-name: CI
+name: Test
 
 on:
   push:
@@ -11,22 +11,22 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-    name: Build
+  required:
+    name: ubuntu / stable
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build
-        run: cargo build --verbose
+      - name: Compile tests
+        run: cargo test --locked --no-run
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo test --locked
 
-  ci-success:
-    name: CI workflow
+  test-success:
+    name: Test workflow
     if: github.event.pusher.name == 'bors[bot]' && success()
     runs-on: ubuntu-latest
     needs:
-      - build
+      - required
     steps:
-      - name: CI workflow succeeded
+      - name: Test workflow succeeded
         run: exit 0
