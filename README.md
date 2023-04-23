@@ -5,15 +5,14 @@
 [actions]:
   https://github.com/elasticdog/rustops-blueprint/actions?query=branch%3Amain
 
-**RustOps Blueprint is code repository template for a polished Rust development
-experience.**
+**A code repository template for a polished Rust development experience.**
 
 ---
 
 ## License
 
 RustOps Blueprint is distributed under the terms of both the Apache License
-(Version 2.0) and the MIT license.
+(Version 2.0) and the MIT License.
 
 See [LICENSE-APACHE](LICENSE-APACHE) and [LICENSE-MIT](LICENSE-MIT) for details.
 
