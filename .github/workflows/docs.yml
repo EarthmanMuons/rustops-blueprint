@@ -24,13 +24,12 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Install stable Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache dependencies
-        uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
+      - name: Install nightly Rust toolchain
+        uses: dtolnay/rust-toolchain@nightly
 
       - name: Build docs
+        env:
+          RUSTDOCFLAGS: --enable-index-page -Z unstable-options
         run: cargo doc --no-deps
 
       - name: Upload github-pages artifact
