@@ -23,21 +23,19 @@ docs: {
 			name: "build / stable"
 			env: CARGO_TERM_COLOR: "always"
 			"runs-on": "ubuntu-latest"
-			steps: [{
-				name: "Checkout source code"
-				uses: "actions/checkout@v3"
-			}, {
-				name: "Install nightly Rust toolchain"
-				uses: "dtolnay/rust-toolchain@nightly"
-			}, {
-				name: "Build docs"
-				env: RUSTDOCFLAGS: "--enable-index-page -Z unstable-options"
-				run: "cargo doc --no-deps"
-			}, {
-				name: "Upload github-pages artifact"
-				uses: "actions/upload-pages-artifact@v1"
-				with: path: "target/doc"
-			}]
+			steps: [
+				_#checkoutCode,
+				_#installRust & {with: toolchain: "nightly"},
+				{
+					name: "Build docs"
+					env: RUSTDOCFLAGS: "--enable-index-page -Z unstable-options"
+					run: "cargo doc --no-deps"
+				}, {
+					name: "Upload github-pages artifact"
+					uses: "actions/upload-pages-artifact@v1"
+					with: path: "target/doc"
+				},
+			]
 		}
 
 		deploy: {

@@ -27,11 +27,8 @@ check: {
 			"runs-on": "ubuntu-latest"
 			steps: [
 				_#checkoutCode,
+				_#installRust & {with: components: "clippy,rustfmt"},
 				{
-					name: "Install stable Rust toolchain"
-					uses: "dtolnay/rust-toolchain@stable"
-					with: components: "clippy,rustfmt"
-				}, {
 					name: "Cache dependencies"
 					uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
 				}, {
@@ -46,11 +43,8 @@ check: {
 			"runs-on": "ubuntu-latest"
 			steps: [
 				_#checkoutCode,
+				_#installRust & {with: components: "clippy,rustfmt"},
 				{
-					name: "Install stable Rust toolchain"
-					uses: "dtolnay/rust-toolchain@stable"
-					with: components: "clippy,rustfmt"
-				}, {
 					name: "Cache dependencies"
 					uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
 				}, {
@@ -70,14 +64,13 @@ check: {
 					name: "Get MSRV from package metadata"
 					id:   "msrv"
 					run:  "awk -F '\"' '/rust-version/{ print \"version=\" $2 }' Cargo.toml >> $GITHUB_OUTPUT"
-				}, {
-					name: "Install ${{ steps.msrv.outputs.version }} Rust toolchain"
-					uses: "dtolnay/rust-toolchain@master"
-					with: toolchain: "${{ steps.msrv.outputs.version }}"
-				}, {
+				},
+				_#installRust & {with: toolchain: "${{ steps.msrv.outputs.version }}"},
+				{
 					name: "Cache dependencies"
 					uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
-				}, {
+				},
+				{
 					name: "Check packages and dependencies for errors"
 					run:  "cargo check --locked"
 				},

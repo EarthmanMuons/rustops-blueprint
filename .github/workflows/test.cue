@@ -32,10 +32,8 @@ test: {
 			"runs-on": "ubuntu-latest"
 			steps: [
 				_#checkoutCode,
+				_#installRust,
 				{
-					name: "Install stable Rust toolchain"
-					uses: "dtolnay/rust-toolchain@stable"
-				}, {
 					name: "Install cargo-nextest"
 					uses: "taiki-e/install-action@7522ae03ca435a0ad1001ca93d6cd7cb8e81bd2f"
 					with: tool: "cargo-nextest"

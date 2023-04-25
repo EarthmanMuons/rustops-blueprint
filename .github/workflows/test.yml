@@ -24,7 +24,9 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
       - name: Install stable Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        with:
+          toolchain: stable
       - name: Install cargo-nextest
         uses: taiki-e/install-action@7522ae03ca435a0ad1001ca93d6cd7cb8e81bd2f
         with:

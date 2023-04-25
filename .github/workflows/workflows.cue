@@ -33,3 +33,12 @@ _#checkoutCode: {
 		uses: "actions/checkout@v3"
 	}
 }
+
+_#installRust: {
+	_#step & {
+		name: "Install \(with.toolchain) Rust toolchain"
+		uses: "dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d"
+		with: toolchain:   string | *"stable"
+		with: components?: string
+	}
+}
