@@ -78,11 +78,11 @@ jobs:
       - name: Check if CUE and YAML are in sync
         run: |-
           if git diff --quiet HEAD --; then
-              echo 'CUE and YAML files are in sync; the repository is clean.'
+              echo 'CUE and YAML files are in sync; the working tree is clean.'
           else
               git diff --color --patch-with-stat HEAD --
               echo "***"
-              echo 'Error: CUE and YAML files are out of sync; the repository is dirty.'
+              echo 'Error: CUE and YAML files are out of sync; the working tree is dirty.'
               echo 'Run `cue cmd genworkflows` locally to regenerate the YAML from CUE.'
               exit 1
           fi
