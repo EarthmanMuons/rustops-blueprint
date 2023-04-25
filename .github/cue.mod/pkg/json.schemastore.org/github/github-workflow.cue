@@ -3,7 +3,7 @@ package github
 import "strings"
 
 #Workflow: {
-	@jsonschema(schema="http://json-schema.org/draft-07/schema#")
+	@jsonschema(schema="http://json-schema.org/draft-07/schema")
 
 	// The name of your workflow. GitHub displays the names of your
 	// workflows on your repository's actions page. If you omit this
@@ -344,7 +344,7 @@ import "strings"
 										description?: string
 
 					// A boolean specifying whether the secret must be supplied.
-					required: bool
+					required: _
 				}}
 			}
 			...
@@ -426,7 +426,7 @@ import "strings"
 		// To help you get started, there is also a list of crontab guru
 		// examples (https://crontab.guru/examples.html).
 		schedule?: [...null | bool | number | string | [...] | {
-			cron?: =~"^(((\\d+,)+\\d+|((\\d+|\\*)/\\d+|((JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(-(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC))?))|(\\d+-\\d+)|\\d+(-\\d+)?/\\d+(-\\d+)?|\\d+|\\*|(MON|TUE|WED|THU|FRI|SAT|SUN)(-(MON|TUE|WED|THU|FRI|SAT|SUN))?) ?){5}$"
+			cron?: =~"^(((\\d+,)+\\d+|((\\d+|\\*)/\\d+|((JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(-(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC))?))|(\\d+-\\d+)|\\d+|\\*|((MON|TUE|WED|THU|FRI|SAT|SUN)(-(MON|TUE|WED|THU|FRI|SAT|SUN))?)) ?){5}$"
 		}] & [_, ...]
 	}
 
@@ -681,7 +681,7 @@ import "strings"
 			// using a matrix job strategy. By default, GitHub will maximize
 			// the number of jobs run in parallel depending on the available
 			// runners on GitHub-hosted virtual machines.
-			"max-parallel"?: number | string
+			"max-parallel"?: number
 		}
 
 		// Concurrency ensures that only a single job or workflow using
@@ -707,11 +707,7 @@ import "strings"
 
 		// The type of machine to run the job on. The machine can be
 		// either a GitHub-hosted runner, or a self-hosted runner.
-		"runs-on": "macos-10.15" | "macos-11" | "macos-12" | "macos-latest" | "self-hosted" | "ubuntu-18.04" | "ubuntu-20.04" | "ubuntu-22.04" | "ubuntu-latest" | "ubuntu-latest-4-cores" | "ubuntu-latest-8-cores" | "ubuntu-latest-16-cores" | "windows-2019" | "windows-2022" | "windows-latest" | "windows-latest-8-cores" | (["self-hosted", ...string] & [_, ...] | ["self-hosted", #machine, ...string] & [_, _, ...] | ["self-hosted", #architecture, ...string] & [_, _, ...] | ["self-hosted", #machine, #architecture, ...string] & [_, _, _, ...] | ["self-hosted", #architecture, #machine, ...string] & [_, _, _, ...]) & [...] | {
-			group?:  string
-			labels?: string | [...string]
-			...
-		} | #stringContainingExpressionSyntax
+		"runs-on": "macos-10.15" | "macos-11" | "macos-12" | "macos-latest" | "self-hosted" | "ubuntu-18.04" | "ubuntu-20.04" | "ubuntu-22.04" | "ubuntu-latest" | "windows-2019" | "windows-2022" | "windows-latest" | (["self-hosted", ...string] & [_, ...] | ["self-hosted", #machine, ...string] & [_, _, ...] | ["self-hosted", #architecture, ...string] & [_, _, ...] | ["self-hosted", #machine, #architecture, ...string] & [_, _, _, ...] | ["self-hosted", #architecture, #machine, ...string] & [_, _, _, ...]) & [...] | #stringContainingExpressionSyntax
 
 		// The environment that the job references.
 		environment?: string | #environment
@@ -747,14 +743,7 @@ import "strings"
 		// filesystem. Because steps run in their own process, changes to
 		// environment variables are not preserved between steps. GitHub
 		// provides built-in steps to set up and complete a job.
-		// Must contain either `uses` or `run`
-		steps?: [...({
-			uses: string
-			...
-		} | {
-			run: string
-			...
-		}) & {
+		steps?: [...{
 			// A unique identifier for the step. You can use the id to
 			// reference the step in contexts. For more information, see
 			// https://help.github.com/en/articles/contexts-and-expression-syntax-for-github-actions.
@@ -834,12 +823,12 @@ import "strings"
 
 			// The maximum number of minutes to run the step before killing
 			// the process.
-			"timeout-minutes"?: number | #expressionSyntax
+			"timeout-minutes"?: number
 		}] & [_, ...]
 
 		// The maximum number of minutes to let a workflow run before
 		// GitHub automatically cancels it. Default: 360
-		"timeout-minutes"?: number | #expressionSyntax | *360
+		"timeout-minutes"?: number | *360
 
 		// A strategy creates a build matrix for your jobs. You can define
 		// different variations of an environment to run each job in.
@@ -877,7 +866,7 @@ import "strings"
 			// using a matrix job strategy. By default, GitHub will maximize
 			// the number of jobs run in parallel depending on the available
 			// runners on GitHub-hosted virtual machines.
-			"max-parallel"?: number | string
+			"max-parallel"?: number
 		}
 
 		// Prevents a workflow run from failing when a job fails. Set to
