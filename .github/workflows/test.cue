@@ -29,7 +29,7 @@ test: {
 	jobs: {
 		required: {
 			name:      "linux / stable"
-			"runs-on": "ubuntu-latest"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -53,7 +53,7 @@ test: {
 		workflow_status: {
 			name:      "test workflow status"
 			if:        "always()"
-			"runs-on": "ubuntu-latest"
+			"runs-on": defaultRunner
 			needs: [
 				"required",
 			]
@@ -61,7 +61,6 @@ test: {
 				name: "Check `linux / stable` job status"
 				run: """
 					[[ \"${{ needs.required.result }}\" = \"success\" ]] && exit 0 || exit 1
-
 					"""
 			}]
 		}

@@ -22,7 +22,7 @@ docs: {
 		build: {
 			name: "build / stable"
 			env: CARGO_TERM_COLOR: "always"
-			"runs-on": "ubuntu-latest"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: toolchain: "nightly"},
@@ -42,14 +42,14 @@ docs: {
 			name:  "deploy / github-pages"
 			needs: "build"
 			permissions: {
-				pages:      "write"
 				"id-token": "write"
+				pages:      "write"
 			}
 			environment: {
 				name: "github-pages"
 				url:  "${{ steps.deployment.outputs.page_url }}"
 			}
-			"runs-on": "ubuntu-latest"
+			"runs-on": defaultRunner
 			steps: [{
 				name: "Deploy to GitHub Pages"
 				id:   "deployment"

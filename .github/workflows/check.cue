@@ -24,7 +24,7 @@ check: {
 	jobs: {
 		format: {
 			name:      "stable / format"
-			"runs-on": "ubuntu-latest"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
@@ -36,9 +36,9 @@ check: {
 			]
 		}
 
-		lint: {
+		lint: _#job & {
 			name:      "stable / lint"
-			"runs-on": "ubuntu-latest"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
@@ -53,7 +53,7 @@ check: {
 		// Minimum Supported Rust Version
 		msrv: {
 			name:      "msrv / compile"
-			"runs-on": "ubuntu-latest"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				{
@@ -75,7 +75,7 @@ check: {
 
 		cue: {
 			name:      "cue / vet"
-			"runs-on": "ubuntu-latest"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				{
@@ -110,7 +110,7 @@ check: {
 		workflow_status: {
 			name:      "check workflow status"
 			if:        "always()"
-			"runs-on": "ubuntu-latest"
+			"runs-on": defaultRunner
 			needs: [
 				"format",
 				"lint",
