@@ -42,3 +42,10 @@ _#installRust: {
 		with: components?: string
 	}
 }
+
+_#cacheRust: {
+	_#step & {
+		name: "Cache dependencies"
+		uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
+	}
+}

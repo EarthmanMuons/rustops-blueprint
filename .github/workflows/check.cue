@@ -28,10 +28,8 @@ check: {
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
+				_#cacheRust,
 				{
-					name: "Cache dependencies"
-					uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
-				}, {
 					name: "Check formatting"
 					run:  "cargo fmt --check"
 				},
@@ -44,10 +42,8 @@ check: {
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
+				_#cacheRust,
 				{
-					name: "Cache dependencies"
-					uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
-				}, {
 					name: "Check lints"
 					run:  "cargo clippy -- -D warnings"
 				},

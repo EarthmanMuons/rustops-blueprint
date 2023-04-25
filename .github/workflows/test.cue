@@ -37,13 +37,13 @@ test: {
 					name: "Install cargo-nextest"
 					uses: "taiki-e/install-action@7522ae03ca435a0ad1001ca93d6cd7cb8e81bd2f"
 					with: tool: "cargo-nextest"
-				}, {
-					name: "Cache dependencies"
-					uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
-				}, {
+				},
+				_#cacheRust,
+				{
 					name: "Compile tests"
 					run:  "cargo test --locked --no-run"
-				}, {
+				},
+				{
 					name: "Run tests"
 					run:  "cargo nextest run --locked"
 				},
