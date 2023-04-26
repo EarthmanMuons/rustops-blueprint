@@ -67,7 +67,7 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
-      - name: Install CUE
+      - name: Install CUE v0.5.0
         uses: cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb
         with:
           version: v0.5.0
