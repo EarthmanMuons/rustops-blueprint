@@ -15,10 +15,9 @@ check: {
 
 	env: CARGO_TERM_COLOR: "always"
 
-	jobs: {
+	jobs: _#defaultJobs & {
 		format: {
-			name:      "stable / format"
-			"runs-on": defaultRunner
+			name: "stable / format"
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
@@ -31,8 +30,7 @@ check: {
 		}
 
 		lint: {
-			name:      "stable / lint"
-			"runs-on": defaultRunner
+			name: "stable / lint"
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
@@ -46,8 +44,7 @@ check: {
 
 		// Minimum Supported Rust Version
 		msrv: {
-			name:      "msrv / compile"
-			"runs-on": defaultRunner
+			name: "msrv / compile"
 			steps: [
 				_#checkoutCode,
 				{
@@ -65,8 +62,7 @@ check: {
 		}
 
 		cue: {
-			name:      "cue / vet"
-			"runs-on": defaultRunner
+			name: "cue / vet"
 			steps: [
 				_#checkoutCode,
 				_#installCue,
@@ -98,9 +94,8 @@ check: {
 		}
 
 		workflow_status: {
-			name:      "check workflow status"
-			if:        "always()"
-			"runs-on": defaultRunner
+			name: "check workflow status"
+			if:   "always()"
 			needs: [
 				"format",
 				"lint",
