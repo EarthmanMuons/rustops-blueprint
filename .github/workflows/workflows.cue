@@ -45,6 +45,14 @@ _#checkoutCode: {
 	}
 }
 
+_#installCue: {
+	_#step & {
+		name: "Install CUE \(with.version)"
+		uses: "cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb"
+		with: version: "v0.5.0"
+	}
+}
+
 _#installRust: {
 	_#step & {
 		name: "Install \(with.toolchain) Rust toolchain"

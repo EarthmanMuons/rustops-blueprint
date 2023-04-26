@@ -56,10 +56,7 @@ check: {
 					run:  "awk -F '\"' '/rust-version/{ print \"version=\" $2 }' Cargo.toml >> $GITHUB_OUTPUT"
 				},
 				_#installRust & {with: toolchain: "${{ steps.msrv.outputs.version }}"},
-				{
-					name: "Cache dependencies"
-					uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
-				},
+				_#cacheRust,
 				{
 					name: "Check packages and dependencies for errors"
 					run:  "cargo check --locked"
@@ -72,11 +69,7 @@ check: {
 			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
-				{
-					name: "Install CUE"
-					uses: "cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb"
-					with: version: "v0.5.0"
-				},
+				_#installCue,
 				{
 					name:                "Validate CUE files"
 					"working-directory": ".github/workflows"
