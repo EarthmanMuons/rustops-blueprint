@@ -2,6 +2,8 @@ package workflows
 
 import "json.schemastore.org/github"
 
+import "list"
+
 workflows: [...{
 	filename: string
 	workflow: github.#Workflow
@@ -21,6 +23,13 @@ workflows: [
 		workflow: test
 	},
 ]
+
+defaultBranch: "main"
+
+// https://bors.tech/documentation/getting-started/
+_borsBranches: ["staging", "trying"]
+
+defaultPushBranches: list.Concat([[defaultBranch], _borsBranches])
 
 // TODO: drop when cuelang.org/issue/390 is fixed.
 // Declare definitions for sub-schemas

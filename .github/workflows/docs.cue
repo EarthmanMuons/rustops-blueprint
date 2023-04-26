@@ -4,7 +4,7 @@ docs: {
 	name: "docs"
 
 	on: {
-		push: branches: ["main"]
+		push: branches: [defaultBranch]
 
 		// Allow manually running this workflow.
 		workflow_dispatch: null
