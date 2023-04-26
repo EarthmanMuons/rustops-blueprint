@@ -82,15 +82,18 @@ check: {
 					name: "Install CUE"
 					uses: "cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb"
 					with: version: "v0.5.0"
-				}, {
+				},
+				{
 					name:                "Validate CUE files"
 					"working-directory": ".github/workflows"
 					run:                 "cue vet -c"
-				}, {
+				},
+				{
 					name:                "Regenerate YAML from CUE"
 					"working-directory": ".github/workflows"
 					run:                 "cue cmd genworkflows"
-				}, {
+				},
+				{
 					name: "Check if CUE and YAML are in sync"
 					run: """
 						if git diff --quiet HEAD --; then
@@ -117,27 +120,32 @@ check: {
 				"msrv",
 				"cue",
 			]
-			steps: [{
-				name: "Check `stable / format` job status"
-				run: """
-					[[ \"${{ needs.format.result }}\" = \"success\" ]] && exit 0 || exit 1
-					"""
-			}, {
-				name: "Check `stable / lint` job status"
-				run: """
-					[[ \"${{ needs.lint.result }}\" = \"success\" ]] && exit 0 || exit 1
-					"""
-			}, {
-				name: "Check `msrv / compile` job status"
-				run: """
-					[[ \"${{ needs.msrv.result }}\" = \"success\" ]] && exit 0 || exit 1
-					"""
-			}, {
-				name: "Check `cue / vet` job status"
-				run: """
-					[[ \"${{ needs.cue.result }}\" = \"success\" ]] && exit 0 || exit 1
-					"""
-			}]
+			steps: [
+				{
+					name: "Check `stable / format` job status"
+					run: """
+						[[ \"${{ needs.format.result }}\" = \"success\" ]] && exit 0 || exit 1
+						"""
+				},
+				{
+					name: "Check `stable / lint` job status"
+					run: """
+						[[ \"${{ needs.lint.result }}\" = \"success\" ]] && exit 0 || exit 1
+						"""
+				},
+				{
+					name: "Check `msrv / compile` job status"
+					run: """
+						[[ \"${{ needs.msrv.result }}\" = \"success\" ]] && exit 0 || exit 1
+						"""
+				},
+				{
+					name: "Check `cue / vet` job status"
+					run: """
+						[[ \"${{ needs.cue.result }}\" = \"success\" ]] && exit 0 || exit 1
+						"""
+				},
+			]
 		}
 	}
 }

@@ -57,12 +57,14 @@ test: {
 			needs: [
 				"required",
 			]
-			steps: [{
-				name: "Check `linux / stable` job status"
-				run: """
-					[[ \"${{ needs.required.result }}\" = \"success\" ]] && exit 0 || exit 1
-					"""
-			}]
+			steps: [
+				{
+					name: "Check `linux / stable` job status"
+					run: """
+						[[ \"${{ needs.required.result }}\" = \"success\" ]] && exit 0 || exit 1
+						"""
+				},
+			]
 		}
 	}
 }

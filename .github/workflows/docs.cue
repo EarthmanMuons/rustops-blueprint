@@ -30,7 +30,8 @@ docs: {
 					name: "Build docs"
 					env: RUSTDOCFLAGS: "--enable-index-page -Z unstable-options"
 					run: "cargo doc --no-deps"
-				}, {
+				},
+				{
 					name: "Upload github-pages artifact"
 					uses: "actions/upload-pages-artifact@v1"
 					with: path: "target/doc"
@@ -50,11 +51,13 @@ docs: {
 				url:  "${{ steps.deployment.outputs.page_url }}"
 			}
 			"runs-on": defaultRunner
-			steps: [{
-				name: "Deploy to GitHub Pages"
-				id:   "deployment"
-				uses: "actions/deploy-pages@v2"
-			}]
+			steps: [
+				{
+					name: "Deploy to GitHub Pages"
+					id:   "deployment"
+					uses: "actions/deploy-pages@v2"
+				},
+			]
 		}
 	}
 }
