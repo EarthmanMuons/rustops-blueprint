@@ -4,14 +4,8 @@ check: {
 	name: "check"
 
 	on: {
-		pull_request: branches: [
-			"main",
-		]
-		push: branches: [
-			"main",
-			"staging",
-			"trying",
-		]
+		pull_request: branches: [defaultBranch]
+		push: branches: defaultPushBranches
 	}
 
 	concurrency: {
