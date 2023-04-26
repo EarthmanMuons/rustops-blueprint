@@ -56,10 +56,7 @@ check: {
 					run:  "awk -F '\"' '/rust-version/{ print \"version=\" $2 }' Cargo.toml >> $GITHUB_OUTPUT"
 				},
 				_#installRust & {with: toolchain: "${{ steps.msrv.outputs.version }}"},
-				{
-					name: "Cache dependencies"
-					uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
-				},
+				_#cacheRust,
 				{
 					name: "Check packages and dependencies for errors"
 					run:  "cargo check --locked"
