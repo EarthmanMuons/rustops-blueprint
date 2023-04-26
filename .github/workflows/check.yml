@@ -91,12 +91,12 @@ jobs:
   workflow_status:
     name: check workflow status
     if: always()
-    runs-on: ubuntu-latest
     needs:
       - format
       - lint
       - msrv
       - cue
+    runs-on: ubuntu-latest
     steps:
       - name: Check `stable / format` job status
         run: '[[ "${{ needs.format.result }}" = "success" ]] && exit 0 || exit 1'

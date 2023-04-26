@@ -20,10 +20,9 @@ test: {
 		RUSTFLAGS:         "-D warnings"
 	}
 
-	jobs: {
+	jobs: _#defaultJobs & {
 		required: {
-			name:      "linux / stable"
-			"runs-on": defaultRunner
+			name: "linux / stable"
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -45,9 +44,8 @@ test: {
 		}
 
 		workflow_status: {
-			name:      "test workflow status"
-			if:        "always()"
-			"runs-on": defaultRunner
+			name: "test workflow status"
+			if:   "always()"
 			needs: [
 				"required",
 			]
