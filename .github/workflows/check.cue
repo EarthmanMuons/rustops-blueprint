@@ -36,7 +36,7 @@ check: {
 			]
 		}
 
-		lint: _#job & {
+		lint: {
 			name:      "stable / lint"
 			"runs-on": defaultRunner
 			steps: [
