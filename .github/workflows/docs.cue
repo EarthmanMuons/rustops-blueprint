@@ -22,41 +22,42 @@ docs: {
 		build: {
 			name: "build / stable"
 			env: CARGO_TERM_COLOR: "always"
-			"runs-on": "ubuntu-latest"
-			steps: [{
-				name: "Checkout source code"
-				uses: "actions/checkout@v3"
-			}, {
-				name: "Install nightly Rust toolchain"
-				uses: "dtolnay/rust-toolchain@nightly"
-			}, {
-				name: "Build docs"
-				env: RUSTDOCFLAGS: "--enable-index-page -Z unstable-options"
-				run: "cargo doc --no-deps"
-			}, {
-				name: "Upload github-pages artifact"
-				uses: "actions/upload-pages-artifact@v1"
-				with: path: "target/doc"
-			}]
+			"runs-on": defaultRunner
+			steps: [
+				_#checkoutCode,
+				_#installRust & {with: toolchain: "nightly"},
+				{
+					name: "Build docs"
+					env: RUSTDOCFLAGS: "--enable-index-page -Z unstable-options"
+					run: "cargo doc --no-deps"
+				},
+				{
+					name: "Upload github-pages artifact"
+					uses: "actions/upload-pages-artifact@v1"
+					with: path: "target/doc"
+				},
+			]
 		}
 
 		deploy: {
 			name:  "deploy / github-pages"
 			needs: "build"
 			permissions: {
-				pages:      "write"
 				"id-token": "write"
+				pages:      "write"
 			}
 			environment: {
 				name: "github-pages"
 				url:  "${{ steps.deployment.outputs.page_url }}"
 			}
-			"runs-on": "ubuntu-latest"
-			steps: [{
-				name: "Deploy to GitHub Pages"
-				id:   "deployment"
-				uses: "actions/deploy-pages@v2"
-			}]
+			"runs-on": defaultRunner
+			steps: [
+				{
+					name: "Deploy to GitHub Pages"
+					id:   "deployment"
+					uses: "actions/deploy-pages@v2"
+				},
+			]
 		}
 	}
 }
