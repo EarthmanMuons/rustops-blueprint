@@ -1,6 +1,6 @@
 package workflows
 
-check: {
+check: _#borsWorkflow & {
 	name: "check"
 
 	on: {
@@ -16,6 +16,38 @@ check: {
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: _#defaultJobs & {
+		cue: {
+			name: "cue / vet"
+			steps: [
+				_#checkoutCode,
+				_#installCue,
+				{
+					name:                "Validate CUE files"
+					"working-directory": ".github/workflows"
+					run:                 "cue vet -c"
+				},
+				{
+					name:                "Regenerate YAML from CUE"
+					"working-directory": ".github/workflows"
+					run:                 "cue cmd genworkflows"
+				},
+				{
+					name: "Check if CUE and YAML are in sync"
+					run: """
+						if git diff --quiet HEAD --; then
+						    echo 'CUE and YAML files are in sync; the working tree is clean.'
+						else
+						    git diff --color --patch-with-stat HEAD --
+						    echo "***"
+						    echo 'Error: CUE and YAML files are out of sync; the working tree is dirty.'
+						    echo 'Run `cue cmd genworkflows` locally to regenerate the YAML from CUE.'
+						    exit 1
+						fi
+						"""
+				},
+			]
+		}
+
 		format: {
 			name: "stable / format"
 			steps: [
@@ -61,72 +93,12 @@ check: {
 			]
 		}
 
-		cue: {
-			name: "cue / vet"
-			steps: [
-				_#checkoutCode,
-				_#installCue,
-				{
-					name:                "Validate CUE files"
-					"working-directory": ".github/workflows"
-					run:                 "cue vet -c"
-				},
-				{
-					name:                "Regenerate YAML from CUE"
-					"working-directory": ".github/workflows"
-					run:                 "cue cmd genworkflows"
-				},
-				{
-					name: "Check if CUE and YAML are in sync"
-					run: """
-						if git diff --quiet HEAD --; then
-						    echo 'CUE and YAML files are in sync; the working tree is clean.'
-						else
-						    git diff --color --patch-with-stat HEAD --
-						    echo "***"
-						    echo 'Error: CUE and YAML files are out of sync; the working tree is dirty.'
-						    echo 'Run `cue cmd genworkflows` locally to regenerate the YAML from CUE.'
-						    exit 1
-						fi
-						"""
-				},
-			]
-		}
-
 		workflow_status: {
-			name: "check workflow status"
-			if:   "always()"
 			needs: [
+				"cue",
 				"format",
 				"lint",
 				"msrv",
-				"cue",
-			]
-			steps: [
-				{
-					name: "Check `stable / format` job status"
-					run: """
-						[[ \"${{ needs.format.result }}\" = \"success\" ]] && exit 0 || exit 1
-						"""
-				},
-				{
-					name: "Check `stable / lint` job status"
-					run: """
-						[[ \"${{ needs.lint.result }}\" = \"success\" ]] && exit 0 || exit 1
-						"""
-				},
-				{
-					name: "Check `msrv / compile` job status"
-					run: """
-						[[ \"${{ needs.msrv.result }}\" = \"success\" ]] && exit 0 || exit 1
-						"""
-				},
-				{
-					name: "Check `cue / vet` job status"
-					run: """
-						[[ \"${{ needs.cue.result }}\" = \"success\" ]] && exit 0 || exit 1
-						"""
-				},
 			]
 		}
 	}

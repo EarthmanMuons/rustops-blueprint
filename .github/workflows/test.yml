@@ -8,14 +8,14 @@ name: test
       - main
       - staging
       - trying
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
 env:
   CARGO_INCREMENTAL: 0
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
   RUSTFLAGS: -D warnings
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 jobs:
   required:
     name: linux / stable
@@ -39,10 +39,10 @@ jobs:
         run: cargo nextest run --locked
   workflow_status:
     name: test workflow status
-    if: always()
     needs:
       - required
+    if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Check `linux / stable` job status
+      - name: 'Check status of job_id: required'
         run: '[[ "${{ needs.required.result }}" = "success" ]] && exit 0 || exit 1'

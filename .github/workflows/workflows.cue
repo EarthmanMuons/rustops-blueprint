@@ -25,18 +25,36 @@ workflows: [
 ]
 
 defaultBranch: "main"
+_borsBranches: ["staging", "trying"]
+defaultPushBranches: list.Concat([[defaultBranch], _borsBranches])
+
+defaultRunner: "ubuntu-latest"
 
 // https://bors.tech/documentation/getting-started/
-_borsBranches: ["staging", "trying"]
+_#borsWorkflow: github.#Workflow & {
+	name: string
+	let workflowName = name
 
-defaultPushBranches: list.Concat([[defaultBranch], _borsBranches])
+	jobs: {
+		"workflow_status": _#job & {
+			name:      "\(workflowName) workflow status"
+			needs:     github.#Workflow.#jobNeeds
+			if:        "always()"
+			"runs-on": defaultRunner
+			steps: [
+				for jobId in needs {
+					name: "Check status of job_id: \(jobId)"
+					run:  "[[ \"${{ needs.\(jobId).result }}\" = \"success\" ]] && exit 0 || exit 1"
+				},
+			]
+		}
+	}
+}
 
 // TODO: drop when cuelang.org/issue/390 is fixed.
 // Declare definitions for sub-schemas
 _#job:  (github.#Workflow.jobs & {x: _}).x
 _#step: ((_#job & {steps:            _}).steps & [_])[0]
-
-defaultRunner: "ubuntu-latest"
 
 _#defaultJobs: github.#Workflow.jobs & {
 	[string]: "runs-on": defaultRunner
