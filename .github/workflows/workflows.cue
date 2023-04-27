@@ -79,3 +79,10 @@ _#cacheRust: _#step & {
 	name: "Cache dependencies"
 	uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
 }
+
+_#cargoCheck: _#step & {
+	{
+		name: "Check packages and dependencies for errors"
+		run:  "cargo check --locked"
+	}
+}

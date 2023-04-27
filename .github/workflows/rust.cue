@@ -28,10 +28,7 @@ rust: _#borsWorkflow & {
 				_#checkoutCode,
 				_#installRust,
 				_#cacheRust,
-				{
-					name: "Check packages and dependencies for errors"
-					run:  "cargo check --locked"
-				},
+				_#cargoCheck,
 			]
 		}
 
@@ -111,10 +108,7 @@ rust: _#borsWorkflow & {
 				},
 				_#installRust & {with: toolchain: "${{ steps.msrv.outputs.version }}"},
 				_#cacheRust,
-				{
-					name: "Check packages and dependencies for errors"
-					run:  "cargo check --locked"
-				},
+				_#cargoCheck,
 			]
 		}
 
