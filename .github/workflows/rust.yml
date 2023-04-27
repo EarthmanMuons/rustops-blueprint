@@ -17,8 +17,22 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Install stable Rust toolchain
+        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        with:
+          toolchain: stable
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
+      - name: Check packages and dependencies for errors
+        run: cargo check --locked
   format:
-    name: stable / format
+    name: format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -33,7 +47,7 @@ jobs:
       - name: Check formatting
         run: cargo fmt --check
   lint:
-    name: stable / lint
+    name: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -47,8 +61,12 @@ jobs:
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
       - name: Check lints
         run: cargo clippy -- -D warnings
-  linux:
-    name: linux / stable
+  testStable:
+    name: test / stable
+    needs:
+      - check
+      - format
+      - lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -67,8 +85,12 @@ jobs:
         run: cargo test --locked --no-run
       - name: Run tests
         run: cargo nextest run --locked
-  msrv:
-    name: msrv / compile
+  checkMsrv:
+    name: check / msrv
+    needs:
+      - check
+      - format
+      - lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -87,18 +109,12 @@ jobs:
   bors:
     name: bors needs met for rust
     needs:
-      - format
-      - lint
-      - linux
-      - msrv
+      - testStable
+      - checkMsrv
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: 'Check status of job_id: format'
-        run: '[[ "${{ needs.format.result }}" = "success" ]] && exit 0 || exit 1'
-      - name: 'Check status of job_id: lint'
-        run: '[[ "${{ needs.lint.result }}" = "success" ]] && exit 0 || exit 1'
-      - name: 'Check status of job_id: linux'
-        run: '[[ "${{ needs.linux.result }}" = "success" ]] && exit 0 || exit 1'
-      - name: 'Check status of job_id: msrv'
-        run: '[[ "${{ needs.msrv.result }}" = "success" ]] && exit 0 || exit 1'
+      - name: 'Check status of job_id: testStable'
+        run: '[[ "${{ needs.testStable.result }}" = "success" ]] && exit 0 || exit 1'
+      - name: 'Check status of job_id: checkMsrv'
+        run: '[[ "${{ needs.checkMsrv.result }}" = "success" ]] && exit 0 || exit 1'

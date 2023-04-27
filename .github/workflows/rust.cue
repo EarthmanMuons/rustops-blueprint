@@ -21,8 +21,21 @@ rust: _#borsWorkflow & {
 	}
 
 	jobs: _#defaultJobs & {
+		check: {
+			name: "check"
+			steps: [
+				_#checkoutCode,
+				_#installRust,
+				_#cacheRust,
+				{
+					name: "Check packages and dependencies for errors"
+					run:  "cargo check --locked"
+				},
+			]
+		}
+
 		format: {
-			name: "stable / format"
+			name: "format"
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
@@ -35,7 +48,7 @@ rust: _#borsWorkflow & {
 		}
 
 		lint: {
-			name: "stable / lint"
+			name: "lint"
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
@@ -47,8 +60,9 @@ rust: _#borsWorkflow & {
 			]
 		}
 
-		linux: {
-			name: "linux / stable"
+		testStable: {
+			name: "test / stable"
+			needs: ["check", "format", "lint"]
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -70,8 +84,9 @@ rust: _#borsWorkflow & {
 		}
 
 		// Minimum Supported Rust Version
-		msrv: {
-			name: "msrv / compile"
+		checkMsrv: {
+			name: "check / msrv"
+			needs: ["check", "format", "lint"]
 			steps: [
 				_#checkoutCode,
 				{
@@ -89,10 +104,8 @@ rust: _#borsWorkflow & {
 		}
 
 		bors: needs: [
-			"format",
-			"lint",
-			"linux",
-			"msrv",
+			"testStable",
+			"checkMsrv",
 		]
 	}
 }
