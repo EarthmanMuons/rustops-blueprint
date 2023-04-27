@@ -1,7 +1,7 @@
 package workflows
 
-docs: {
-	name: "docs"
+githubPages: {
+	name: "github-pages"
 
 	on: {
 		push: branches: [defaultBranch]

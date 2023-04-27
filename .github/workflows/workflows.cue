@@ -11,16 +11,16 @@ workflows: [...{
 
 workflows: [
 	{
-		filename: "check.yml"
-		workflow: check
+		filename: "github-actions.yml"
+		workflow: githubActions
 	},
 	{
-		filename: "docs.yml"
-		workflow: docs
+		filename: "github-pages.yml"
+		workflow: githubPages
 	},
 	{
-		filename: "test.yml"
-		workflow: test
+		filename: "rust.yml"
+		workflow: rust
 	},
 ]
 
@@ -37,7 +37,8 @@ _#borsWorkflow: github.#Workflow & {
 
 	jobs: {
 		"bors": _#job & {
-			name:      "bors needs met for \(workflowName)"
+			name: "bors needs met for \(workflowName)"
+			// TODO: ensure needs can't be empty
 			needs:     github.#Workflow.#jobNeeds
 			if:        "always()"
 			"runs-on": defaultRunner
