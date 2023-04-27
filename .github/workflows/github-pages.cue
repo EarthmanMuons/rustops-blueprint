@@ -4,7 +4,13 @@ githubPages: {
 	name: "github-pages"
 
 	on: {
-		push: branches: [defaultBranch]
+		push: {
+			branches: [defaultBranch]
+			paths: [
+				"!.github/**",
+				".github/workflows/github-pages.yml",
+			]
+		}
 
 		// Allow manually running this workflow.
 		workflow_dispatch: null
