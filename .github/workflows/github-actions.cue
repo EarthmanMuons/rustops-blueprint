@@ -3,11 +3,6 @@ package workflows
 githubActions: _#borsWorkflow & {
 	name: "github-actions"
 
-	on: {
-		pull_request: branches: [defaultBranch]
-		push: branches: defaultPushBranches
-	}
-
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: {

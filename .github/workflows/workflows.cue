@@ -25,8 +25,7 @@ workflows: [
 ]
 
 defaultBranch: "main"
-_borsBranches: ["staging", "trying"]
-defaultPushBranches: list.Concat([[defaultBranch], _borsBranches])
+borsBranches: ["staging", "trying"]
 
 defaultRunner: "ubuntu-latest"
 
@@ -41,6 +40,11 @@ _#pullRequestWorkflow: github.#Workflow & {
 _#borsWorkflow: _#pullRequestWorkflow & {
 	name: string
 	let workflowName = name
+
+	on: {
+		pull_request: branches: [defaultBranch]
+		push: branches: list.Concat([[defaultBranch], borsBranches])
+	}
 
 	jobs: {
 		"bors": _#job & {

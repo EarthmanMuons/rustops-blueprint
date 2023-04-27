@@ -3,11 +3,6 @@ package workflows
 rust: _#borsWorkflow & {
 	name: "rust"
 
-	on: {
-		pull_request: branches: [defaultBranch]
-		push: branches: defaultPushBranches
-	}
-
 	env: {
 		CARGO_INCREMENTAL: 0
 		CARGO_TERM_COLOR:  "always"
