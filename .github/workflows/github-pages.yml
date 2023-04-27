@@ -3,6 +3,9 @@ name: github-pages
   push:
     branches:
       - main
+    paths:
+      - '!.github/**'
+      - .github/workflows/github-pages.yml
   workflow_dispatch: null
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
