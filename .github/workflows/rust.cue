@@ -8,11 +8,6 @@ rust: _#borsWorkflow & {
 		push: branches: defaultPushBranches
 	}
 
-	concurrency: {
-		group:                "${{ github.workflow }}-${{ github.head_ref || github.run_id }}"
-		"cancel-in-progress": true
-	}
-
 	env: {
 		CARGO_INCREMENTAL: 0
 		CARGO_TERM_COLOR:  "always"

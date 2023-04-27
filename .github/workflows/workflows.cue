@@ -30,8 +30,15 @@ defaultPushBranches: list.Concat([[defaultBranch], _borsBranches])
 
 defaultRunner: "ubuntu-latest"
 
+_#pullRequestWorkflow: github.#Workflow & {
+	concurrency: {
+		group:                "${{ github.workflow }}-${{ github.head_ref || github.run_id }}"
+		"cancel-in-progress": true
+	}
+}
+
 // https://bors.tech/documentation/getting-started/
-_#borsWorkflow: github.#Workflow & {
+_#borsWorkflow: _#pullRequestWorkflow & {
 	name: string
 	let workflowName = name
 
