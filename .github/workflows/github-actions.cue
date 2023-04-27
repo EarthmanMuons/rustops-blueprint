@@ -1,7 +1,7 @@
 package workflows
 
-check: _#borsWorkflow & {
-	name: "check"
+githubActions: _#borsWorkflow & {
+	name: "github-actions"
 
 	on: {
 		pull_request: branches: [defaultBranch]
@@ -48,56 +48,8 @@ check: _#borsWorkflow & {
 			]
 		}
 
-		format: {
-			name: "stable / format"
-			steps: [
-				_#checkoutCode,
-				_#installRust & {with: components: "clippy,rustfmt"},
-				_#cacheRust,
-				{
-					name: "Check formatting"
-					run:  "cargo fmt --check"
-				},
-			]
-		}
-
-		lint: {
-			name: "stable / lint"
-			steps: [
-				_#checkoutCode,
-				_#installRust & {with: components: "clippy,rustfmt"},
-				_#cacheRust,
-				{
-					name: "Check lints"
-					run:  "cargo clippy -- -D warnings"
-				},
-			]
-		}
-
-		// Minimum Supported Rust Version
-		msrv: {
-			name: "msrv / compile"
-			steps: [
-				_#checkoutCode,
-				{
-					name: "Get MSRV from package metadata"
-					id:   "msrv"
-					run:  "awk -F '\"' '/rust-version/{ print \"version=\" $2 }' Cargo.toml >> $GITHUB_OUTPUT"
-				},
-				_#installRust & {with: toolchain: "${{ steps.msrv.outputs.version }}"},
-				_#cacheRust,
-				{
-					name: "Check packages and dependencies for errors"
-					run:  "cargo check --locked"
-				},
-			]
-		}
-
 		bors: needs: [
 			"cue",
-			"format",
-			"lint",
-			"msrv",
 		]
 	}
 }
