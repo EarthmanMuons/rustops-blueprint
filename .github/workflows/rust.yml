@@ -122,6 +122,22 @@ jobs:
     if: always()
     steps:
       - name: 'Check status of job_id: testStable'
-        run: '[[ "${{ needs.testStable.result }}" = "success" ]] && exit 0 || exit 1'
+        run: |-
+          RESULT="${{ needs.testStable.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi
       - name: 'Check status of job_id: checkMsrv'
-        run: '[[ "${{ needs.checkMsrv.result }}" = "success" ]] && exit 0 || exit 1'
+        run: |-
+          RESULT="${{ needs.checkMsrv.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi

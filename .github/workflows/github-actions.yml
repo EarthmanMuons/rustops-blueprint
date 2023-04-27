@@ -14,9 +14,32 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 jobs:
+  changes:
+    name: detect repo changes
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      github-actions: ${{ steps.filter.outputs.github-actions }}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 20
+      - id: filter
+        name: Filter changed repository files
+        uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50
+        with:
+          filters: |-
+            github-actions:
+              - '.github/**/*.cue'
+              - '.github/**/*.yml'
   cueVet:
     name: cue / vet
+    needs:
+      - changes
     runs-on: ubuntu-latest
+    if: ${{ needs.changes.outputs.github-actions == 'true' }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -48,7 +71,7 @@ jobs:
               echo 'CUE files were already formatted; the working tree is clean.'
           else
               git diff --color --patch-with-stat HEAD --
-              echo "***"
+              echo '***'
               echo 'Error: CUE files are not formatted; the working tree is dirty.'
               echo 'Run `cue fmt` locally to format the CUE files.'
               exit 1
@@ -88,6 +111,22 @@ jobs:
     if: always()
     steps:
       - name: 'Check status of job_id: cueFormat'
-        run: '[[ "${{ needs.cueFormat.result }}" = "success" ]] && exit 0 || exit 1'
+        run: |-
+          RESULT="${{ needs.cueFormat.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi
       - name: 'Check status of job_id: cueSynced'
-        run: '[[ "${{ needs.cueSynced.result }}" = "success" ]] && exit 0 || exit 1'
+        run: |-
+          RESULT="${{ needs.cueSynced.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi
