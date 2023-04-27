@@ -11,9 +11,13 @@ rust: _#borsWorkflow & {
 	}
 
 	jobs: {
+		changes: _#changes
+
 		check: {
-			name:      "check"
+			name: "check"
+			needs: ["changes"]
 			"runs-on": defaultRunner
+			"if":      "${{ needs.changes.outputs.rust == 'true' }}"
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -23,8 +27,10 @@ rust: _#borsWorkflow & {
 		}
 
 		format: {
-			name:      "format"
+			name: "format"
+			needs: ["changes"]
 			"runs-on": defaultRunner
+			"if":      "${{ needs.changes.outputs.rust == 'true' }}"
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
@@ -37,8 +43,10 @@ rust: _#borsWorkflow & {
 		}
 
 		lint: {
-			name:      "lint"
+			name: "lint"
+			needs: ["changes"]
 			"runs-on": defaultRunner
+			"if":      "${{ needs.changes.outputs.rust == 'true' }}"
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
