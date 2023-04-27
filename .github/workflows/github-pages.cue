@@ -18,11 +18,10 @@ githubPages: {
 		"cancel-in-progress": false
 	}
 
-	jobs: {
+	jobs: _#defaultJobs & {
 		build: {
 			name: "build / stable"
 			env: CARGO_TERM_COLOR: "always"
-			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: toolchain: "nightly"},
@@ -50,7 +49,6 @@ githubPages: {
 				name: "github-pages"
 				url:  "${{ steps.deployment.outputs.page_url }}"
 			}
-			"runs-on": defaultRunner
 			steps: [
 				{
 					name: "Deploy to GitHub Pages"

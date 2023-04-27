@@ -84,8 +84,8 @@ jobs:
     needs:
       - cueFormat
       - cueSynced
-    if: always()
     runs-on: ubuntu-latest
+    if: always()
     steps:
       - name: 'Check status of job_id: cueFormat'
         run: '[[ "${{ needs.cueFormat.result }}" = "success" ]] && exit 0 || exit 1'

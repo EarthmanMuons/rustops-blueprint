@@ -111,8 +111,8 @@ jobs:
     needs:
       - testStable
       - checkMsrv
-    if: always()
     runs-on: ubuntu-latest
+    if: always()
     steps:
       - name: 'Check status of job_id: testStable'
         run: '[[ "${{ needs.testStable.result }}" = "success" ]] && exit 0 || exit 1'

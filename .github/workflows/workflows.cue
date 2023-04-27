@@ -39,9 +39,8 @@ _#borsWorkflow: github.#Workflow & {
 		"bors": _#job & {
 			name: "bors needs met for \(workflowName)"
 			// TODO: ensure needs can't be empty
-			needs:     github.#Workflow.#jobNeeds
-			if:        "always()"
-			"runs-on": defaultRunner
+			needs: github.#Workflow.#jobNeeds
+			if:    "always()"
 			steps: [
 				for jobId in needs {
 					name: "Check status of job_id: \(jobId)"
