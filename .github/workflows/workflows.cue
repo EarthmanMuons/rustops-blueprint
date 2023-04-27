@@ -39,8 +39,9 @@ _#borsWorkflow: github.#Workflow & {
 		"bors": _#job & {
 			name: "bors needs met for \(workflowName)"
 			// TODO: ensure needs can't be empty
-			needs: github.#Workflow.#jobNeeds
-			if:    "always()"
+			needs:     github.#Workflow.#jobNeeds
+			"runs-on": defaultRunner
+			if:        "always()"
 			steps: [
 				for jobId in needs {
 					name: "Check status of job_id: \(jobId)"
@@ -55,10 +56,6 @@ _#borsWorkflow: github.#Workflow & {
 // Declare definitions for sub-schemas
 _#job:  (github.#Workflow.jobs & {x: _}).x
 _#step: ((_#job & {steps:            _}).steps & [_])[0]
-
-_#defaultJobs: github.#Workflow.jobs & {
-	[string]: "runs-on": defaultRunner
-}
 
 _#checkoutCode: _#step & {
 	name: "Checkout source code"

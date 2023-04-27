@@ -20,9 +20,10 @@ rust: _#borsWorkflow & {
 		RUSTFLAGS:         "-D warnings"
 	}
 
-	jobs: _#defaultJobs & {
+	jobs: {
 		check: {
-			name: "check"
+			name:      "check"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -35,7 +36,8 @@ rust: _#borsWorkflow & {
 		}
 
 		format: {
-			name: "format"
+			name:      "format"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
@@ -48,7 +50,8 @@ rust: _#borsWorkflow & {
 		}
 
 		lint: {
-			name: "lint"
+			name:      "lint"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy,rustfmt"},
@@ -63,6 +66,7 @@ rust: _#borsWorkflow & {
 		testStable: {
 			name: "test / stable"
 			needs: ["check", "format", "lint"]
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -87,6 +91,7 @@ rust: _#borsWorkflow & {
 		checkMsrv: {
 			name: "check / msrv"
 			needs: ["check", "format", "lint"]
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				{

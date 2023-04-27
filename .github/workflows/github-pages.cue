@@ -18,9 +18,10 @@ githubPages: {
 		"cancel-in-progress": false
 	}
 
-	jobs: _#defaultJobs & {
+	jobs: {
 		build: {
-			name: "build / stable"
+			name:      "build / stable"
+			"runs-on": defaultRunner
 			env: CARGO_TERM_COLOR: "always"
 			steps: [
 				_#checkoutCode,
@@ -45,6 +46,7 @@ githubPages: {
 				"id-token": "write"
 				pages:      "write"
 			}
+			"runs-on": defaultRunner
 			environment: {
 				name: "github-pages"
 				url:  "${{ steps.deployment.outputs.page_url }}"
