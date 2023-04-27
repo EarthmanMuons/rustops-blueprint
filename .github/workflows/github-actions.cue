@@ -15,9 +15,10 @@ githubActions: _#borsWorkflow & {
 
 	env: CARGO_TERM_COLOR: "always"
 
-	jobs: _#defaultJobs & {
+	jobs: {
 		cueVet: {
-			name: "cue / vet"
+			name:      "cue / vet"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installCue,
@@ -32,6 +33,7 @@ githubActions: _#borsWorkflow & {
 		cueFormat: {
 			name: "cue / format"
 			needs: ["cueVet"]
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installCue,
@@ -60,6 +62,7 @@ githubActions: _#borsWorkflow & {
 		cueSynced: {
 			name: "cue / synced"
 			needs: ["cueVet"]
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				_#installCue,
