@@ -37,8 +37,8 @@ jobs:
         run: cargo test --locked --no-run
       - name: Run tests
         run: cargo nextest run --locked
-  workflow_status:
-    name: test workflow status
+  bors:
+    name: bors needs met for test
     needs:
       - required
     if: always()

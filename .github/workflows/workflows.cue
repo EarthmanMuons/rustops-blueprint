@@ -36,8 +36,8 @@ _#borsWorkflow: github.#Workflow & {
 	let workflowName = name
 
 	jobs: {
-		"workflow_status": _#job & {
-			name:      "\(workflowName) workflow status"
+		"bors": _#job & {
+			name:      "bors needs met for \(workflowName)"
 			needs:     github.#Workflow.#jobNeeds
 			if:        "always()"
 			"runs-on": defaultRunner

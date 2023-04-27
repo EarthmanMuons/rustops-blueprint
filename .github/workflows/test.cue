@@ -43,8 +43,6 @@ test: _#borsWorkflow & {
 			]
 		}
 
-		workflow_status: {
-			needs: ["required"]
-		}
+		bors: needs: ["required"]
 	}
 }
