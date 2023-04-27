@@ -3,16 +3,6 @@ package workflows
 rust: _#borsWorkflow & {
 	name: "rust"
 
-	on: {
-		pull_request: branches: [defaultBranch]
-		push: branches: defaultPushBranches
-	}
-
-	concurrency: {
-		group:                "${{ github.workflow }}-${{ github.head_ref || github.run_id }}"
-		"cancel-in-progress": true
-	}
-
 	env: {
 		CARGO_INCREMENTAL: 0
 		CARGO_TERM_COLOR:  "always"
@@ -28,10 +18,7 @@ rust: _#borsWorkflow & {
 				_#checkoutCode,
 				_#installRust,
 				_#cacheRust,
-				{
-					name: "Check packages and dependencies for errors"
-					run:  "cargo check --locked"
-				},
+				_#cargoCheck,
 			]
 		}
 
@@ -111,10 +98,7 @@ rust: _#borsWorkflow & {
 				},
 				_#installRust & {with: toolchain: "${{ steps.msrv.outputs.version }}"},
 				_#cacheRust,
-				{
-					name: "Check packages and dependencies for errors"
-					run:  "cargo check --locked"
-				},
+				_#cargoCheck,
 			]
 		}
 

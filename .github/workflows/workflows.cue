@@ -25,15 +25,26 @@ workflows: [
 ]
 
 defaultBranch: "main"
-_borsBranches: ["staging", "trying"]
-defaultPushBranches: list.Concat([[defaultBranch], _borsBranches])
+borsBranches: ["staging", "trying"]
 
 defaultRunner: "ubuntu-latest"
 
+_#pullRequestWorkflow: github.#Workflow & {
+	concurrency: {
+		group:                "${{ github.workflow }}-${{ github.head_ref || github.run_id }}"
+		"cancel-in-progress": true
+	}
+}
+
 // https://bors.tech/documentation/getting-started/
-_#borsWorkflow: github.#Workflow & {
+_#borsWorkflow: _#pullRequestWorkflow & {
 	name: string
 	let workflowName = name
+
+	on: {
+		pull_request: branches: [defaultBranch]
+		push: branches: list.Concat([[defaultBranch], borsBranches])
+	}
 
 	jobs: {
 		"bors": _#job & {
@@ -78,4 +89,11 @@ _#installRust: _#step & {
 _#cacheRust: _#step & {
 	name: "Cache dependencies"
 	uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
+}
+
+_#cargoCheck: _#step & {
+	{
+		name: "Check packages and dependencies for errors"
+		run:  "cargo check --locked"
+	}
 }

@@ -3,16 +3,6 @@ package workflows
 githubActions: _#borsWorkflow & {
 	name: "github-actions"
 
-	on: {
-		pull_request: branches: [defaultBranch]
-		push: branches: defaultPushBranches
-	}
-
-	concurrency: {
-		group:                "${{ github.workflow }}-${{ github.head_ref || github.run_id }}"
-		"cancel-in-progress": true
-	}
-
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: {
