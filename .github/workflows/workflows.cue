@@ -106,7 +106,7 @@ _#changes: _#job & {
 
 _#checkoutCode: _#step & {
 	name: "Checkout source code"
-	uses: "actions/checkout@v3"
+	uses: "actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab"
 }
 
 _#filterChanges: _#step & {
@@ -123,6 +123,7 @@ _#installCue: _#step & {
 
 _#installRust: _#step & {
 	name: "Install \(with.toolchain) Rust toolchain"
+	// NOTE: upstream does not tag releases, so this won't be updated by dependabot
 	uses: "dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d"
 	with: toolchain:   string | *"stable"
 	with: components?: string

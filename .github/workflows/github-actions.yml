@@ -24,7 +24,7 @@ jobs:
       rust: ${{ steps.filter.outputs.rust }}
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
           fetch-depth: 20
       - name: Filter changed repository files
@@ -47,7 +47,7 @@ jobs:
     if: ${{ needs.changes.outputs.github-actions == 'true' }}
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - name: Install CUE v0.5.0
         uses: cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb
         with:
@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - name: Install CUE v0.5.0
         uses: cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb
         with:
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - name: Install CUE v0.5.0
         uses: cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb
         with:
