@@ -1,6 +1,6 @@
 package workflows
 
-test: {
+test: _#borsWorkflow & {
 	name: "test"
 
 	on: {
@@ -44,19 +44,7 @@ test: {
 		}
 
 		workflow_status: {
-			name: "test workflow status"
-			if:   "always()"
-			needs: [
-				"required",
-			]
-			steps: [
-				{
-					name: "Check `linux / stable` job status"
-					run: """
-						[[ \"${{ needs.required.result }}\" = \"success\" ]] && exit 0 || exit 1
-						"""
-				},
-			]
+			needs: ["required"]
 		}
 	}
 }
