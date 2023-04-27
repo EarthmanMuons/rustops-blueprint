@@ -14,7 +14,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 jobs:
-  cue:
+  cueVet:
     name: cue / vet
     runs-on: ubuntu-latest
     steps:
@@ -27,6 +27,44 @@ jobs:
       - name: Validate CUE files
         working-directory: .github/workflows
         run: cue vet -c
+  cueFormat:
+    name: cue / format
+    needs:
+      - cueVet
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Install CUE v0.5.0
+        uses: cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb
+        with:
+          version: v0.5.0
+      - name: Format CUE files
+        working-directory: .github/workflows
+        run: cue fmt
+      - name: Check if CUE files were reformated
+        run: |-
+          if git diff --quiet HEAD --; then
+              echo 'CUE files were already formatted; the working tree is clean.'
+          else
+              git diff --color --patch-with-stat HEAD --
+              echo "***"
+              echo 'Error: CUE files are not formatted; the working tree is dirty.'
+              echo 'Run `cue fmt` locally to format the CUE files.'
+              exit 1
+          fi
+  cueSynced:
+    name: cue / synced
+    needs:
+      - cueVet
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Install CUE v0.5.0
+        uses: cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb
+        with:
+          version: v0.5.0
       - name: Regenerate YAML from CUE
         working-directory: .github/workflows
         run: cue cmd genworkflows
@@ -44,9 +82,12 @@ jobs:
   bors:
     name: bors needs met for github-actions
     needs:
-      - cue
+      - cueFormat
+      - cueSynced
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: 'Check status of job_id: cue'
-        run: '[[ "${{ needs.cue.result }}" = "success" ]] && exit 0 || exit 1'
+      - name: 'Check status of job_id: cueFormat'
+        run: '[[ "${{ needs.cueFormat.result }}" = "success" ]] && exit 0 || exit 1'
+      - name: 'Check status of job_id: cueSynced'
+        run: '[[ "${{ needs.cueSynced.result }}" = "success" ]] && exit 0 || exit 1'

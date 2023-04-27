@@ -16,7 +16,7 @@ githubActions: _#borsWorkflow & {
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: _#defaultJobs & {
-		cue: {
+		cueVet: {
 			name: "cue / vet"
 			steps: [
 				_#checkoutCode,
@@ -26,6 +26,43 @@ githubActions: _#borsWorkflow & {
 					"working-directory": ".github/workflows"
 					run:                 "cue vet -c"
 				},
+			]
+		}
+
+		cueFormat: {
+			name: "cue / format"
+			needs: ["cueVet"]
+			steps: [
+				_#checkoutCode,
+				_#installCue,
+				{
+					name:                "Format CUE files"
+					"working-directory": ".github/workflows"
+					run:                 "cue fmt"
+				},
+				{
+					name: "Check if CUE files were reformated"
+					run: """
+						if git diff --quiet HEAD --; then
+						    echo 'CUE files were already formatted; the working tree is clean.'
+						else
+						    git diff --color --patch-with-stat HEAD --
+						    echo "***"
+						    echo 'Error: CUE files are not formatted; the working tree is dirty.'
+						    echo 'Run `cue fmt` locally to format the CUE files.'
+						    exit 1
+						fi
+						"""
+				},
+			]
+		}
+
+		cueSynced: {
+			name: "cue / synced"
+			needs: ["cueVet"]
+			steps: [
+				_#checkoutCode,
+				_#installCue,
 				{
 					name:                "Regenerate YAML from CUE"
 					"working-directory": ".github/workflows"
@@ -49,7 +86,8 @@ githubActions: _#borsWorkflow & {
 		}
 
 		bors: needs: [
-			"cue",
+			"cueFormat",
+			"cueSynced",
 		]
 	}
 }
