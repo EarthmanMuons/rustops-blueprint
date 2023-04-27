@@ -66,7 +66,17 @@ rust: _#borsWorkflow & {
 		testStable: {
 			name: "test / stable"
 			needs: ["check", "format", "lint"]
-			"runs-on": defaultRunner
+			strategy: {
+				"fail-fast": false
+				matrix: {
+					platform: [
+						"macos-latest",
+						"ubuntu-latest",
+						"windows-latest",
+					]
+				}
+			}
+			"runs-on": "${{ matrix.platform }}"
 			steps: [
 				_#checkoutCode,
 				_#installRust,

@@ -67,7 +67,14 @@ jobs:
       - check
       - format
       - lint
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
