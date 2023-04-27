@@ -6,24 +6,7 @@ githubActions: _#borsWorkflow & {
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: {
-		changes: {
-			name:      "detect repo changes"
-			"runs-on": defaultRunner
-			permissions: "pull-requests": "read"
-			outputs: {
-				"github-actions": "${{ steps.filter.outputs.github-actions }}"
-			}
-			steps: [
-				_#checkoutCode & {with: "fetch-depth": 20},
-				_#filterChanges & {
-					with: filters: """
-						github-actions:
-						  - '.github/**/*.cue'
-						  - '.github/**/*.yml'
-						"""
-				},
-			]
-		}
+		changes: _#changes
 
 		cueVet: {
 			name: "cue / vet"

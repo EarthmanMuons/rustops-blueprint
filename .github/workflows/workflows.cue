@@ -77,6 +77,32 @@ _#borsWorkflow: _#pullRequestWorkflow & {
 _#job:  (github.#Workflow.jobs & {x: _}).x
 _#step: ((_#job & {steps:            _}).steps & [_])[0]
 
+_#changes: _#job & {
+	name:      "detect repo changes"
+	"runs-on": defaultRunner
+	permissions: "pull-requests": "read"
+	outputs: {
+		"github-actions": "${{ steps.filter.outputs.github-actions }}"
+		"rust":           "${{ steps.filter.outputs.rust }}"
+	}
+	steps: [
+		_#checkoutCode & {with: "fetch-depth": 20},
+		{
+			name: "Filter changed repository files"
+			uses: "dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50"
+			id:   "filter"
+			with: filters: """
+				github-actions:
+				  - '.github/**/*.cue'
+				  - '.github/**/*.yml'
+				rust:
+				  - '**/*.rs'
+				  - '**/Cargo.*'
+				"""
+		},
+	]
+}
+
 _#checkoutCode: _#step & {
 	name: "Checkout source code"
 	uses: "actions/checkout@v3"
