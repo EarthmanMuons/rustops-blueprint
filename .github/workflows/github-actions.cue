@@ -6,9 +6,30 @@ githubActions: _#borsWorkflow & {
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: {
-		cueVet: {
-			name:      "cue / vet"
+		changes: {
+			name:      "detect repo changes"
 			"runs-on": defaultRunner
+			permissions: "pull-requests": "read"
+			outputs: {
+				"github-actions": "${{ steps.filter.outputs.github-actions }}"
+			}
+			steps: [
+				_#checkoutCode & {with: "fetch-depth": 20},
+				_#filterChanges & {
+					with: filters: """
+						github-actions:
+						  - '.github/**/*.cue'
+						  - '.github/**/*.yml'
+						"""
+				},
+			]
+		}
+
+		cueVet: {
+			name: "cue / vet"
+			needs: ["changes"]
+			"runs-on": defaultRunner
+			"if":      "${{ needs.changes.outputs.github-actions == 'true' }}"
 			steps: [
 				_#checkoutCode,
 				_#installCue,
@@ -39,7 +60,7 @@ githubActions: _#borsWorkflow & {
 						    echo 'CUE files were already formatted; the working tree is clean.'
 						else
 						    git diff --color --patch-with-stat HEAD --
-						    echo "***"
+						    echo '***'
 						    echo 'Error: CUE files are not formatted; the working tree is dirty.'
 						    echo 'Run `cue fmt` locally to format the CUE files.'
 						    exit 1

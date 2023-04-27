@@ -52,11 +52,20 @@ _#borsWorkflow: _#pullRequestWorkflow & {
 			// TODO: ensure needs can't be empty
 			needs:     github.#Workflow.#jobNeeds
 			"runs-on": defaultRunner
-			if:        "always()"
+			"if":      "always()"
 			steps: [
 				for jobId in needs {
 					name: "Check status of job_id: \(jobId)"
-					run:  "[[ \"${{ needs.\(jobId).result }}\" = \"success\" ]] && exit 0 || exit 1"
+					run:  """
+						RESULT="${{ needs.\(jobId).result }}";
+						if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+						    exit 0
+						else
+						    echo "***"
+						    echo "Error: The required job did not pass."
+						    exit 1
+						fi
+						"""
 				},
 			]
 		}
@@ -71,6 +80,12 @@ _#step: ((_#job & {steps:            _}).steps & [_])[0]
 _#checkoutCode: _#step & {
 	name: "Checkout source code"
 	uses: "actions/checkout@v3"
+}
+
+_#filterChanges: _#step & {
+	name: "Filter changed repository files"
+	uses: "dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50"
+	id:   "filter"
 }
 
 _#installCue: _#step & {
