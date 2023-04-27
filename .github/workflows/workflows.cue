@@ -134,8 +134,6 @@ _#cacheRust: _#step & {
 }
 
 _#cargoCheck: _#step & {
-	{
-		name: "Check packages and dependencies for errors"
-		run:  "cargo check --locked"
-	}
+	name: "Check packages and dependencies for errors"
+	run:  "cargo check --locked"
 }
