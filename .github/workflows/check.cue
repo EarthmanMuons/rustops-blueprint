@@ -93,13 +93,11 @@ check: _#borsWorkflow & {
 			]
 		}
 
-		workflow_status: {
-			needs: [
-				"cue",
-				"format",
-				"lint",
-				"msrv",
-			]
-		}
+		bors: needs: [
+			"cue",
+			"format",
+			"lint",
+			"msrv",
+		]
 	}
 }

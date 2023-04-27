@@ -1,3 +1,6 @@
+status = [
+  "bors needs met for check",
+  "bors needs met for test",
+]
 #required_approvals = 1
-status = ["check workflow status", "test workflow status"]
 up_to_date_approvals = true
