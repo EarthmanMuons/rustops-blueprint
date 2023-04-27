@@ -38,6 +38,7 @@ jobs:
             rust:
               - '**/*.rs'
               - '**/Cargo.*'
+              - '.github/workflows/rust.yml'
   cueVet:
     name: cue / vet
     needs:

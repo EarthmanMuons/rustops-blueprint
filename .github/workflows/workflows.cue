@@ -98,6 +98,7 @@ _#changes: _#job & {
 				rust:
 				  - '**/*.rs'
 				  - '**/Cargo.*'
+				  - '.github/workflows/rust.yml'
 				"""
 		},
 	]
