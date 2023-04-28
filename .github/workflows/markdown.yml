@@ -1,4 +1,4 @@
-name: docs
+name: markdown
 "on":
   pull_request:
     branches:
@@ -46,7 +46,7 @@ jobs:
               - '**/Cargo.*'
               - .github/workflows/rust.yml
   markdownFormat:
-    name: markdown / format
+    name: format
     needs:
       - changes
     runs-on: ubuntu-latest
@@ -60,7 +60,7 @@ jobs:
           prettier_version: 2.8.8
           prettier_options: --check --color --prose-wrap always ${{ needs.changes.outputs.markdown_files }}
   bors:
-    name: bors needs met for docs
+    name: bors needs met for markdown
     needs:
       - markdownFormat
     runs-on: ubuntu-latest

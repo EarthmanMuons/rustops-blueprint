@@ -1,7 +1,7 @@
 package workflows
 
-docs: _#borsWorkflow & {
-	name: "docs"
+markdown: _#borsWorkflow & {
+	name: "markdown"
 
 	on: push: branches: borsBranches
 
@@ -11,7 +11,7 @@ docs: _#borsWorkflow & {
 		changes: _#changes
 
 		markdownFormat: {
-			name: "markdown / format"
+			name: "format"
 			needs: ["changes"]
 			"runs-on": defaultRunner
 			"if":      "${{ needs.changes.outputs.markdown == 'true' }}"
