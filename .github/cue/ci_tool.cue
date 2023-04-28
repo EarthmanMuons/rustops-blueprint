@@ -8,8 +8,8 @@ import (
 	"tool/http"
 )
 
-// vendor a CUE-imported version of the JSONSchema that defines
-// GitHub Actions workflows into the main module's cue.mod/pkg
+// vendor a cue-imported version of the jsonschema that defines
+// github actions workflows into the main module's cue.mod/pkg
 command: importjsonschema: {
 	getJSONSchema: http.Get & {
 		// https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/github-workflow.json
@@ -24,9 +24,30 @@ command: importjsonschema: {
 	}
 }
 
+// clear out any existing workflow yaml files
+command: clearworkflows: {
+	list: file.Glob & {
+		glob: "../workflows/*.yml"
+	}
+
+	for _, filepath in list.files {
+		(filepath): {
+			remove: exec.Run & {
+				cmd: "rm \(filepath)"
+			}
+		}
+	}
+}
+
+// generate workflow yaml files from cue definitions
 command: genworkflows: {
+	clear: exec.Run & {
+		cmd: "cue cmd clearworkflows"
+	}
+
 	for w in workflows {
 		"\(w.filename)": file.Create & {
+			$dep:     clear.$done
 			filename: path.FromSlash("../workflows/\(w.filename)", "unix")
 			contents: yaml.Marshal(w.workflow)
 		}
