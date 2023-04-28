@@ -8,7 +8,7 @@ githubActions: _#borsWorkflow & {
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: {
-		changes: _#changes
+		changes: _#detectFileChanges
 
 		cueVet: {
 			name: "cue / vet"

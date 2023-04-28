@@ -92,7 +92,7 @@ _fileFilters: {
 	]
 }
 
-_#changes: _#job & {
+_#detectFileChanges: _#job & {
 	name:      "detect file changes"
 	"runs-on": defaultRunner
 	permissions: "pull-requests": "read"

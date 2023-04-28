@@ -15,7 +15,7 @@ rust: _#borsWorkflow & {
 	}
 
 	jobs: {
-		changes: _#changes
+		changes: _#detectFileChanges
 
 		check: {
 			name: "check"
