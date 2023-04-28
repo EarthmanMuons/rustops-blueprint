@@ -1,9 +1,6 @@
 package workflows
 
-import (
-	"encoding/yaml"
-	"list"
-)
+import "encoding/yaml"
 
 import "json.schemastore.org/github"
 
@@ -48,15 +45,11 @@ _#borsWorkflow: _#pullRequestWorkflow & {
 	name: string
 	let workflowName = name
 
-	on: {
-		pull_request: branches: [defaultBranch]
-		push: branches: list.Concat([[defaultBranch], borsBranches])
-	}
+	on: pull_request: branches: [defaultBranch]
 
 	jobs: {
 		"bors": _#job & {
-			name: "bors needs met for \(workflowName)"
-			// TODO: ensure needs can't be empty
+			name:      "bors needs met for \(workflowName)"
 			needs:     github.#Workflow.#jobNeeds
 			"runs-on": defaultRunner
 			"if":      "always()"

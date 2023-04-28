@@ -1,7 +1,11 @@
 package workflows
 
+import "list"
+
 rust: _#borsWorkflow & {
 	name: "rust"
+
+	on: push: branches: list.Concat([[defaultBranch], borsBranches])
 
 	env: {
 		CARGO_INCREMENTAL: 0

@@ -3,6 +3,8 @@ package workflows
 docs: _#borsWorkflow & {
 	name: "docs"
 
+	on: push: branches: borsBranches
+
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: {
