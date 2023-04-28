@@ -1,7 +1,7 @@
 status = [
   "bors needs met for github-actions",
-  "bors needs met for markdown",
   "bors needs met for rust",
+  "bors needs met for wordsmith",
 ]
 #required_approvals = 1
 up_to_date_approvals = true

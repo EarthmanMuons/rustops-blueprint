@@ -39,7 +39,7 @@ githubActions: _#borsWorkflow & {
 					run:                 "cue fmt"
 				},
 				{
-					name: "Check if CUE files were reformated"
+					name: "Check if CUE files were reformatted"
 					run: """
 						if git diff --quiet HEAD --; then
 						    echo "CUE files were already formatted; the working tree is clean."

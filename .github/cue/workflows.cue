@@ -19,12 +19,12 @@ workflows: [
 		workflow: githubPages
 	},
 	{
-		filename: "markdown.yml"
-		workflow: markdown
-	},
-	{
 		filename: "rust.yml"
 		workflow: rust
+	},
+	{
+		filename: "wordsmith.yml"
+		workflow: wordsmith
 	},
 ]
 
@@ -149,6 +149,11 @@ _#cacheRust: _#step & {
 _#cargoCheck: _#step & {
 	name: "Check packages and dependencies for errors"
 	run:  "cargo check --locked"
+}
+
+_#codespell: _#step & {
+	name: "Check common misspellings"
+	uses: "codespell-project/actions-codespell@22ff5a2e4b591290baf82d47c9feadac31c65441"
 }
 
 _#prettier: _#step & {

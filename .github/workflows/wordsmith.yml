@@ -1,4 +1,4 @@
-name: markdown
+name: wordsmith
 "on":
   pull_request:
     branches:
@@ -46,7 +46,7 @@ jobs:
               - '**/Cargo.*'
               - .github/workflows/rust.yml
   markdownFormat:
-    name: format
+    name: markdown / format
     needs:
       - changes
     runs-on: ubuntu-latest
@@ -59,16 +59,37 @@ jobs:
         with:
           prettier_version: 2.8.8
           prettier_options: --check --color --prose-wrap always ${{ needs.changes.outputs.markdown_files }}
+  spellcheck:
+    name: spellcheck
+    needs:
+      - changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      - name: Check common misspellings
+        uses: codespell-project/actions-codespell@22ff5a2e4b591290baf82d47c9feadac31c65441
   bors:
-    name: bors needs met for markdown
+    name: bors needs met for wordsmith
     needs:
       - markdownFormat
+      - spellcheck
     runs-on: ubuntu-latest
     if: always()
     steps:
       - name: 'Check status of job_id: markdownFormat'
         run: |-
           RESULT="${{ needs.markdownFormat.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi
+      - name: 'Check status of job_id: spellcheck'
+        run: |-
+          RESULT="${{ needs.spellcheck.result }}";
           if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
               exit 0
           else
