@@ -3,6 +3,8 @@ package workflows
 githubActions: _#borsWorkflow & {
 	name: "github-actions"
 
+	on: push: branches: borsBranches
+
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: {
