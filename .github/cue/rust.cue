@@ -65,6 +65,7 @@ rust: _#borsWorkflow & {
 		testStable: {
 			name: "test / stable"
 			needs: ["check", "format", "lint"]
+			defaults: run: shell: "bash"
 			strategy: {
 				"fail-fast": false
 				matrix: {

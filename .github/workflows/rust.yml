@@ -108,6 +108,9 @@ jobs:
       - check
       - format
       - lint
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
