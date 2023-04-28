@@ -1,8 +1,11 @@
 package workflows
 
-import "json.schemastore.org/github"
+import (
+	"encoding/yaml"
+	"list"
+)
 
-import "list"
+import "json.schemastore.org/github"
 
 workflows: [...{
 	filename: string
@@ -10,6 +13,10 @@ workflows: [...{
 }]
 
 workflows: [
+	{
+		filename: "docs.yml"
+		workflow: docs
+	},
 	{
 		filename: "github-actions.yml"
 		workflow: githubActions
@@ -77,13 +84,30 @@ _#borsWorkflow: _#pullRequestWorkflow & {
 _#job:  (github.#Workflow.jobs & {x: _}).x
 _#step: ((_#job & {steps:            _}).steps & [_])[0]
 
+_fileFilters: {
+	"github-actions": [
+		".github/**/*.yml",
+		".github/cue/**/*.cue",
+	]
+	markdown: [
+		{"added|modified": "**/*.md"},
+	]
+	rust: [
+		"**/*.rs",
+		"**/Cargo.*",
+		".github/workflows/rust.yml",
+	]
+}
+
 _#changes: _#job & {
-	name:      "detect repo changes"
+	name:      "detect file changes"
 	"runs-on": defaultRunner
 	permissions: "pull-requests": "read"
 	outputs: {
-		"github-actions": "${{ steps.filter.outputs.github-actions }}"
-		"rust":           "${{ steps.filter.outputs.rust }}"
+		for filter, _ in _fileFilters {
+			"\(filter)":       "${{ steps.filter.outputs.\(filter) }}"
+			"\(filter)_files": "${{ steps.filter.outputs.\(filter)_files }}"
+		}
 	}
 	steps: [
 		_#checkoutCode & {with: "fetch-depth": 20},
@@ -91,15 +115,10 @@ _#changes: _#job & {
 			name: "Filter changed repository files"
 			uses: "dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50"
 			id:   "filter"
-			with: filters: """
-				github-actions:
-				  - '.github/cue/**/*.cue'
-				  - '.github/**/*.yml'
-				rust:
-				  - '**/*.rs'
-				  - '**/Cargo.*'
-				  - '.github/workflows/rust.yml'
-				"""
+			with: {
+				"list-files": "shell"
+				filters:      yaml.Marshal(_fileFilters)
+			}
 		},
 	]
 }
@@ -137,4 +156,10 @@ _#cacheRust: _#step & {
 _#cargoCheck: _#step & {
 	name: "Check packages and dependencies for errors"
 	run:  "cargo check --locked"
+}
+
+_#prettier: _#step & {
+	name: "Check formatting"
+	uses: "creyD/prettier_action@31355f8eef017f8aeba2e0bc09d8502b13dbbad1"
+	with: prettier_version: "2.8.8"
 }

@@ -1,4 +1,5 @@
 status = [
+  "bors needs met for docs",
   "bors needs met for github-actions",
   "bors needs met for rust",
 ]

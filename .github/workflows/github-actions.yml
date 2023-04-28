@@ -15,13 +15,17 @@ concurrency:
   cancel-in-progress: true
 jobs:
   changes:
-    name: detect repo changes
+    name: detect file changes
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
     outputs:
       github-actions: ${{ steps.filter.outputs.github-actions }}
+      github-actions_files: ${{ steps.filter.outputs.github-actions_files }}
+      markdown: ${{ steps.filter.outputs.markdown }}
+      markdown_files: ${{ steps.filter.outputs.markdown_files }}
       rust: ${{ steps.filter.outputs.rust }}
+      rust_files: ${{ steps.filter.outputs.rust_files }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
@@ -31,14 +35,17 @@ jobs:
         uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50
         id: filter
         with:
-          filters: |-
+          list-files: shell
+          filters: |
             github-actions:
-              - '.github/cue/**/*.cue'
-              - '.github/**/*.yml'
+              - .github/**/*.yml
+              - .github/cue/**/*.cue
+            markdown:
+              - added|modified: '**/*.md'
             rust:
               - '**/*.rs'
               - '**/Cargo.*'
-              - '.github/workflows/rust.yml'
+              - .github/workflows/rust.yml
   cueVet:
     name: cue / vet
     needs:
