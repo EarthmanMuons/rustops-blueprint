@@ -93,7 +93,7 @@ _#changes: _#job & {
 			id:   "filter"
 			with: filters: """
 				github-actions:
-				  - '.github/**/*.cue'
+				  - '.github/cue/**/*.cue'
 				  - '.github/**/*.yml'
 				rust:
 				  - '**/*.rs'

@@ -27,7 +27,7 @@ command: importjsonschema: {
 command: genworkflows: {
 	for w in workflows {
 		"\(w.filename)": file.Create & {
-			filename: w.filename
+			filename: path.FromSlash("../workflows/\(w.filename)", "unix")
 			contents: yaml.Marshal(w.workflow)
 		}
 	}

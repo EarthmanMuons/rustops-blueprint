@@ -33,7 +33,7 @@ jobs:
         with:
           filters: |-
             github-actions:
-              - '.github/**/*.cue'
+              - '.github/cue/**/*.cue'
               - '.github/**/*.yml'
             rust:
               - '**/*.rs'
@@ -53,7 +53,7 @@ jobs:
         with:
           version: v0.5.0
       - name: Validate CUE files
-        working-directory: .github/workflows
+        working-directory: .github/cue
         run: cue vet -c
   cueFormat:
     name: cue / format
@@ -68,7 +68,7 @@ jobs:
         with:
           version: v0.5.0
       - name: Format CUE files
-        working-directory: .github/workflows
+        working-directory: .github/cue
         run: cue fmt
       - name: Check if CUE files were reformated
         run: |-
@@ -94,7 +94,7 @@ jobs:
         with:
           version: v0.5.0
       - name: Regenerate YAML from CUE
-        working-directory: .github/workflows
+        working-directory: .github/cue
         run: cue cmd genworkflows
       - name: Check if CUE and YAML are in sync
         run: |-

@@ -18,7 +18,7 @@ githubActions: _#borsWorkflow & {
 				_#installCue,
 				{
 					name:                "Validate CUE files"
-					"working-directory": ".github/workflows"
+					"working-directory": ".github/cue"
 					run:                 "cue vet -c"
 				},
 			]
@@ -33,7 +33,7 @@ githubActions: _#borsWorkflow & {
 				_#installCue,
 				{
 					name:                "Format CUE files"
-					"working-directory": ".github/workflows"
+					"working-directory": ".github/cue"
 					run:                 "cue fmt"
 				},
 				{
@@ -62,7 +62,7 @@ githubActions: _#borsWorkflow & {
 				_#installCue,
 				{
 					name:                "Regenerate YAML from CUE"
-					"working-directory": ".github/workflows"
+					"working-directory": ".github/cue"
 					run:                 "cue cmd genworkflows"
 				},
 				{
