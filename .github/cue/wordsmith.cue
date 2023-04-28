@@ -1,7 +1,7 @@
 package workflows
 
-markdown: _#borsWorkflow & {
-	name: "markdown"
+wordsmith: _#borsWorkflow & {
+	name: "wordsmith"
 
 	on: push: branches: borsBranches
 
@@ -11,7 +11,7 @@ markdown: _#borsWorkflow & {
 		changes: _#changes
 
 		markdownFormat: {
-			name: "format"
+			name: "markdown / format"
 			needs: ["changes"]
 			"runs-on": defaultRunner
 			"if":      "${{ needs.changes.outputs.markdown == 'true' }}"
@@ -25,8 +25,19 @@ markdown: _#borsWorkflow & {
 			]
 		}
 
+		spellcheck: {
+			name: "spellcheck"
+			needs: ["changes"]
+			"runs-on": defaultRunner
+			steps: [
+				_#checkoutCode,
+				_#codespell,
+			]
+		}
+
 		bors: needs: [
 			"markdownFormat",
+			"spellcheck",
 		]
 	}
 }
