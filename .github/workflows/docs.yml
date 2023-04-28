@@ -1,0 +1,79 @@
+name: docs
+"on":
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - staging
+      - trying
+env:
+  CARGO_TERM_COLOR: always
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  changes:
+    name: detect file changes
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      github-actions: ${{ steps.filter.outputs.github-actions }}
+      github-actions_files: ${{ steps.filter.outputs.github-actions_files }}
+      markdown: ${{ steps.filter.outputs.markdown }}
+      markdown_files: ${{ steps.filter.outputs.markdown_files }}
+      rust: ${{ steps.filter.outputs.rust }}
+      rust_files: ${{ steps.filter.outputs.rust_files }}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        with:
+          fetch-depth: 20
+      - name: Filter changed repository files
+        uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50
+        id: filter
+        with:
+          list-files: shell
+          filters: |
+            github-actions:
+              - .github/**/*.yml
+              - .github/cue/**/*.cue
+            markdown:
+              - added|modified: '**/*.md'
+            rust:
+              - '**/*.rs'
+              - '**/Cargo.*'
+              - .github/workflows/rust.yml
+  markdownFormat:
+    name: markdown / format
+    needs:
+      - changes
+    runs-on: ubuntu-latest
+    if: ${{ needs.changes.outputs.markdown == 'true' }}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      - name: Check formatting
+        uses: creyD/prettier_action@31355f8eef017f8aeba2e0bc09d8502b13dbbad1
+        with:
+          prettier_version: 2.8.8
+          prettier_options: --check --color --prose-wrap always ${{ needs.changes.outputs.markdown_files }}
+  bors:
+    name: bors needs met for docs
+    needs:
+      - markdownFormat
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: 'Check status of job_id: markdownFormat'
+        run: |-
+          RESULT="${{ needs.markdownFormat.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi
