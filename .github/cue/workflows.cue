@@ -11,16 +11,16 @@ workflows: [...{
 
 workflows: [
 	{
-		filename: "docs.yml"
-		workflow: docs
-	},
-	{
 		filename: "github-actions.yml"
 		workflow: githubActions
 	},
 	{
 		filename: "github-pages.yml"
 		workflow: githubPages
+	},
+	{
+		filename: "markdown.yml"
+		workflow: markdown
 	},
 	{
 		filename: "rust.yml"
