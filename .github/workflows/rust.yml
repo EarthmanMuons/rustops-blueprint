@@ -62,8 +62,11 @@ jobs:
         uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
         with:
           toolchain: stable
+          components: clippy,rustfmt
       - name: Cache dependencies
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
+        with:
+          shared-key: workflow
       - name: Check packages and dependencies for errors
         run: cargo check --locked
   format:
@@ -82,6 +85,8 @@ jobs:
           components: clippy,rustfmt
       - name: Cache dependencies
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
+        with:
+          shared-key: workflow
       - name: Check formatting
         run: cargo fmt --check
   lint:
@@ -100,6 +105,8 @@ jobs:
           components: clippy,rustfmt
       - name: Cache dependencies
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
+        with:
+          shared-key: workflow
       - name: Check lints
         run: cargo clippy -- -D warnings
   testStable:
@@ -126,12 +133,15 @@ jobs:
         uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
         with:
           toolchain: stable
+          components: clippy,rustfmt
       - name: Install cargo-nextest
         uses: taiki-e/install-action@7522ae03ca435a0ad1001ca93d6cd7cb8e81bd2f
         with:
           tool: cargo-nextest
       - name: Cache dependencies
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
+        with:
+          shared-key: workflow
       - name: Compile tests
         run: cargo test --locked --no-run
       - name: Run tests
@@ -153,8 +163,11 @@ jobs:
         uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
         with:
           toolchain: ${{ steps.msrv.outputs.version }}
+          components: clippy,rustfmt
       - name: Cache dependencies
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
+        with:
+          shared-key: workflow
       - name: Check packages and dependencies for errors
         run: cargo check --locked
   bors:

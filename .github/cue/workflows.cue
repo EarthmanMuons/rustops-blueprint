@@ -135,15 +135,21 @@ _#installCue: _#step & {
 
 _#installRust: _#step & {
 	name: "Install \(with.toolchain) Rust toolchain"
+
 	// NOTE: upstream does not tag releases, so this won't be updated by dependabot
 	uses: "dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d"
-	with: toolchain:   string | *"stable"
-	with: components?: string
+	with: {
+		toolchain:  string | *"stable"
+		components: string | *"clippy,rustfmt"
+	}
 }
 
 _#cacheRust: _#step & {
 	name: "Cache dependencies"
 	uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
+
+	// share the cache across all workflow jobs instead of keying on job_id 
+	with: "shared-key": string | *"workflow"
 }
 
 _#cargoCheck: _#step & {
