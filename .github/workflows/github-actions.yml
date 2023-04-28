@@ -24,7 +24,7 @@ jobs:
       rust: ${{ steps.filter.outputs.rust }}
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
           fetch-depth: 20
       - name: Filter changed repository files
@@ -33,7 +33,7 @@ jobs:
         with:
           filters: |-
             github-actions:
-              - '.github/**/*.cue'
+              - '.github/cue/**/*.cue'
               - '.github/**/*.yml'
             rust:
               - '**/*.rs'
@@ -47,13 +47,13 @@ jobs:
     if: ${{ needs.changes.outputs.github-actions == 'true' }}
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - name: Install CUE v0.5.0
         uses: cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb
         with:
           version: v0.5.0
       - name: Validate CUE files
-        working-directory: .github/workflows
+        working-directory: .github/cue
         run: cue vet -c
   cueFormat:
     name: cue / format
@@ -62,13 +62,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - name: Install CUE v0.5.0
         uses: cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb
         with:
           version: v0.5.0
       - name: Format CUE files
-        working-directory: .github/workflows
+        working-directory: .github/cue
         run: cue fmt
       - name: Check if CUE files were reformated
         run: |-
@@ -88,13 +88,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - name: Install CUE v0.5.0
         uses: cue-lang/setup-cue@0be332bb74c8a2f07821389447ba3163e2da3bfb
         with:
           version: v0.5.0
       - name: Regenerate YAML from CUE
-        working-directory: .github/workflows
+        working-directory: .github/cue
         run: cue cmd genworkflows
       - name: Check if CUE and YAML are in sync
         run: |-
