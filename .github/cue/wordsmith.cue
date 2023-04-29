@@ -8,7 +8,7 @@ wordsmith: _#borsWorkflow & {
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: {
-		changes: _#changes
+		changes: _#detectFileChanges
 
 		markdownFormat: {
 			name: "markdown / format"

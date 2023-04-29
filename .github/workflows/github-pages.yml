@@ -23,6 +23,7 @@ jobs:
         uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
         with:
           toolchain: nightly
+          components: clippy,rustfmt
       - name: Build docs
         env:
           RUSTDOCFLAGS: --enable-index-page -Z unstable-options

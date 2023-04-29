@@ -15,7 +15,7 @@ rust: _#borsWorkflow & {
 	}
 
 	jobs: {
-		changes: _#changes
+		changes: _#detectFileChanges
 
 		check: {
 			name: "check"
@@ -37,7 +37,7 @@ rust: _#borsWorkflow & {
 			"if":      "${{ needs.changes.outputs.rust == 'true' }}"
 			steps: [
 				_#checkoutCode,
-				_#installRust & {with: components: "clippy,rustfmt"},
+				_#installRust,
 				_#cacheRust,
 				{
 					name: "Check formatting"
@@ -53,7 +53,7 @@ rust: _#borsWorkflow & {
 			"if":      "${{ needs.changes.outputs.rust == 'true' }}"
 			steps: [
 				_#checkoutCode,
-				_#installRust & {with: components: "clippy,rustfmt"},
+				_#installRust,
 				_#cacheRust,
 				{
 					name: "Check lints"
