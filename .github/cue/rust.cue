@@ -94,6 +94,10 @@ rust: _#borsWorkflow & {
 					name: "Run tests"
 					run:  "cargo nextest run --locked"
 				},
+				{
+					name: "Run doctests"
+					run:  "cargo test --locked --doc"
+				},
 			]
 		}
 
