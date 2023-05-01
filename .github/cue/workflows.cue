@@ -47,16 +47,15 @@ _#borsWorkflow: _#pullRequestWorkflow & {
 
 	on: pull_request: branches: [defaultBranch]
 
-	jobs: {
-		"bors": _#job & {
-			name:      "bors needs met for \(workflowName)"
-			needs:     github.#Workflow.#jobNeeds
-			"runs-on": defaultRunner
-			"if":      "always()"
-			steps: [
-				for jobId in needs {
-					name: "Check status of job_id: \(jobId)"
-					run:  """
+	jobs: bors: _#job & {
+		name:      "bors needs met for \(workflowName)"
+		needs:     github.#Workflow.#jobNeeds
+		"runs-on": defaultRunner
+		if:        "always()"
+		steps: [
+			for jobId in needs {
+				name: "Check status of job_id: \(jobId)"
+				run:  """
 						RESULT="${{ needs.\(jobId).result }}";
 						if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
 						    exit 0
@@ -66,9 +65,8 @@ _#borsWorkflow: _#pullRequestWorkflow & {
 						    exit 1
 						fi
 						"""
-				},
-			]
-		}
+			},
+		]
 	}
 }
 

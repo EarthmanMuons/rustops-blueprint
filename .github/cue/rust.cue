@@ -21,7 +21,7 @@ rust: _#borsWorkflow & {
 			name: "check"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			"if":      "${{ needs.changes.outputs.rust == 'true' }}"
+			if:        "${{ needs.changes.outputs.rust == 'true' }}"
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -34,7 +34,7 @@ rust: _#borsWorkflow & {
 			name: "format"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			"if":      "${{ needs.changes.outputs.rust == 'true' }}"
+			if:        "${{ needs.changes.outputs.rust == 'true' }}"
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -50,7 +50,7 @@ rust: _#borsWorkflow & {
 			name: "lint"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			"if":      "${{ needs.changes.outputs.rust == 'true' }}"
+			if:        "${{ needs.changes.outputs.rust == 'true' }}"
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -68,13 +68,11 @@ rust: _#borsWorkflow & {
 			defaults: run: shell: "bash"
 			strategy: {
 				"fail-fast": false
-				matrix: {
-					platform: [
-						"macos-latest",
-						"ubuntu-latest",
-						"windows-latest",
-					]
-				}
+				matrix: platform: [
+					"macos-latest",
+					"ubuntu-latest",
+					"windows-latest",
+				]
 			}
 			"runs-on": "${{ matrix.platform }}"
 			steps: [

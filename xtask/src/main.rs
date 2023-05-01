@@ -1,4 +1,3 @@
-mod cue;
 mod fixup;
 
 use std::{
@@ -18,9 +17,9 @@ fn main() -> Result<(), DynError> {
         Some(t) => match t.as_str() {
             "--help" => tasks::print_help(),
             "fixup" => tasks::fixup()?,
+            "fixup.github-actions" => tasks::fixup_github_actions()?,
             "fixup.markdown" => tasks::fixup_markdown()?,
             "fixup.spelling" => tasks::fixup_spelling()?,
-            "gen-ci" => tasks::gen_ci()?,
             invalid => return Err(format!("Invalid task name: {}", invalid).into()),
         },
     };
@@ -28,14 +27,18 @@ fn main() -> Result<(), DynError> {
 }
 
 pub mod tasks {
-    use crate::cue::generate_ci;
-    use crate::fixup::format_markdown;
-    use crate::fixup::spellcheck;
+    use crate::fixup::{format_cue, format_markdown, regenerate_ci_yaml, spellcheck};
     use crate::DynError;
 
     pub fn fixup() -> Result<(), DynError> {
-        spellcheck()?;
-        format_markdown()
+        fixup_spelling()?; // affects all file types; run this first
+        fixup_github_actions()?;
+        fixup_markdown()
+    }
+
+    pub fn fixup_github_actions() -> Result<(), DynError> {
+        format_cue()?;
+        regenerate_ci_yaml()
     }
 
     pub fn fixup_markdown() -> Result<(), DynError> {
@@ -46,10 +49,6 @@ pub mod tasks {
         spellcheck()
     }
 
-    pub fn gen_ci() -> Result<(), DynError> {
-        generate_ci()
-    }
-
     pub fn print_help() {
         println!(
             "
@@ -58,8 +57,8 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask fixup`.
     Tasks:
         fixup: Run all fixup xtasks, editing files in-place.
         fixup.markdown: Format Markdown files in-place.
-        fixup.spelling: Fix common misspellings across files in-place.
-        gen-ci: Regenerate GitHub Actions workflow YAML files from CUE definitions.
+        fixup.spelling: Fix common misspellings across all files in-place.
+        fixup.github-actions: Format GitHub Actions files in-place.
 "
         );
     }
@@ -76,7 +75,7 @@ pub fn project_root() -> PathBuf {
 pub fn verbose_cd<P: AsRef<Path>>(sh: &Shell, dir: P) {
     sh.change_dir(dir);
     eprintln!(
-        "$ cd {}{}",
+        "\n$ cd {}{}",
         sh.current_dir().display(),
         std::path::MAIN_SEPARATOR
     );

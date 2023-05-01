@@ -14,7 +14,7 @@ wordsmith: _#borsWorkflow & {
 			name: "markdown / format"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			"if":      "${{ needs.changes.outputs.markdown == 'true' }}"
+			if:        "${{ needs.changes.outputs.markdown == 'true' }}"
 			steps: [
 				_#checkoutCode,
 				_#prettier & {

@@ -7,6 +7,13 @@ use xshell::{cmd, Shell};
 
 use crate::{project_root, verbose_cd, DynError};
 
+pub fn format_cue() -> Result<(), DynError> {
+    let sh = Shell::new()?;
+    verbose_cd(&sh, cue_dir());
+    cmd!(sh, "cue fmt --simplify").run()?;
+    Ok(())
+}
+
 pub fn format_markdown() -> Result<(), DynError> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
@@ -18,6 +25,24 @@ pub fn format_markdown() -> Result<(), DynError> {
     }
 
     Ok(())
+}
+
+pub fn regenerate_ci_yaml() -> Result<(), DynError> {
+    let sh = Shell::new()?;
+    verbose_cd(&sh, cue_dir());
+    cmd!(sh, "cue cmd regen-ci-yaml").run()?;
+    Ok(())
+}
+
+pub fn spellcheck() -> Result<(), DynError> {
+    let sh = Shell::new()?;
+    verbose_cd(&sh, project_root());
+    cmd!(sh, "codespell --write-changes").run()?;
+    Ok(())
+}
+
+fn cue_dir() -> PathBuf {
+    project_root().join(".github/cue")
 }
 
 fn find_markdown_files<P: AsRef<Path>>(dir: P) -> Result<Vec<PathBuf>, DynError> {
@@ -33,11 +58,4 @@ fn find_markdown_files<P: AsRef<Path>>(dir: P) -> Result<Vec<PathBuf>, DynError>
         }
     }
     Ok(result)
-}
-
-pub fn spellcheck() -> Result<(), DynError> {
-    let sh = Shell::new()?;
-    verbose_cd(&sh, project_root());
-    cmd!(sh, "codespell --write-changes").run()?;
-    Ok(())
 }
