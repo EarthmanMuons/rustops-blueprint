@@ -5,10 +5,9 @@ and generated using the [CUE][] (Configure, Unify, Execute) data constraint
 language. Editing the YAML directly will cause your changes to be rejected by
 CI, as the CUE and YAML files must be in sync.
 
-To generate these workflow YAML files, edit the CUE files under the sibling
-directory, and then run the following commands:
+To regenerate these workflow YAML files, edit the CUE files under the sibling
+directory, and then run the following command:
 
-    $ cd .github/cue/
-    $ cue cmd genworkflows
+    $ cargo xtask fixup.github-actions
 
 [CUE]: https://cuelang.org/

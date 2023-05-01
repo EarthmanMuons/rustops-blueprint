@@ -2,5 +2,6 @@
 builtin = clear,rare,usage,en-GB_to_en-US
 check-filenames =
 check-hidden =
+ignore-words-list = crate
 skip = ./.git,./.github/cue/cue.mod/pkg,./.jj,./target
 uri-ignore-words-list = *

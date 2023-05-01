@@ -14,7 +14,7 @@ githubActions: _#borsWorkflow & {
 			name: "cue / vet"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			"if":      "${{ needs.changes.outputs.github-actions == 'true' }}"
+			if:        "${{ needs.changes.outputs.github-actions == 'true' }}"
 			steps: [
 				_#checkoutCode,
 				_#installCue,
@@ -36,7 +36,7 @@ githubActions: _#borsWorkflow & {
 				{
 					name:                "Format CUE files"
 					"working-directory": ".github/cue"
-					run:                 "cue fmt"
+					run:                 "cue fmt --simplify"
 				},
 				{
 					name: "Check if CUE files were reformatted"
@@ -47,7 +47,7 @@ githubActions: _#borsWorkflow & {
 						    git diff --color --patch-with-stat HEAD --
 						    echo "***"
 						    echo "Error: CUE files are not formatted; the working tree is dirty."
-						    echo "Run 'cue fmt' locally to format the CUE files."
+						    echo "Run 'cargo xtask fixup.github-actions' locally to format the CUE files."
 						    exit 1
 						fi
 						"""
@@ -65,7 +65,7 @@ githubActions: _#borsWorkflow & {
 				{
 					name:                "Regenerate YAML from CUE"
 					"working-directory": ".github/cue"
-					run:                 "cue cmd genworkflows"
+					run:                 "cue cmd regen-ci-yaml"
 				},
 				{
 					name: "Check if CUE and YAML are in sync"
@@ -76,7 +76,7 @@ githubActions: _#borsWorkflow & {
 						    git diff --color --patch-with-stat HEAD --
 						    echo "***"
 						    echo "Error: CUE and YAML files are out of sync; the working tree is dirty."
-						    echo "Run 'cue cmd genworkflows' locally to regenerate the YAML from CUE."
+						    echo "Run 'cargo xtask fixup.github-actions' locally to regenerate the YAML from CUE."
 						    exit 1
 						fi
 						"""
