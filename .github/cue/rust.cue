@@ -57,7 +57,7 @@ rust: _#borsWorkflow & {
 				_#cacheRust,
 				{
 					name: "Check lints"
-					run:  "cargo clippy -- -D warnings"
+					run:  "cargo clippy --no-deps -- -D warnings"
 				},
 			]
 		}

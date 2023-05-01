@@ -19,6 +19,7 @@ fn main() -> Result<(), DynError> {
             "fixup" => tasks::fixup()?,
             "fixup.github-actions" => tasks::fixup_github_actions()?,
             "fixup.markdown" => tasks::fixup_markdown()?,
+            "fixup.rust" => tasks::fixup_rust()?,
             "fixup.spelling" => tasks::fixup_spelling()?,
             invalid => return Err(format!("Invalid task name: {}", invalid).into()),
         },
@@ -27,13 +28,16 @@ fn main() -> Result<(), DynError> {
 }
 
 pub mod tasks {
-    use crate::fixup::{format_cue, format_markdown, regenerate_ci_yaml, spellcheck};
+    use crate::fixup::{
+        format_cue, format_markdown, format_rust, lint_rust, regenerate_ci_yaml, spellcheck,
+    };
     use crate::DynError;
 
     pub fn fixup() -> Result<(), DynError> {
         fixup_spelling()?; // affects all file types; run this first
         fixup_github_actions()?;
-        fixup_markdown()
+        fixup_markdown()?;
+        fixup_rust()
     }
 
     pub fn fixup_github_actions() -> Result<(), DynError> {
@@ -43,6 +47,11 @@ pub mod tasks {
 
     pub fn fixup_markdown() -> Result<(), DynError> {
         format_markdown()
+    }
+
+    pub fn fixup_rust() -> Result<(), DynError> {
+        lint_rust()?;
+        format_rust()
     }
 
     pub fn fixup_spelling() -> Result<(), DynError> {
@@ -58,7 +67,8 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask fixup`.
         fixup: Run all fixup xtasks, editing files in-place.
         fixup.markdown: Format Markdown files in-place.
         fixup.spelling: Fix common misspellings across all files in-place.
-        fixup.github-actions: Format GitHub Actions files in-place.
+        fixup.github-actions: Format CUE files in-place and regenerate CI YAML files.
+        fixup.rust: Fix lints and format Rust files in-place.
 "
         );
     }
