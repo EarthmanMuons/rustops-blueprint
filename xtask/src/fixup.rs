@@ -34,3 +34,10 @@ fn find_markdown_files<P: AsRef<Path>>(dir: P) -> Result<Vec<PathBuf>, DynError>
     }
     Ok(result)
 }
+
+pub fn spellcheck() -> Result<(), DynError> {
+    let sh = Shell::new()?;
+    verbose_cd(&sh, project_root());
+    cmd!(sh, "codespell --write-changes").run()?;
+    Ok(())
+}

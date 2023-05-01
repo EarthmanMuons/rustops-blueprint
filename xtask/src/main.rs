@@ -18,6 +18,7 @@ fn main() -> Result<(), DynError> {
         Some(t) => match t.as_str() {
             "--help" => tasks::print_help(),
             "fixup.markdown" => tasks::fixup_markdown()?,
+            "fixup.spelling" => tasks::fixup_spelling()?,
             "gen-ci" => tasks::gen_ci()?,
             invalid => return Err(format!("Invalid task name: {}", invalid).into()),
         },
@@ -28,10 +29,15 @@ fn main() -> Result<(), DynError> {
 pub mod tasks {
     use crate::cue::generate_ci;
     use crate::fixup::format_markdown;
+    use crate::fixup::spellcheck;
     use crate::DynError;
 
     pub fn fixup_markdown() -> Result<(), DynError> {
         format_markdown()
+    }
+
+    pub fn fixup_spelling() -> Result<(), DynError> {
+        spellcheck()
     }
 
     pub fn gen_ci() -> Result<(), DynError> {
@@ -41,10 +47,11 @@ pub mod tasks {
     pub fn print_help() {
         println!(
             "
-Usage: Run with `cargo xtask <task>`, eg. `cargo xtask gen-ci`.
+Usage: Run with `cargo xtask <task>`, eg. `cargo xtask fixup.spelling`.
 
     Tasks:
-        fixup.markdown: Format Markdown files in-place. (Beware!)
+        fixup.markdown: Format Markdown files in-place.
+        fixup.spelling: Fix common misspellings across files in-place.
         gen-ci: Regenerate GitHub Actions workflow YAML files from CUE definitions.
 "
         );
