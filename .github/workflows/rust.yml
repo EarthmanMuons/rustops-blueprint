@@ -135,7 +135,7 @@ jobs:
           toolchain: stable
           components: clippy,rustfmt
       - name: Install cargo-nextest
-        uses: taiki-e/install-action@7522ae03ca435a0ad1001ca93d6cd7cb8e81bd2f
+        uses: taiki-e/install-action@a24dd0e0c4266ae898414a44466cc7ce1445b31a
         with:
           tool: cargo-nextest
       - name: Cache dependencies
