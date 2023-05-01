@@ -14,7 +14,7 @@ fn main() -> Result<(), DynError> {
         None => tasks::print_help(),
         Some(t) => match t.as_str() {
             "--help" => tasks::print_help(),
-            "gen.workflows" => tasks::genworkflows()?,
+            "gen-ci" => tasks::gen_ci()?,
             invalid => return Err(format!("Invalid task name: {}", invalid).into()),
         },
     };
@@ -22,20 +22,20 @@ fn main() -> Result<(), DynError> {
 }
 
 pub mod tasks {
-    use crate::cue::gen_workflows;
+    use crate::cue::generate_ci;
     use crate::DynError;
 
-    pub fn genworkflows() -> Result<(), DynError> {
-        gen_workflows()
+    pub fn gen_ci() -> Result<(), DynError> {
+        generate_ci()
     }
 
     pub fn print_help() {
         println!(
             "
-Usage: Run with `cargo xtask <task>`, eg. `cargo xtask gen.workflows`.
+Usage: Run with `cargo xtask <task>`, eg. `cargo xtask gen-ci`.
 
     Tasks:
-        gen.workflows: Generate GitHub Actions workflow YAML files from CUE definitions.
+        gen-ci: Regenerate GitHub Actions workflow YAML files from CUE definitions.
 "
         );
     }
