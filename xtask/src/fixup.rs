@@ -16,13 +16,18 @@ pub fn format_cue() -> Result<(), DynError> {
 
 pub fn format_markdown() -> Result<(), DynError> {
     let sh = Shell::new()?;
-    verbose_cd(&sh, project_root());
+    let root = project_root();
+    verbose_cd(&sh, &root);
 
     let markdown_files = find_markdown_files(sh.current_dir())?;
-    for file in markdown_files {
-        let relative_path = file.strip_prefix(project_root()).unwrap_or(&file);
-        cmd!(sh, "prettier --prose-wrap always --write {relative_path}").run()?;
-    }
+    let relative_paths: Vec<PathBuf> = markdown_files
+        .into_iter()
+        .filter_map(|path| path.strip_prefix(&root).ok().map(PathBuf::from))
+        .collect();
+
+    cmd!(sh, "prettier --prose-wrap always --write")
+        .args(&relative_paths)
+        .run()?;
 
     Ok(())
 }

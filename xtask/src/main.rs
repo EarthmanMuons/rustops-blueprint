@@ -75,10 +75,9 @@ Usage: Run with `cargo xtask <task>`, eg. `cargo xtask fixup`.
 }
 
 pub fn project_root() -> PathBuf {
-    Path::new(&env!("CARGO_MANIFEST_DIR"))
-        .ancestors()
-        .nth(1)
-        .unwrap()
+    Path::new(env!("CARGO_MANIFEST_DIR"))
+        .parent()
+        .expect("Failed to find project root")
         .to_path_buf()
 }
 
