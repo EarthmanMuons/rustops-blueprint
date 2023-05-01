@@ -27,6 +27,20 @@ pub fn format_markdown() -> Result<(), DynError> {
     Ok(())
 }
 
+pub fn format_rust() -> Result<(), DynError> {
+    let sh = Shell::new()?;
+    verbose_cd(&sh, project_root());
+    cmd!(sh, "cargo fmt").run()?;
+    Ok(())
+}
+
+pub fn lint_rust() -> Result<(), DynError> {
+    let sh = Shell::new()?;
+    verbose_cd(&sh, project_root());
+    cmd!(sh, "cargo clippy --fix --allow-no-vcs -- -D warnings").run()?;
+    Ok(())
+}
+
 pub fn regenerate_ci_yaml() -> Result<(), DynError> {
     let sh = Shell::new()?;
     verbose_cd(&sh, cue_dir());
