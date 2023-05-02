@@ -5,10 +5,9 @@ name: github-actions
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - staging
-      - trying
+  merge_group:
+    types:
+      - checks_requested
 env:
   CARGO_TERM_COLOR: always
 concurrency:
@@ -47,7 +46,7 @@ jobs:
               - '**/*.rs'
               - '**/Cargo.*'
               - .github/workflows/rust.yml
-  cueVet:
+  cue_vet:
     name: cue / vet
     needs:
       - changes
@@ -63,10 +62,10 @@ jobs:
       - name: Validate CUE files
         working-directory: .github/cue
         run: cue vet -c
-  cueFormat:
+  cue_format:
     name: cue / format
     needs:
-      - cueVet
+      - cue_vet
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -89,10 +88,10 @@ jobs:
               echo "Run 'cargo xtask fixup.github-actions' locally to format the CUE files."
               exit 1
           fi
-  cueSynced:
+  cue_synced:
     name: cue / synced
     needs:
-      - cueVet
+      - cue_vet
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -115,17 +114,17 @@ jobs:
               echo "Run 'cargo xtask fixup.github-actions' locally to regenerate the YAML from CUE."
               exit 1
           fi
-  bors:
-    name: bors needs met for github-actions
+  merge_queue:
+    name: github-actions workflow ready
     needs:
-      - cueFormat
-      - cueSynced
+      - cue_format
+      - cue_synced
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: 'Check status of job_id: cueFormat'
+      - name: 'Check status of job_id: cue_format'
         run: |-
-          RESULT="${{ needs.cueFormat.result }}";
+          RESULT="${{ needs.cue_format.result }}";
           if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
               exit 0
           else
@@ -133,9 +132,9 @@ jobs:
               echo "Error: The required job did not pass."
               exit 1
           fi
-      - name: 'Check status of job_id: cueSynced'
+      - name: 'Check status of job_id: cue_synced'
         run: |-
-          RESULT="${{ needs.cueSynced.result }}";
+          RESULT="${{ needs.cue_synced.result }}";
           if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
               exit 0
           else

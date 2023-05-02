@@ -5,10 +5,9 @@ name: wordsmith
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - staging
-      - trying
+  merge_group:
+    types:
+      - checks_requested
 env:
   CARGO_TERM_COLOR: always
 concurrency:
@@ -47,7 +46,7 @@ jobs:
               - '**/*.rs'
               - '**/Cargo.*'
               - .github/workflows/rust.yml
-  markdownFormat:
+  markdown_format:
     name: markdown / format
     needs:
       - changes
@@ -71,17 +70,17 @@ jobs:
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - name: Check common misspellings
         uses: codespell-project/actions-codespell@22ff5a2e4b591290baf82d47c9feadac31c65441
-  bors:
-    name: bors needs met for wordsmith
+  merge_queue:
+    name: wordsmith workflow ready
     needs:
-      - markdownFormat
+      - markdown_format
       - spellcheck
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: 'Check status of job_id: markdownFormat'
+      - name: 'Check status of job_id: markdown_format'
         run: |-
-          RESULT="${{ needs.markdownFormat.result }}";
+          RESULT="${{ needs.markdown_format.result }}";
           if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
               exit 0
           else

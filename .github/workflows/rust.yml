@@ -5,11 +5,12 @@ name: rust
   pull_request:
     branches:
       - main
+  merge_group:
+    types:
+      - checks_requested
   push:
     branches:
       - main
-      - staging
-      - trying
 env:
   CARGO_INCREMENTAL: 0
   CARGO_TERM_COLOR: always
@@ -111,7 +112,7 @@ jobs:
           shared-key: workflow
       - name: Check lints
         run: cargo clippy --no-deps -- -D warnings
-  testStable:
+  test_stable:
     name: test / stable
     needs:
       - check
@@ -150,7 +151,7 @@ jobs:
         run: cargo nextest run --locked
       - name: Run doctests
         run: cargo test --locked --doc
-  checkMsrv:
+  check_msrv:
     name: check / msrv
     needs:
       - check
@@ -174,17 +175,17 @@ jobs:
           shared-key: workflow
       - name: Check packages and dependencies for errors
         run: cargo check --locked
-  bors:
-    name: bors needs met for rust
+  merge_queue:
+    name: rust workflow ready
     needs:
-      - testStable
-      - checkMsrv
+      - test_stable
+      - check_msrv
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: 'Check status of job_id: testStable'
+      - name: 'Check status of job_id: test_stable'
         run: |-
-          RESULT="${{ needs.testStable.result }}";
+          RESULT="${{ needs.test_stable.result }}";
           if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
               exit 0
           else
@@ -192,9 +193,9 @@ jobs:
               echo "Error: The required job did not pass."
               exit 1
           fi
-      - name: 'Check status of job_id: checkMsrv'
+      - name: 'Check status of job_id: check_msrv'
         run: |-
-          RESULT="${{ needs.checkMsrv.result }}";
+          RESULT="${{ needs.check_msrv.result }}";
           if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
               exit 0
           else

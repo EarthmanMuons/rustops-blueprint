@@ -1,16 +1,14 @@
 package workflows
 
-githubActions: _#borsWorkflow & {
+githubActions: _#useMergeQueue & {
 	name: "github-actions"
-
-	on: push: branches: borsBranches
 
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: {
 		changes: _#detectFileChanges
 
-		cueVet: {
+		cue_vet: {
 			name: "cue / vet"
 			needs: ["changes"]
 			"runs-on": defaultRunner
@@ -26,9 +24,9 @@ githubActions: _#borsWorkflow & {
 			]
 		}
 
-		cueFormat: {
+		cue_format: {
 			name: "cue / format"
-			needs: ["cueVet"]
+			needs: ["cue_vet"]
 			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
@@ -55,9 +53,9 @@ githubActions: _#borsWorkflow & {
 			]
 		}
 
-		cueSynced: {
+		cue_synced: {
 			name: "cue / synced"
-			needs: ["cueVet"]
+			needs: ["cue_vet"]
 			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
@@ -84,9 +82,9 @@ githubActions: _#borsWorkflow & {
 			]
 		}
 
-		bors: needs: [
-			"cueFormat",
-			"cueSynced",
+		merge_queue: needs: [
+			"cue_format",
+			"cue_synced",
 		]
 	}
 }
