@@ -29,8 +29,6 @@ workflows: [
 ]
 
 defaultBranch: "main"
-borsBranches: ["staging", "trying"]
-
 defaultRunner: "ubuntu-latest"
 
 _#pullRequestWorkflow: github.#Workflow & {
@@ -40,15 +38,17 @@ _#pullRequestWorkflow: github.#Workflow & {
 	}
 }
 
-// https://bors.tech/documentation/getting-started/
-_#borsWorkflow: _#pullRequestWorkflow & {
+_#useMergeQueue: _#pullRequestWorkflow & {
 	name: string
 	let workflowName = name
 
-	on: pull_request: branches: [defaultBranch]
+	on: {
+		pull_request: branches: [defaultBranch]
+		merge_group: types: ["checks_requested"]
+	}
 
-	jobs: bors: _#job & {
-		name:      "bors needs met for \(workflowName)"
+	jobs: merge_queue: _#job & {
+		name:      "\(workflowName) workflow ready"
 		needs:     github.#Workflow.#jobNeeds
 		"runs-on": defaultRunner
 		if:        "always()"

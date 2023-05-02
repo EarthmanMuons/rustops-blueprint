@@ -1,11 +1,9 @@
 package workflows
 
-import "list"
-
-rust: _#borsWorkflow & {
+rust: _#useMergeQueue & {
 	name: "rust"
 
-	on: push: branches: list.Concat([[defaultBranch], borsBranches])
+	on: push: branches: [defaultBranch]
 
 	env: {
 		CARGO_INCREMENTAL: 0
@@ -62,7 +60,7 @@ rust: _#borsWorkflow & {
 			]
 		}
 
-		testStable: {
+		test_stable: {
 			name: "test / stable"
 			needs: ["check", "format", "lint"]
 			defaults: run: shell: "bash"
@@ -96,7 +94,7 @@ rust: _#borsWorkflow & {
 		}
 
 		// Minimum Supported Rust Version
-		checkMsrv: {
+		check_msrv: {
 			name: "check / msrv"
 			needs: ["check", "format", "lint"]
 			"runs-on": defaultRunner
@@ -113,9 +111,9 @@ rust: _#borsWorkflow & {
 			]
 		}
 
-		bors: needs: [
-			"testStable",
-			"checkMsrv",
+		merge_queue: needs: [
+			"test_stable",
+			"check_msrv",
 		]
 	}
 }

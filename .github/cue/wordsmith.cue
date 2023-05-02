@@ -1,16 +1,14 @@
 package workflows
 
-wordsmith: _#borsWorkflow & {
+wordsmith: _#useMergeQueue & {
 	name: "wordsmith"
-
-	on: push: branches: borsBranches
 
 	env: CARGO_TERM_COLOR: "always"
 
 	jobs: {
 		changes: _#detectFileChanges
 
-		markdownFormat: {
+		markdown_format: {
 			name: "markdown / format"
 			needs: ["changes"]
 			"runs-on": defaultRunner
@@ -35,8 +33,8 @@ wordsmith: _#borsWorkflow & {
 			]
 		}
 
-		bors: needs: [
-			"markdownFormat",
+		merge_queue: needs: [
+			"markdown_format",
 			"spellcheck",
 		]
 	}

@@ -10,7 +10,7 @@ import (
 
 // vendor a cue-imported version of the jsonschema that defines
 // github actions workflows into the main module's cue.mod/pkg
-command: importjsonschema: {
+command: "import-jsonschema": {
 	getJSONSchema: http.Get & {
 		// https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/github-workflow.json
 		_commit: "5ffe36662a8fcab3c32e8fbca39c5253809e6913"
