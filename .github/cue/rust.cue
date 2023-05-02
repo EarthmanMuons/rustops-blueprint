@@ -78,11 +78,7 @@ rust: _#borsWorkflow & {
 			steps: [
 				_#checkoutCode,
 				_#installRust,
-				{
-					name: "Install cargo-nextest"
-					uses: "taiki-e/install-action@7522ae03ca435a0ad1001ca93d6cd7cb8e81bd2f"
-					with: tool: "cargo-nextest"
-				},
+				_#installTool & {with: tool: "cargo-nextest"},
 				_#cacheRust,
 				{
 					name: "Compile tests"
