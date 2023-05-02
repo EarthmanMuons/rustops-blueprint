@@ -61,14 +61,18 @@ pub mod tasks {
     pub fn print_help() {
         println!(
             "
-Usage: Run with `cargo xtask <task>`, eg. `cargo xtask fixup`.
+Usage: cargo xtask <task>
 
-    Tasks:
-        fixup: Run all fixup xtasks, editing files in-place.
-        fixup.markdown: Format Markdown files in-place.
-        fixup.spelling: Fix common misspellings across all files in-place.
-        fixup.github-actions: Format CUE files in-place and regenerate CI YAML files.
-        fixup.rust: Fix lints and format Rust files in-place.
+Description:
+    Custom cargo commands for invoking developer tools that standardize
+    processes and files within this project's repository.
+
+Tasks:
+    fixup                  Run all fixup xtasks, editing files in-place.
+    fixup.markdown         Format Markdown files in-place.
+    fixup.spelling         Fix common misspellings across all files in-place.
+    fixup.github-actions   Format CUE files in-place and regenerate CI YAML files.
+    fixup.rust             Fix lints and format Rust files in-place.
 "
         );
     }
