@@ -8,9 +8,6 @@ name: rust
   merge_group:
     types:
       - checks_requested
-  push:
-    branches:
-      - main
 env:
   CARGO_INCREMENTAL: 0
   CARGO_TERM_COLOR: always
