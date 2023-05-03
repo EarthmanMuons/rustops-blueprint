@@ -28,9 +28,9 @@ fn main() -> Result<(), DynError> {
 }
 
 pub mod tasks {
-    use crate::fixup::{
-        format_cue, format_markdown, format_rust, lint_rust, regenerate_ci_yaml, spellcheck,
-    };
+    use crate::fixup::{format_cue, format_markdown, format_rust};
+    use crate::fixup::{lint_cue, lint_rust};
+    use crate::fixup::{regenerate_ci_yaml, spellcheck};
     use crate::DynError;
 
     pub fn fixup() -> Result<(), DynError> {
@@ -41,6 +41,7 @@ pub mod tasks {
     }
 
     pub fn fixup_github_actions() -> Result<(), DynError> {
+        lint_cue()?;
         format_cue()?;
         regenerate_ci_yaml()
     }
