@@ -32,7 +32,7 @@ rust: _#useMergeQueue & {
 			name: "format"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			if:        "${{ needs.changes.outputs.rust == 'true' }}"
+			if:        "${{ needs.changes.outputs.rust == 'true' && github.event_name == 'pull_request' }}"
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -48,7 +48,7 @@ rust: _#useMergeQueue & {
 			name: "lint"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			if:        "${{ needs.changes.outputs.rust == 'true' }}"
+			if:        "${{ needs.changes.outputs.rust == 'true' && github.event_name == 'pull_request' }}"
 			steps: [
 				_#checkoutCode,
 				_#installRust,
