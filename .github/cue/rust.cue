@@ -71,6 +71,7 @@ rust: _#useMergeQueue & {
 				]
 			}
 			"runs-on": "${{ matrix.platform }}"
+			if:        "needs.changes.outputs.rust == 'true' && always()"
 			steps: [
 				_#checkoutCode,
 				_#installRust,
