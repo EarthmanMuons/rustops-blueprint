@@ -12,7 +12,7 @@ wordsmith: _#useMergeQueue & {
 			name: "markdown / format"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			if:        "${{ needs.changes.outputs.markdown == 'true' && github.event_name == 'pull_request' }}"
+			if:        "needs.changes.outputs.markdown == 'true' && github.event_name == 'pull_request'"
 			steps: [
 				_#checkoutCode,
 				_#prettier & {
@@ -27,7 +27,7 @@ wordsmith: _#useMergeQueue & {
 			name: "spellcheck"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			if:        "${{ github.event_name == 'pull_request' }}"
+			if:        "github.event_name == 'pull_request'"
 			steps: [
 				_#checkoutCode,
 				_#codespell,

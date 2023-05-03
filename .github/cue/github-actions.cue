@@ -12,7 +12,7 @@ githubActions: _#useMergeQueue & {
 			name: "cue / vet"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			if:        "${{ needs.changes.outputs.github-actions == 'true' }}"
+			if:        "needs.changes.outputs.github-actions == 'true'"
 			steps: [
 				_#checkoutCode,
 				_#installCue,
