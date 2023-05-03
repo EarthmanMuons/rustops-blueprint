@@ -3,8 +3,6 @@ package workflows
 rust: _#useMergeQueue & {
 	name: "rust"
 
-	on: push: branches: [defaultBranch]
-
 	env: {
 		CARGO_INCREMENTAL: 0
 		CARGO_TERM_COLOR:  "always"
