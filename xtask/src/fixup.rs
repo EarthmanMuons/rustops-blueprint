@@ -39,6 +39,13 @@ pub fn format_rust() -> Result<(), DynError> {
     Ok(())
 }
 
+pub fn lint_cue() -> Result<(), DynError> {
+    let sh = Shell::new()?;
+    verbose_cd(&sh, cue_dir());
+    cmd!(sh, "cue vet --concrete").run()?;
+    Ok(())
+}
+
 pub fn lint_rust() -> Result<(), DynError> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
