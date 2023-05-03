@@ -97,6 +97,7 @@ rust: _#useMergeQueue & {
 			name: "check / msrv"
 			needs: ["check", "format", "lint"]
 			"runs-on": defaultRunner
+			if:        "needs.changes.outputs.rust == 'true' && always()"
 			steps: [
 				_#checkoutCode,
 				{
