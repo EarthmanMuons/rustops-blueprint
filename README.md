@@ -5,7 +5,7 @@
 [actions]:
   https://github.com/elasticdog/rustops-blueprint/actions?query=branch%3Amain
 
-**A code repository template for a polished Rust development experience.**
+**A GitHub repository template for a polished Rust development experience.**
 
 ---
 
