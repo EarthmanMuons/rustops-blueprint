@@ -74,6 +74,12 @@ _#installTool: _#step & {
 	with: tool: string
 }
 
+// https://github.com/dorny/paths-filter/releases
+_#pathsFilter: _#step & {
+	name: "Filter changed repository files"
+	uses: "dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50"
+}
+
 // https://github.com/creyD/prettier_action/releases
 _#prettier: _#step & {
 	name: "Check formatting"
