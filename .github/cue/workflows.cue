@@ -5,27 +5,15 @@ import "encoding/yaml"
 import "json.schemastore.org/github"
 
 workflows: [...{
-	filename: string
+	filename: *"\(workflow.name).yml" | string
 	workflow: github.#Workflow
 }]
 
 workflows: [
-	{
-		filename: "github-actions.yml"
-		workflow: githubActions
-	},
-	{
-		filename: "github-pages.yml"
-		workflow: githubPages
-	},
-	{
-		filename: "rust.yml"
-		workflow: rust
-	},
-	{
-		filename: "wordsmith.yml"
-		workflow: wordsmith
-	},
+	{workflow: githubActions},
+	{workflow: githubPages},
+	{workflow: rust},
+	{workflow: wordsmith},
 ]
 
 defaultBranch: "main"
