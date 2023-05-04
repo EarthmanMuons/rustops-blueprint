@@ -1,8 +1,14 @@
 [package]
 name = "mylib"
 version.workspace = true
+authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
+description = "My library description."
+documentation = "https://earthmanmuons.github.io/rustops-blueprint/mylib/index.html"
+readme.workspace = true
+homepage = "https://github.com/EarthmanMuons/rustops-blueprint/tree/main/crates/mylib"
+repository = "https://github.com/EarthmanMuons/rustops-blueprint/tree/main/crates/mylib"
 license.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
