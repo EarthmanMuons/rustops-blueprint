@@ -10,4 +10,4 @@ The format is based on [Keep a Changelog][1], and this project adheres to
 
 ## [Unreleased]
 
-[unreleased]: https://github.com/elasticdog/rustops-blueprint/tree/main
+[unreleased]: https://github.com/EarthmanMuons/rustops-blueprint/tree/main
