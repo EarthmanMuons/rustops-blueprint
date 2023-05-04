@@ -12,6 +12,7 @@ workflows: [...{
 workflows: [
 	{workflow: githubActions},
 	{workflow: githubPages},
+	{workflow: preloadCache},
 	{workflow: rust},
 	{workflow: wordsmith},
 ]
