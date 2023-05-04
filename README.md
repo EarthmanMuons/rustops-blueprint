@@ -1,9 +1,9 @@
 # RustOps Blueprint &emsp; [![CI Status]][actions]
 
 [CI Status]:
-  https://img.shields.io/github/checks-status/elasticdog/rustops-blueprint/main?label=CI&logo=github
+  https://img.shields.io/github/actions/workflow/status/EarthmanMuons/rustops-blueprint/rust.yml?event=merge_group&label=CI&logo=github
 [actions]:
-  https://github.com/elasticdog/rustops-blueprint/actions?query=branch%3Amain
+  https://github.com/EarthmanMuons/rustops-blueprint/actions?query=event%3Amerge_group
 
 **A GitHub repository template for a polished Rust development experience.**
 
