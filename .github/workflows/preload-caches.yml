@@ -69,7 +69,7 @@ jobs:
       - name: Cache dependencies
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
         with:
-          shared-key: stable-ubuntu-latest
+          shared-key: stable-${{ matrix.platform }}
       - name: Install cargo-nextest
         uses: taiki-e/install-action@a775aaf2e8ed709f76ee019cb77e39fc50613631
         with:
@@ -96,6 +96,6 @@ jobs:
       - name: Cache dependencies
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
         with:
-          shared-key: stable-ubuntu-latest
+          shared-key: msrv-ubuntu-latest
       - name: Check packages and dependencies for errors
         run: cargo check --locked
