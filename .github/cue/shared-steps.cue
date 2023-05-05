@@ -86,3 +86,19 @@ _#prettier: _#step & {
 	uses: "creyD/prettier_action@31355f8eef017f8aeba2e0bc09d8502b13dbbad1"
 	with: prettier_version: "2.8.8"
 }
+
+_testRust: [
+	_#installTool & {with: tool: "cargo-nextest"},
+	_#step & {
+		name: "Compile tests"
+		run:  "cargo test --locked --no-run"
+	},
+	_#step & {
+		name: "Run tests"
+		run:  "cargo nextest run --locked --all-targets --all-features"
+	},
+	_#step & {
+		name: "Run doctests"
+		run:  "cargo test --locked --doc"
+	},
+]
