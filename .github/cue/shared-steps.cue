@@ -21,7 +21,7 @@ _#cacheRust: _#step & {
 	uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
 
 	// share the cache across all workflow jobs instead of keying on job_id 
-	with: "shared-key": *"workflow" | string
+	with: "shared-key": *"stable-\(defaultRunner)" | string
 }
 
 _#cargoCheck: _#step & {
