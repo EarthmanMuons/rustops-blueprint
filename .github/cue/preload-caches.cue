@@ -35,13 +35,13 @@ preloadCaches: {
 
 	jobs: {
 		flush_caches: {
-			name:      "flush caches"
-			"runs-on": defaultRunner
-			if:        "github.event_name == 'workflow_dispatch'"
+			name: "flush caches"
 			permissions: {
 				// required to delete caches
 				actions: "write"
 			}
+			if:        "github.event_name == 'workflow_dispatch'"
+			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
 				{
@@ -64,6 +64,7 @@ preloadCaches: {
 		cache_stable: {
 			name: "cache / stable"
 			needs: ["flush_caches"]
+			if: "always()"
 			defaults: run: shell: "bash"
 			strategy: {
 				"fail-fast": false
@@ -87,6 +88,7 @@ preloadCaches: {
 		cache_msrv: {
 			name: "cache / msrv"
 			needs: ["flush_caches"]
+			if:        "always()"
 			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,

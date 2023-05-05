@@ -80,9 +80,9 @@ _fileFilters: {
 }
 
 _#detectFileChanges: _#job & {
-	name:      "detect file changes"
-	"runs-on": defaultRunner
+	name: "detect file changes"
 	permissions: "pull-requests": "read"
+	"runs-on": defaultRunner
 	outputs: {
 		for filter, _ in _fileFilters {
 			"\(filter)":       "${{ steps.filter.outputs.\(filter) }}"

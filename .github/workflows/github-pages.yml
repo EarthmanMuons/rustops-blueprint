@@ -36,10 +36,10 @@ jobs:
           path: target/doc
   deploy:
     name: deploy / github-pages
-    needs: build
     permissions:
       id-token: write
       pages: write
+    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages

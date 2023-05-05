@@ -16,9 +16,9 @@ concurrency:
 jobs:
   changes:
     name: detect file changes
-    runs-on: ubuntu-latest
     permissions:
       pull-requests: read
+    runs-on: ubuntu-latest
     outputs:
       github-actions: ${{ steps.filter.outputs.github-actions }}
       github-actions_files: ${{ steps.filter.outputs.github-actions_files }}
