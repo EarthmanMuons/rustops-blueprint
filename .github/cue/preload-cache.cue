@@ -13,7 +13,8 @@ preloadCache: {
 			]
 		}
 
-		// Run every Monday at 7:45am UTC to cover any upstream Rust stable release.
+		// Run every Monday at 7:45am UTC,
+		// to help cover tool changes and any upstream Rust stable releases.
 		schedule: [{cron: "45 7 * * 1"}]
 
 		// Allow manually running this workflow.
@@ -33,8 +34,35 @@ preloadCache: {
 	}
 
 	jobs: {
-		check_stable: {
-			name: "check / stable"
+		flush_caches: {
+			name:      "flush caches"
+			"runs-on": defaultRunner
+			if:        "github.event_name == 'workflow_dispatch'"
+			permissions: {
+				// required to delete caches
+				actions: "write"
+			}
+			steps: [
+				_#checkoutCode,
+				{
+					name: "Flush \(defaultBranch) branch caches"
+					env: GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+					run: """
+						gh extension install actions/gh-actions-cache
+						REPO=${{ github.repository }}
+						BRANCH="refs/heads/\(defaultBranch)"
+						cacheKeys=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1)
+						set +e
+						for key in $cacheKeys; do
+						    gh actions-cache delete "$key" -R $REPO -B $BRANCH --confirm
+						done
+						"""
+				},
+			]
+		}
+
+		cache_stable: {
+			name: "cache / stable"
 			defaults: run: shell: "bash"
 			strategy: {
 				"fail-fast": false
@@ -55,8 +83,8 @@ preloadCache: {
 		}
 
 		// Minimum Supported Rust Version
-		check_msrv: {
-			name:      "check / msrv"
+		cache_msrv: {
+			name:      "cache / msrv"
 			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,

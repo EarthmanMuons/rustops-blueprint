@@ -45,15 +45,15 @@ _#useMergeQueue: _#pullRequestWorkflow & {
 			for jobId in needs {
 				name: "Check status of job_id: \(jobId)"
 				run:  """
-						RESULT="${{ needs.\(jobId).result }}";
-						if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
-						    exit 0
-						else
-						    echo "***"
-						    echo "Error: The required job did not pass."
-						    exit 1
-						fi
-						"""
+					RESULT="${{ needs.\(jobId).result }}";
+					if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+					    exit 0
+					else
+					    echo "***"
+					    echo "Error: The required job did not pass."
+					    exit 1
+					fi
+					"""
 			},
 		]
 	}
