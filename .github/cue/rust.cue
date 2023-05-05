@@ -33,7 +33,7 @@ rust: _#useMergeQueue & {
 			if:        "needs.changes.outputs.rust == 'true' && github.event_name == 'pull_request'"
 			steps: [
 				_#checkoutCode,
-				_#installRust,
+				_#installRust & {with: components: "rustfmt"},
 				_#cacheRust,
 				{
 					name: "Check formatting"
@@ -49,7 +49,7 @@ rust: _#useMergeQueue & {
 			if:        "needs.changes.outputs.rust == 'true' && github.event_name == 'pull_request'"
 			steps: [
 				_#checkoutCode,
-				_#installRust,
+				_#installRust & {with: components: "clippy"},
 				_#cacheRust,
 				{
 					name: "Check lints"

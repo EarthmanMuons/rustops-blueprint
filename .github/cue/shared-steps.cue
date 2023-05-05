@@ -62,8 +62,8 @@ _#installRust: _#step & {
 	// NOTE: upstream does not tag releases, so this won't be updated by dependabot
 	uses: "dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d"
 	with: {
-		toolchain:  *"stable" | string
-		components: *"clippy,rustfmt" | string
+		toolchain:   *"stable" | string
+		components?: string
 	}
 }
 
