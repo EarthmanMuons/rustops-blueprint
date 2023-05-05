@@ -49,6 +49,7 @@ preloadCache: {
 				_#checkoutCode,
 				_#installRust,
 				_#cacheRust,
+				_#installTool & {with: tool: "cargo-nextest"},
 				_#cargoCheck,
 			]
 		}
