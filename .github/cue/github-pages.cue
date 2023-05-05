@@ -9,6 +9,7 @@ githubPages: {
 			paths: [
 				"!.github/**",
 				".github/workflows/github-pages.yml",
+				"**.rs",
 			]
 		}
 
