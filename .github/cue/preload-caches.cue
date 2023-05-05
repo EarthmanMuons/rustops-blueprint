@@ -1,7 +1,7 @@
 package workflows
 
-preloadCache: {
-	name: "preload-cache"
+preloadCaches: {
+	name: "preload-caches"
 
 	on: {
 		push: {
@@ -63,6 +63,7 @@ preloadCache: {
 
 		cache_stable: {
 			name: "cache / stable"
+			needs: ["flush_caches"]
 			defaults: run: shell: "bash"
 			strategy: {
 				"fail-fast": false
@@ -84,7 +85,8 @@ preloadCache: {
 
 		// Minimum Supported Rust Version
 		cache_msrv: {
-			name:      "cache / msrv"
+			name: "cache / msrv"
+			needs: ["flush_caches"]
 			"runs-on": defaultRunner
 			steps: [
 				_#checkoutCode,
