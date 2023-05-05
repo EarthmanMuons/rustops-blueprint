@@ -76,19 +76,7 @@ rust: _#useMergeQueue & {
 				_#checkoutCode,
 				_#installRust,
 				_#cacheRust & {with: "shared-key": "stable-${{ matrix.platform }}"},
-				_#installTool & {with: tool:       "cargo-nextest"},
-				{
-					name: "Compile tests"
-					run:  "cargo test --locked --no-run"
-				},
-				{
-					name: "Run tests"
-					run:  "cargo nextest run --locked"
-				},
-				{
-					name: "Run doctests"
-					run:  "cargo test --locked --doc"
-				},
+				for step in _testRust {step},
 			]
 		}
 

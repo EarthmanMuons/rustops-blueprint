@@ -14,6 +14,7 @@ workflows: [
 	{workflow: githubPages},
 	{workflow: preloadCaches},
 	{workflow: rust},
+	{workflow: scheduled},
 	{workflow: wordsmith},
 ]
 
