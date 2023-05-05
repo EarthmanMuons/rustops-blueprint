@@ -65,7 +65,6 @@ jobs:
         uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
         with:
           toolchain: stable
-          components: clippy,rustfmt
       - name: Cache dependencies
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
         with:
@@ -92,7 +91,6 @@ jobs:
         uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
         with:
           toolchain: ${{ steps.msrv.outputs.version }}
-          components: clippy,rustfmt
       - name: Cache dependencies
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
         with:
