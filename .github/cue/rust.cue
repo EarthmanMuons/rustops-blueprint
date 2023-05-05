@@ -75,8 +75,8 @@ rust: _#useMergeQueue & {
 			steps: [
 				_#checkoutCode,
 				_#installRust,
-				_#cacheRust,
-				_#installTool & {with: tool: "cargo-nextest"},
+				_#cacheRust & {with: "shared-key": "stable-${{ matrix.platform }}"},
+				_#installTool & {with: tool:       "cargo-nextest"},
 				{
 					name: "Compile tests"
 					run:  "cargo test --locked --no-run"
@@ -105,8 +105,8 @@ rust: _#useMergeQueue & {
 					id:   "msrv"
 					run:  "awk -F '\"' '/rust-version/{ print \"version=\" $2 }' Cargo.toml >> $GITHUB_OUTPUT"
 				},
-				_#installRust & {with: toolchain: "${{ steps.msrv.outputs.version }}"},
-				_#cacheRust,
+				_#installRust & {with: toolchain:  "${{ steps.msrv.outputs.version }}"},
+				_#cacheRust & {with: "shared-key": "msrv-\(defaultRunner)"},
 				_#cargoCheck,
 			]
 		}
