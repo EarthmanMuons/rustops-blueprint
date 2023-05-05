@@ -135,14 +135,14 @@ jobs:
         with:
           toolchain: stable
           components: clippy,rustfmt
-      - name: Install cargo-nextest
-        uses: taiki-e/install-action@a775aaf2e8ed709f76ee019cb77e39fc50613631
-        with:
-          tool: cargo-nextest
       - name: Cache dependencies
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
         with:
           shared-key: workflow
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@a775aaf2e8ed709f76ee019cb77e39fc50613631
+        with:
+          tool: cargo-nextest
       - name: Compile tests
         run: cargo test --locked --no-run
       - name: Run tests

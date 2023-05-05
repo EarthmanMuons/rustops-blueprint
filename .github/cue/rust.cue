@@ -75,8 +75,8 @@ rust: _#useMergeQueue & {
 			steps: [
 				_#checkoutCode,
 				_#installRust,
-				_#installTool & {with: tool: "cargo-nextest"},
 				_#cacheRust,
+				_#installTool & {with: tool: "cargo-nextest"},
 				{
 					name: "Compile tests"
 					run:  "cargo test --locked --no-run"
