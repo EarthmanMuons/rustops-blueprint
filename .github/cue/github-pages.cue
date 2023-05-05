@@ -46,12 +46,12 @@ githubPages: {
 		}
 
 		deploy: {
-			name:  "deploy / github-pages"
-			needs: "build"
+			name: "deploy / github-pages"
 			permissions: {
 				"id-token": "write"
 				pages:      "write"
 			}
+			needs:     "build"
 			"runs-on": defaultRunner
 			environment: {
 				name: "github-pages"
