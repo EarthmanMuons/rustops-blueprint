@@ -8,6 +8,7 @@ name: github-pages
     paths:
       - '!.github/**'
       - .github/workflows/github-pages.yml
+      - '**.rs'
   workflow_dispatch: null
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
