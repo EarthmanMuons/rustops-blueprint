@@ -21,8 +21,29 @@ env:
   RUST_BACKTRACE: 1
   RUSTFLAGS: -D warnings
 jobs:
-  check_stable:
-    name: check / stable
+  flush_caches:
+    name: flush caches
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    permissions:
+      actions: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      - name: Flush main branch caches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |-
+          gh extension install actions/gh-actions-cache
+          REPO=${{ github.repository }}
+          BRANCH="refs/heads/main"
+          cacheKeys=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1)
+          set +e
+          for key in $cacheKeys; do
+              gh actions-cache delete "$key" -R $REPO -B $BRANCH --confirm
+          done
+  cache_stable:
+    name: cache / stable
     defaults:
       run:
         shell: bash
@@ -52,8 +73,8 @@ jobs:
           tool: cargo-nextest
       - name: Check packages and dependencies for errors
         run: cargo check --locked
-  check_msrv:
-    name: check / msrv
+  cache_msrv:
+    name: cache / msrv
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
