@@ -66,6 +66,7 @@ jobs:
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
         with:
           shared-key: stable-ubuntu-latest
+        timeout-minutes: 5
       - name: Check packages and dependencies for errors
         run: cargo check --locked
   format:
@@ -86,6 +87,7 @@ jobs:
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
         with:
           shared-key: stable-ubuntu-latest
+        timeout-minutes: 5
       - name: Check formatting
         run: cargo fmt --check
   lint:
@@ -106,6 +108,7 @@ jobs:
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
         with:
           shared-key: stable-ubuntu-latest
+        timeout-minutes: 5
       - name: Check lints
         run: cargo clippy --all-targets --all-features -- -D warnings
   test_stable:
@@ -137,6 +140,7 @@ jobs:
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
         with:
           shared-key: stable-${{ matrix.platform }}
+        timeout-minutes: 5
       - name: Install cargo-nextest
         uses: taiki-e/install-action@a775aaf2e8ed709f76ee019cb77e39fc50613631
         with:
@@ -169,6 +173,7 @@ jobs:
         uses: Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f
         with:
           shared-key: msrv-ubuntu-latest
+        timeout-minutes: 5
       - name: Check packages and dependencies for errors
         run: cargo check --locked
   merge_queue:
