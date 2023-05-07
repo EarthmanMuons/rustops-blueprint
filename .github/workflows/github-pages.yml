@@ -31,7 +31,7 @@ jobs:
           RUSTDOCFLAGS: --enable-index-page -Z unstable-options
         run: cargo doc --no-deps
       - name: Upload github-pages artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@64bcae551a7b18bcb9a09042ddf1960979799187
         with:
           path: target/doc
   deploy:
@@ -45,6 +45,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
+      - uses: actions/deploy-pages@af48cf94a42f2c634308b1c9dc0151830b6f190a
         id: deployment
-        uses: actions/deploy-pages@v2
+        name: Deploy to GitHub Pages

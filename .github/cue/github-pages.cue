@@ -38,11 +38,7 @@ githubPages: {
 					env: RUSTDOCFLAGS: "--enable-index-page -Z unstable-options"
 					run: "cargo doc --no-deps"
 				},
-				{
-					name: "Upload github-pages artifact"
-					uses: "actions/upload-pages-artifact@v1"
-					with: path: "target/doc"
-				},
+				_#uploadPagesArtifact & {with: path: "target/doc"},
 			]
 		}
 
@@ -59,11 +55,7 @@ githubPages: {
 				url:  "${{ steps.deployment.outputs.page_url }}"
 			}
 			steps: [
-				{
-					name: "Deploy to GitHub Pages"
-					id:   "deployment"
-					uses: "actions/deploy-pages@v2"
-				},
+				_#deployPages,
 			]
 		}
 	}
