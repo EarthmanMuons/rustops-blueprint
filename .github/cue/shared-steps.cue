@@ -42,6 +42,13 @@ _#codespell: _#step & {
 	uses: "codespell-project/actions-codespell@22ff5a2e4b591290baf82d47c9feadac31c65441"
 }
 
+// https://github.com/actions/deploy-pages/releases
+_#deployPages: _#step & {
+	name: "Deploy to GitHub Pages"
+	id:   "deployment"
+	uses: "actions/deploy-pages@af48cf94a42f2c634308b1c9dc0151830b6f190a"
+}
+
 // https://github.com/dorny/paths-filter/releases
 _#filterChanges: _#step & {
 	name: "Filter changed repository files"
@@ -103,3 +110,10 @@ _testRust: [
 		run:  "cargo test --locked --doc"
 	},
 ]
+
+// https://github.com/actions/upload-pages-artifact/releases
+_#uploadPagesArtifact: _#step & {
+	name: "Upload github-pages artifact"
+	uses: "actions/upload-pages-artifact@64bcae551a7b18bcb9a09042ddf1960979799187"
+	with: path: string
+}

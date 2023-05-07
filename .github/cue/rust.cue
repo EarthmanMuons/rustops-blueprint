@@ -89,8 +89,8 @@ rust: _#useMergeQueue & {
 			steps: [
 				_#checkoutCode,
 				{
-					name: "Get MSRV from package metadata"
 					id:   "msrv"
+					name: "Get MSRV from package metadata"
 					run:  "awk -F '\"' '/rust-version/{ print \"version=\" $2 }' Cargo.toml >> $GITHUB_OUTPUT"
 				},
 				_#installRust & {with: toolchain:  "${{ steps.msrv.outputs.version }}"},
