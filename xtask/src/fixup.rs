@@ -49,7 +49,21 @@ pub fn lint_cue() -> Result<(), DynError> {
 pub fn lint_rust() -> Result<(), DynError> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
-    cmd!(sh, "cargo clippy --fix --allow-no-vcs -- -D warnings").run()?;
+    cmd!(
+        sh,
+        "cargo fix --allow-no-vcs --all-features --edition-idioms"
+    )
+    .run()?;
+    cmd!(
+        sh,
+        "cargo clippy --all-targets --all-features --fix --allow-no-vcs"
+    )
+    .run()?;
+    cmd!(
+        sh,
+        "cargo clippy --all-targets --all-features -- -D warnings"
+    )
+    .run()?;
     Ok(())
 }
 
