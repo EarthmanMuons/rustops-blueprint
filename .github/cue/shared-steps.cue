@@ -22,6 +22,7 @@ _#cacheRust: _#step & {
 
 	// share the cache across all workflow jobs instead of keying on job_id 
 	with: "shared-key": *"stable-\(defaultRunner)" | string
+	"timeout-minutes": 5
 }
 
 _#cargoCheck: _#step & {
