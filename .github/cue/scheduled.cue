@@ -27,7 +27,7 @@ scheduled: {
 		name:      "direct-minimal-versions / stable"
 		"runs-on": defaultRunner
 		steps: [
-			_#checkoutCode & {with: ref: defaultBranch},
+			_#checkoutCode,
 			_#installRust,
 			_#installRust & {with: toolchain: "nightly"},
 			{
