@@ -53,7 +53,7 @@ rust: _#useMergeQueue & {
 				_#cacheRust,
 				{
 					name: "Check lints"
-					run:  "cargo clippy --no-deps -- -D warnings"
+					run:  "cargo clippy --all-targets --all-features -- -D warnings"
 				},
 			]
 		}
