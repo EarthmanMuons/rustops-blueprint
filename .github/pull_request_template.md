@@ -1,15 +1,16 @@
 <!--
-Please include a brief summary of your changes and any references to related
-issues. Detailed descriptions should be included in the commit message(s)
-directly.
+Please provide a brief summary of your changes and any references to related
+issues. Include detailed descriptions in the commit message(s) directly.
 
 Address review comments by rewriting the branch, rather than adding commits on
-top. You'll need to force push when pushing to the updated branch.
+top. You'll need to force push when updating the pull request.
 -->
 
 # Checklist
 
-- [ ] I have run `cargo xtask fixup` to automatically follow project conventions
-- [ ] I have updated the `CHANGELOG.md` file
-- [ ] I have made corresponding changes to applicable documentation
+- [ ] I have run `cargo xtask fixup` to automatically adhere to project
+      conventions
+- [ ] I have made corresponding changes to the relevant documentation
+- [ ] I have updated the `CHANGELOG.md` file in accordance with the
+      [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format
 - [ ] I have added tests to cover my changes
