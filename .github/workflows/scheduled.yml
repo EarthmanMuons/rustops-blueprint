@@ -33,7 +33,7 @@ jobs:
       - name: Resolve minimal dependency versions instead of maximum
         run: cargo +nightly update -Z direct-minimal-versions
       - name: Install cargo-nextest
-        uses: taiki-e/install-action@a775aaf2e8ed709f76ee019cb77e39fc50613631
+        uses: taiki-e/install-action@cbbb8cb93ff0f3bc59370e852aedd7dfa09dbaba
         with:
           tool: cargo-nextest
       - name: Compile tests

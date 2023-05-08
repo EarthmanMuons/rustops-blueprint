@@ -71,7 +71,7 @@ jobs:
           shared-key: stable-${{ matrix.platform }}
         timeout-minutes: 5
       - name: Install cargo-nextest
-        uses: taiki-e/install-action@a775aaf2e8ed709f76ee019cb77e39fc50613631
+        uses: taiki-e/install-action@cbbb8cb93ff0f3bc59370e852aedd7dfa09dbaba
         with:
           tool: cargo-nextest
       - name: Check packages and dependencies for errors
