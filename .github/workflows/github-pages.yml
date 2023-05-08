@@ -45,6 +45,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/deploy-pages@af48cf94a42f2c634308b1c9dc0151830b6f190a
-        id: deployment
+      - id: deployment
         name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@af48cf94a42f2c634308b1c9dc0151830b6f190a

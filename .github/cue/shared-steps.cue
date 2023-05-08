@@ -44,16 +44,16 @@ _#codespell: _#step & {
 
 // https://github.com/actions/deploy-pages/releases
 _#deployPages: _#step & {
-	name: "Deploy to GitHub Pages"
 	id:   "deployment"
+	name: "Deploy to GitHub Pages"
 	uses: "actions/deploy-pages@af48cf94a42f2c634308b1c9dc0151830b6f190a"
 }
 
 // https://github.com/dorny/paths-filter/releases
 _#filterChanges: _#step & {
+	id:   "filter"
 	name: "Filter changed repository files"
 	uses: "dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50"
-	id:   "filter"
 }
 
 // https://github.com/cue-lang/setup-cue/commits/main
@@ -78,7 +78,7 @@ _#installRust: _#step & {
 // https://github.com/taiki-e/install-action/releases
 _#installTool: _#step & {
 	name: "Install \(with.tool)"
-	uses: "taiki-e/install-action@a775aaf2e8ed709f76ee019cb77e39fc50613631"
+	uses: "taiki-e/install-action@cbbb8cb93ff0f3bc59370e852aedd7dfa09dbaba"
 	with: tool: string
 }
 
