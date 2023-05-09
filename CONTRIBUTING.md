@@ -28,6 +28,37 @@ happy to mentor contributors and provide guidance or clarification when needed.
 [ideas discussion]:
   https://github.com/EarthmanMuons/rustops-blueprint/discussions/new?category=ideas
 
+## Reporting Bugs or Requesting Features
+
+We appreciate your help in identifying issues or suggesting new features for our
+project. To gather all relevant information and streamline the process, we use
+built-in issue templates on GitHub.
+
+Before opening a new issue, please search the [existing issues][issue tracker]
+to see if your concern has already been reported or a similar feature has been
+requested. This helps us avoid duplicate issues and ensures that we can focus on
+addressing unique concerns effectively.
+
+When reporting a bug or requesting a feature, please follow these steps:
+
+1. Navigate to the [issue tracker][].
+2. Click the "New issue" button.
+3. Choose the appropriate template for your issue (bug report or feature
+   request).
+4. Fill out the template with all the necessary details to help us understand
+   the issue or feature request.
+5. Submit the issue.
+
+### Issue Labels
+
+Built-in issue templates will automatically apply some labels, but we also rely
+on GitHub's [default labels][] to categorize issues and pull requests further.
+Familiarize yourself with these labels to better understand the organization and
+prioritization of tasks within the project.
+
+[default labels]:
+  https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels#about-default-labels
+
 ## Setting Up a Development Environment
 
 RustOps Blueprint follows the ["fork and pull"][] workflow model. After
@@ -45,7 +76,7 @@ git remote add upstream https://github.com/EarthmanMuons/rustops-blueprint.git
 ### Install Rust Components
 
 The project is developed using the latest stable release of Rust, but it also
-requires a few additional toolchain [components][]. We use the lint tool
+requires a couple of additional toolchain [components][]. We use the lint tool
 `clippy` for extra checks on common mistakes and stylistic choices, as well as
 `rustfmt` for automatic code formatting. Install both components for your
 current Rust toolchain using `rustup`:
@@ -54,17 +85,18 @@ current Rust toolchain using `rustup`:
 rustup component add clippy rustfmt
 ```
 
-Additionally, our project utilizes [`cargo-insta`](https://insta.rs/) for
-snapshot testing, and we recommend [`cargo-nextest`](https://nexte.st/) as an
-enhanced test runner. It displays each test's execution time by default, and can
-help to identify performance outliers in the test suite. Install both tools via
-`cargo`:
+Additionally, our project utilizes [`cargo-insta`][] for snapshot testing, and
+we recommend [`cargo-nextest`][] as an enhanced test runner. It displays each
+test's execution time by default, and can help to identify performance outliers
+in the test suite. Install both tools via `cargo`:
 
 ```
 cargo install cargo-insta cargo-nextest
 ```
 
 [components]: https://rust-lang.github.io/rustup/concepts/components.html
+[`cargo-insta`]: https://insta.rs/
+[`cargo-nextest`]: https://nexte.st/
 
 ### Install Additional Tools
 
@@ -89,11 +121,34 @@ that you have the following tools installed:
 
 - Follow the [Keep a Changelog][] format when updating the changelog.
 
-- Ensure your changes are thoroughly tested.
+- Ensure your changes are thoroughly tested. Our continuous integration (CI)
+  pipeline extensively tests all pull requests, and to be merged, a PR must have
+  no warnings or errors.
 
 [commit messages]:
   https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 [Keep a Changelog]: https://keepachangelog.com/en/1.1.0/
+
+## Testing Conventions
+
+RustOps Blueprint follows standard Rust testing conventions, which includes:
+
+- **Unit tests:** Located alongside the source code files they test. Unit tests
+  focus on individual functions or modules and should be placed in the same
+  file, usually at the bottom, under a `#[cfg(test)]` attribute and a
+  `mod tests { ... }` block.
+
+- **Integration tests:** Located in the top-level `tests/` directory.
+  Integration tests cover the interaction between multiple components or the
+  behavior of the whole system.
+
+- **Snapshot tests:** We use [`cargo-insta`][] for maintaining snapshot tests.
+  These tests compare the output of your code against a previously recorded
+  "snapshot" to ensure consistent results. Follow the upstream documentation for
+  creating and updating snapshots as needed.
+
+When contributing, ensure that your changes are well-tested by including
+appropriate unit, integration, and snapshot tests as necessary.
 
 ## Contribution Process
 
@@ -133,41 +188,24 @@ git push -u origin your-feature-branch
 
 Create a pull request on GitHub, comparing your fork's branch with the original
 repository's `main` branch. If changes are requested, rewrite the branch rather
-than adding commits on top, and then force push them to your repository.
+than adding commits on top, and then force push them to your repository. As you
+update your PR and apply changes, mark each conversation as [resolved][].
 
 Once your changes have been discussed and approved, we use GitHub [merge
 queues][] to enforce the [not rocket science][] rule of software engineering,
 ensuring that tests on the `main` branch always pass.
 
+[resolved]:
+  https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/commenting-on-a-pull-request#resolving-conversations
 [merge queues]:
   https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request-with-a-merge-queue
 [not rocket science]: https://graydon2.dreamwidth.org/1597.html
 
-## Reporting Bugs or Requesting Features
-
-We appreciate your help in identifying issues or suggesting new features for our
-project. To gather all relevant information and streamline the process, we use
-built-in issue templates on GitHub.
-
-Before opening a new issue, please search the [existing issues][issue tracker]
-to see if your concern has already been reported or a similar feature has been
-requested. This helps us avoid duplicate issues and ensures that we can focus on
-addressing unique concerns effectively.
-
-When reporting a bug or requesting a feature, please follow these steps:
-
-1. Navigate to the [issue tracker][].
-2. Click the "New issue" button.
-3. Choose the appropriate template for your issue (bug report or feature
-   request).
-4. Fill out the template with all the necessary details to help us understand
-   the issue or feature request.
-5. Submit the issue.
-
 ## Useful Commands
 
 There are some helpful [xtask][] scripts in the repository for running common
-tasks. You can view the details by running:
+tasks and replicating CI jobs locally. You can view the details and available
+commands by running:
 
 ```
 cargo xtask --help
