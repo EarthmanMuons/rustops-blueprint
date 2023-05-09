@@ -9,6 +9,13 @@
 
 ---
 
+## Documentation
+
+Generated [Rustdoc][] reference documentation can be found at
+<https://earthmanmuons.github.io/rustops-blueprint/>
+
+[Rustdoc]: https://doc.rust-lang.org/stable/rustdoc/
+
 ## License
 
 RustOps Blueprint is distributed under the terms of both the Apache License
