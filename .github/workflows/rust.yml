@@ -68,7 +68,7 @@ jobs:
           shared-key: stable-ubuntu-latest
         timeout-minutes: 5
       - name: Check packages and dependencies for errors
-        run: cargo check --locked
+        run: cargo check --locked --all-targets --all-features
   format:
     name: format
     needs:
@@ -175,7 +175,7 @@ jobs:
           shared-key: msrv-ubuntu-latest
         timeout-minutes: 5
       - name: Check packages and dependencies for errors
-        run: cargo check --locked
+        run: cargo check --locked --all-targets --all-features
   merge_queue:
     name: rust workflow ready
     needs:
