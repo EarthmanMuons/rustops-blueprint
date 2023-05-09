@@ -8,26 +8,25 @@ assignees: ""
 
 **Describe the Bug**
 
-A clear and concise description of what the bug is.
+<!-- Provide a clear and concise description of the bug. -->
 
 **Steps to Reproduce**
 
+<!--
 1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+2. Click on '...'
+3. Scroll down to '...'
+4. Observe the error
+-->
 
 **Expected Behavior**
 
-A clear and concise description of what you expected to happen.
+<!-- Provide a clear and concise description of what you expected to happen. -->
 
 **Actual Behavior**
 
-A clear and concise descriptino of what actually happened.
-
-If applicable, add screenshots to help explain your problem.
+<!-- Provide a clear and concise description of what actually happened. If applicable, add screenshots to help explain the problem. -->
 
 **Additional Context**
 
-Add any other context about the problem here. Environmental details, software
-versions used, etc.
+<!-- Include any other context about the problem here, such as environmental details, software versions used, etc. -->
