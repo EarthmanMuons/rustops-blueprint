@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and Community Conversations
+    url: https://github.com/EarthmanMuons/rustops-blueprint/discussions
+    about: Please ask and answer questions here.
+  - name: Security Concerns
+    url: https://github.com/EarthmanMuons/rustops-blueprint/security/policy
+    about: Please go here to learn about reporting security vulnerabilities.
