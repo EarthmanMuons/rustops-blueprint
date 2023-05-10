@@ -4,7 +4,7 @@
 
 # Checklist
 
-- [ ] I have run `cargo xtask fixup` to automatically adhere to project formatting and style conventions
-- [ ] I have made corresponding changes to the relevant documentation
-- [ ] I have updated the `CHANGELOG.md` file in accordance with the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format
-- [ ] I have added tests to cover my changes
+- [ ] Ran `cargo xtask fixup` for project formatting and style
+- [ ] Modified all relevant documentation
+- [ ] Updated `CHANGELOG.md` per "Keep a Changelog" format
+- [ ] Added tests covering my changes
