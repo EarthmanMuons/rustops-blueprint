@@ -1,12 +1,11 @@
-mod fixup;
-
 use std::{
     env,
     error::Error,
     path::{Path, PathBuf},
 };
-
 use xshell::Shell;
+
+mod fixup;
 
 type DynError = Box<dyn Error>;
 
@@ -32,6 +31,22 @@ pub mod tasks {
     use crate::fixup::{lint_cue, lint_rust};
     use crate::fixup::{regenerate_ci_yaml, spellcheck};
     use crate::DynError;
+
+    const HELP: &str = "\
+NAME
+    cargo xtask - helper scripts for running common project tasks
+
+SYNOPSIS
+    cargo xtask --help
+    cargo xtask <COMMAND>
+
+COMMANDS
+    fixup                  Run all fixup xtasks, editing files in-place.
+    fixup.markdown         Format Markdown files in-place.
+    fixup.spelling         Fix common misspellings across all files in-place.
+    fixup.github-actions   Format CUE files in-place and regenerate CI YAML files.
+    fixup.rust             Fix lints and format Rust files in-place.
+";
 
     pub fn fixup() -> Result<(), DynError> {
         fixup_spelling()?; // affects all file types; run this first
@@ -60,22 +75,7 @@ pub mod tasks {
     }
 
     pub fn print_help() {
-        println!(
-            "
-Usage: cargo xtask <task>
-
-Description:
-    Custom cargo commands for invoking developer tools that standardize
-    processes and files within this project's repository.
-
-Tasks:
-    fixup                  Run all fixup xtasks, editing files in-place.
-    fixup.markdown         Format Markdown files in-place.
-    fixup.spelling         Fix common misspellings across all files in-place.
-    fixup.github-actions   Format CUE files in-place and regenerate CI YAML files.
-    fixup.rust             Fix lints and format Rust files in-place.
-"
-        );
+        print!("{}", HELP);
     }
 }
 
