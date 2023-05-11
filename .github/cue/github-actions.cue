@@ -83,6 +83,7 @@ githubActions: _#useMergeQueue & {
 		}
 
 		merge_queue: needs: [
+			"changes",
 			"cue_format",
 			"cue_synced",
 		]

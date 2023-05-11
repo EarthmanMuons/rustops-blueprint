@@ -12,7 +12,7 @@ wordsmith: _#useMergeQueue & {
 			name: "markdown / format"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			if:        "needs.changes.outputs.markdown == 'true' && github.event_name == 'pull_request'"
+			if:        "github.event_name == 'pull_request' && needs.changes.outputs.markdown == 'true'"
 			steps: [
 				_#checkoutCode,
 				_#prettier & {
@@ -35,6 +35,7 @@ wordsmith: _#useMergeQueue & {
 		}
 
 		merge_queue: needs: [
+			"changes",
 			"markdown_format",
 			"spellcheck",
 		]
