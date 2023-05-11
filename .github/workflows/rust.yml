@@ -74,7 +74,7 @@ jobs:
     needs:
       - changes
     runs-on: ubuntu-latest
-    if: needs.changes.outputs.rust == 'true' && github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && needs.changes.outputs.rust == 'true'
     steps:
       - name: Checkout source code
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
@@ -95,7 +95,7 @@ jobs:
     needs:
       - changes
     runs-on: ubuntu-latest
-    if: needs.changes.outputs.rust == 'true' && github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && needs.changes.outputs.rust == 'true'
     steps:
       - name: Checkout source code
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
@@ -128,7 +128,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
     runs-on: ${{ matrix.platform }}
-    if: needs.changes.outputs.rust == 'true' && always()
+    if: always() && needs.changes.outputs.rust == 'true'
     steps:
       - name: Checkout source code
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
@@ -158,7 +158,7 @@ jobs:
       - format
       - lint
     runs-on: ubuntu-latest
-    if: needs.changes.outputs.rust == 'true' && always()
+    if: always() && needs.changes.outputs.rust == 'true'
     steps:
       - name: Checkout source code
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
@@ -179,11 +179,22 @@ jobs:
   merge_queue:
     name: rust workflow ready
     needs:
+      - changes
       - test_stable
       - check_msrv
     runs-on: ubuntu-latest
     if: always()
     steps:
+      - name: 'Check status of job_id: changes'
+        run: |-
+          RESULT="${{ needs.changes.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi
       - name: 'Check status of job_id: test_stable'
         run: |-
           RESULT="${{ needs.test_stable.result }}";

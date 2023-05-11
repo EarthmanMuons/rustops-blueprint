@@ -30,7 +30,7 @@ rust: _#useMergeQueue & {
 			name: "format"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			if:        "needs.changes.outputs.rust == 'true' && github.event_name == 'pull_request'"
+			if:        "github.event_name == 'pull_request' && needs.changes.outputs.rust == 'true'"
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "rustfmt"},
@@ -46,7 +46,7 @@ rust: _#useMergeQueue & {
 			name: "lint"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			if:        "needs.changes.outputs.rust == 'true' && github.event_name == 'pull_request'"
+			if:        "github.event_name == 'pull_request' && needs.changes.outputs.rust == 'true'"
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy"},
@@ -71,7 +71,7 @@ rust: _#useMergeQueue & {
 				]
 			}
 			"runs-on": "${{ matrix.platform }}"
-			if:        "needs.changes.outputs.rust == 'true' && always()"
+			if:        "always() && needs.changes.outputs.rust == 'true'"
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -85,7 +85,7 @@ rust: _#useMergeQueue & {
 			name: "check / msrv"
 			needs: ["check", "format", "lint"]
 			"runs-on": defaultRunner
-			if:        "needs.changes.outputs.rust == 'true' && always()"
+			if:        "always() && needs.changes.outputs.rust == 'true'"
 			steps: [
 				_#checkoutCode,
 				{
@@ -100,6 +100,7 @@ rust: _#useMergeQueue & {
 		}
 
 		merge_queue: needs: [
+			"changes",
 			"test_stable",
 			"check_msrv",
 		]

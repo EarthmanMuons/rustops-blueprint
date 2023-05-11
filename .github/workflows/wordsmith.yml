@@ -51,7 +51,7 @@ jobs:
     needs:
       - changes
     runs-on: ubuntu-latest
-    if: needs.changes.outputs.markdown == 'true' && github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && needs.changes.outputs.markdown == 'true'
     steps:
       - name: Checkout source code
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
@@ -74,11 +74,22 @@ jobs:
   merge_queue:
     name: wordsmith workflow ready
     needs:
+      - changes
       - markdown_format
       - spellcheck
     runs-on: ubuntu-latest
     if: always()
     steps:
+      - name: 'Check status of job_id: changes'
+        run: |-
+          RESULT="${{ needs.changes.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi
       - name: 'Check status of job_id: markdown_format'
         run: |-
           RESULT="${{ needs.markdown_format.result }}";

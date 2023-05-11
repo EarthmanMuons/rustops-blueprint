@@ -117,11 +117,22 @@ jobs:
   merge_queue:
     name: github-actions workflow ready
     needs:
+      - changes
       - cue_format
       - cue_synced
     runs-on: ubuntu-latest
     if: always()
     steps:
+      - name: 'Check status of job_id: changes'
+        run: |-
+          RESULT="${{ needs.changes.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi
       - name: 'Check status of job_id: cue_format'
         run: |-
           RESULT="${{ needs.cue_format.result }}";
