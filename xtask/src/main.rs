@@ -12,9 +12,9 @@ type DynError = Box<dyn Error>;
 fn main() -> Result<(), DynError> {
     let task = env::args().nth(1);
     match task {
-        None => tasks::print_help(),
+        None => tasks::print_help()?,
         Some(t) => match t.as_str() {
-            "--help" => tasks::print_help(),
+            "--help" => tasks::print_help()?,
             "fixup" => tasks::fixup()?,
             "fixup.github-actions" => tasks::fixup_github_actions()?,
             "fixup.markdown" => tasks::fixup_markdown()?,
@@ -74,8 +74,9 @@ COMMANDS
         spellcheck()
     }
 
-    pub fn print_help() {
+    pub fn print_help() -> Result<(), DynError> {
         print!("{}", HELP);
+        Ok(())
     }
 }
 
