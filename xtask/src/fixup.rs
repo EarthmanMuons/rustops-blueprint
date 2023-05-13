@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use anyhow::Result;
 use xshell::{cmd, Shell};
 
-use crate::{project_root, verbose_cd};
+use crate::utils::{project_root, verbose_cd};
 
 pub fn everything() -> Result<()> {
     spelling()?; // affects all file types; run this first

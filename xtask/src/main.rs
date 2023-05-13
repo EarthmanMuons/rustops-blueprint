@@ -1,10 +1,9 @@
 use std::env;
-use std::path::{Path, PathBuf};
 
 use anyhow::Result;
-use xshell::Shell;
 
 mod fixup;
+mod utils;
 
 const HELP: &str = "\
 NAME
@@ -56,20 +55,4 @@ fn main() -> Result<()> {
     }
 
     Ok(())
-}
-
-pub fn project_root() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .expect("Failed to find project root")
-        .to_path_buf()
-}
-
-pub fn verbose_cd<P: AsRef<Path>>(sh: &Shell, dir: P) {
-    sh.change_dir(dir);
-    eprintln!(
-        "\n$ cd {}{}",
-        sh.current_dir().display(),
-        std::path::MAIN_SEPARATOR
-    );
 }
