@@ -1,15 +1,11 @@
-use std::{
-    env,
-    error::Error,
-    path::{Path, PathBuf},
-};
+use anyhow::Result;
+use std::env;
+use std::path::{Path, PathBuf};
 use xshell::Shell;
 
 mod fixup;
 
-type DynError = Box<dyn Error>;
-
-fn main() -> Result<(), DynError> {
+fn main() -> Result<()> {
     let task = env::args().nth(1);
     match task {
         None => tasks::print_help()?,
@@ -20,7 +16,7 @@ fn main() -> Result<(), DynError> {
             "fixup.markdown" => tasks::fixup_markdown()?,
             "fixup.rust" => tasks::fixup_rust()?,
             "fixup.spelling" => tasks::fixup_spelling()?,
-            invalid => return Err(format!("Invalid task name: {}", invalid).into()),
+            invalid => return Err(anyhow::anyhow!("Invalid task name: {}", invalid)),
         },
     };
     Ok(())
@@ -30,7 +26,7 @@ pub mod tasks {
     use crate::fixup::{format_cue, format_markdown, format_rust};
     use crate::fixup::{lint_cue, lint_rust};
     use crate::fixup::{regenerate_ci_yaml, spellcheck};
-    use crate::DynError;
+    use anyhow::Result;
 
     const HELP: &str = "\
 NAME
@@ -48,33 +44,33 @@ COMMANDS
     fixup.rust             Fix lints and format Rust files in-place.
 ";
 
-    pub fn fixup() -> Result<(), DynError> {
+    pub fn fixup() -> Result<()> {
         fixup_spelling()?; // affects all file types; run this first
         fixup_github_actions()?;
         fixup_markdown()?;
         fixup_rust()
     }
 
-    pub fn fixup_github_actions() -> Result<(), DynError> {
+    pub fn fixup_github_actions() -> Result<()> {
         lint_cue()?;
         format_cue()?;
         regenerate_ci_yaml()
     }
 
-    pub fn fixup_markdown() -> Result<(), DynError> {
+    pub fn fixup_markdown() -> Result<()> {
         format_markdown()
     }
 
-    pub fn fixup_rust() -> Result<(), DynError> {
+    pub fn fixup_rust() -> Result<()> {
         lint_rust()?;
         format_rust()
     }
 
-    pub fn fixup_spelling() -> Result<(), DynError> {
+    pub fn fixup_spelling() -> Result<()> {
         spellcheck()
     }
 
-    pub fn print_help() -> Result<(), DynError> {
+    pub fn print_help() -> Result<()> {
         print!("{}", HELP);
         Ok(())
     }

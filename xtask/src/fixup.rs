@@ -1,20 +1,18 @@
-use std::{
-    fs,
-    path::{Path, PathBuf},
-};
-
+use anyhow::Result;
+use std::fs;
+use std::path::{Path, PathBuf};
 use xshell::{cmd, Shell};
 
-use crate::{project_root, verbose_cd, DynError};
+use crate::{project_root, verbose_cd};
 
-pub fn format_cue() -> Result<(), DynError> {
+pub fn format_cue() -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, cue_dir());
     cmd!(sh, "cue fmt --simplify").run()?;
     Ok(())
 }
 
-pub fn format_markdown() -> Result<(), DynError> {
+pub fn format_markdown() -> Result<()> {
     let sh = Shell::new()?;
     let root = project_root();
     verbose_cd(&sh, &root);
@@ -32,21 +30,21 @@ pub fn format_markdown() -> Result<(), DynError> {
     Ok(())
 }
 
-pub fn format_rust() -> Result<(), DynError> {
+pub fn format_rust() -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
     cmd!(sh, "cargo fmt").run()?;
     Ok(())
 }
 
-pub fn lint_cue() -> Result<(), DynError> {
+pub fn lint_cue() -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, cue_dir());
     cmd!(sh, "cue vet --concrete").run()?;
     Ok(())
 }
 
-pub fn lint_rust() -> Result<(), DynError> {
+pub fn lint_rust() -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
     cmd!(
@@ -67,14 +65,14 @@ pub fn lint_rust() -> Result<(), DynError> {
     Ok(())
 }
 
-pub fn regenerate_ci_yaml() -> Result<(), DynError> {
+pub fn regenerate_ci_yaml() -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, cue_dir());
     cmd!(sh, "cue cmd regen-ci-yaml").run()?;
     Ok(())
 }
 
-pub fn spellcheck() -> Result<(), DynError> {
+pub fn spellcheck() -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
     cmd!(sh, "codespell --write-changes").run()?;
@@ -85,7 +83,7 @@ fn cue_dir() -> PathBuf {
     project_root().join(".github/cue")
 }
 
-fn find_markdown_files<P: AsRef<Path>>(dir: P) -> Result<Vec<PathBuf>, DynError> {
+fn find_markdown_files<P: AsRef<Path>>(dir: P) -> Result<Vec<PathBuf>> {
     let mut result = Vec::new();
     for entry in fs::read_dir(dir)? {
         let path = entry?.path();
