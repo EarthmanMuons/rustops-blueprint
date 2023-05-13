@@ -1,79 +1,61 @@
-use anyhow::Result;
 use std::env;
 use std::path::{Path, PathBuf};
+
+use anyhow::Result;
 use xshell::Shell;
 
 mod fixup;
 
-fn main() -> Result<()> {
-    let task = env::args().nth(1);
-    match task {
-        None => tasks::print_help()?,
-        Some(t) => match t.as_str() {
-            "--help" => tasks::print_help()?,
-            "fixup" => tasks::fixup()?,
-            "fixup.github-actions" => tasks::fixup_github_actions()?,
-            "fixup.markdown" => tasks::fixup_markdown()?,
-            "fixup.rust" => tasks::fixup_rust()?,
-            "fixup.spelling" => tasks::fixup_spelling()?,
-            invalid => return Err(anyhow::anyhow!("Invalid task name: {}", invalid)),
-        },
-    };
-    Ok(())
-}
-
-pub mod tasks {
-    use crate::fixup::{format_cue, format_markdown, format_rust};
-    use crate::fixup::{lint_cue, lint_rust};
-    use crate::fixup::{regenerate_ci_yaml, spellcheck};
-    use anyhow::Result;
-
-    const HELP: &str = "\
+const HELP: &str = "\
 NAME
     cargo xtask - helper scripts for running common project tasks
 
 SYNOPSIS
     cargo xtask --help
-    cargo xtask <COMMAND>
+    cargo xtask [COMMAND...]
 
 COMMANDS
     fixup                  Run all fixup xtasks, editing files in-place.
-    fixup.markdown         Format Markdown files in-place.
-    fixup.spelling         Fix common misspellings across all files in-place.
     fixup.github-actions   Format CUE files in-place and regenerate CI YAML files.
+    fixup.markdown         Format Markdown files in-place.
     fixup.rust             Fix lints and format Rust files in-place.
+    fixup.spelling         Fix common misspellings across all files in-place.
 ";
 
-    pub fn fixup() -> Result<()> {
-        fixup_spelling()?; // affects all file types; run this first
-        fixup_github_actions()?;
-        fixup_markdown()?;
-        fixup_rust()
-    }
+fn main() -> Result<()> {
+    use lexopt::prelude::*;
 
-    pub fn fixup_github_actions() -> Result<()> {
-        lint_cue()?;
-        format_cue()?;
-        regenerate_ci_yaml()
-    }
-
-    pub fn fixup_markdown() -> Result<()> {
-        format_markdown()
-    }
-
-    pub fn fixup_rust() -> Result<()> {
-        lint_rust()?;
-        format_rust()
-    }
-
-    pub fn fixup_spelling() -> Result<()> {
-        spellcheck()
-    }
-
-    pub fn print_help() -> Result<()> {
+    // print help when no arguments are given
+    if env::args().len() == 1 {
         print!("{}", HELP);
-        Ok(())
+        std::process::exit(1);
     }
+
+    let mut parser = lexopt::Parser::from_env();
+    while let Some(arg) = parser.next()? {
+        match arg {
+            Short('h') | Long("help") => {
+                print!("{}", HELP);
+                std::process::exit(0);
+            }
+            Value(value) => {
+                let value = value.string()?;
+                match value.as_str() {
+                    "fixup" => fixup::everything()?,
+                    "fixup.github-actions" => fixup::github_actions()?,
+                    "fixup.markdown" => fixup::markdown()?,
+                    "fixup.rust" => fixup::rust()?,
+                    "fixup.spelling" => fixup::spelling()?,
+                    value => {
+                        anyhow::bail!("unknown command '{}'", value);
+                    }
+                }
+            }
+            _ => anyhow::bail!(arg.unexpected()),
+        }
+    }
+
+    Ok(())
 }
 
 pub fn project_root() -> PathBuf {
