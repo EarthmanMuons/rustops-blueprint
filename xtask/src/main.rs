@@ -2,6 +2,7 @@ use std::env;
 
 use anyhow::Result;
 
+mod coverage;
 mod fixup;
 mod install;
 mod utils;
@@ -15,12 +16,13 @@ SYNOPSIS
     cargo xtask [COMMAND...]
 
 COMMANDS
+    coverage               Generate and open an HTML code coverage report.
     fixup                  Run all fixup xtasks, editing files in-place.
     fixup.github-actions   Format CUE files in-place and regenerate CI YAML files.
     fixup.markdown         Format Markdown files in-place.
     fixup.rust             Fix lints and format Rust files in-place.
     fixup.spelling         Fix common misspellings across all files in-place.
-    install                Install required Rust components and cargo dependencies
+    install                Install required Rust components and cargo dependencies.
 ";
 
 fn main() -> Result<()> {
@@ -42,6 +44,7 @@ fn main() -> Result<()> {
             Value(value) => {
                 let value = value.string()?;
                 match value.as_str() {
+                    "coverage" => coverage::html_report()?,
                     "fixup" => fixup::everything()?,
                     "fixup.github-actions" => fixup::github_actions()?,
                     "fixup.markdown" => fixup::markdown()?,

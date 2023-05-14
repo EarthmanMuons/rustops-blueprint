@@ -11,4 +11,5 @@ publish = false
 [dependencies]
 anyhow = "1.0.71"
 lexopt = "0.3.0"
+open = "4.1.0"
 xshell = "0.2.2"
