@@ -29,9 +29,11 @@ pub fn html_report() -> Result<()> {
     ];
     cmd!(sh, "grcov {options...} .").run()?;
 
-    eprintln!("Cleaning up LLVM profile files");
     let profile_files = find_files(sh.current_dir(), "profraw")?;
-    cmd!(sh, "rm").args(profile_files).run()?;
+    if !profile_files.is_empty() {
+        eprintln!("Cleaning up LLVM profile files");
+        cmd!(sh, "rm").args(profile_files).run()?;
+    }
 
     let report = project_root().join("target/debug/coverage/index.html");
     eprintln!("Opening {}", report.display());
