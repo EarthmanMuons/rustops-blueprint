@@ -73,30 +73,48 @@ git remote add upstream https://github.com/EarthmanMuons/rustops-blueprint.git
 ["fork and pull"]: https://help.github.com/articles/fork-a-repo/
 [installing Rust]: https://www.rust-lang.org/learn/get-started
 
-### Install Rust Components
+### Install Rust Dependencies
 
 The project is developed using the latest stable release of Rust, but it also
 requires a couple of additional toolchain [components][]. We use the lint tool
 `clippy` for extra checks on common mistakes and stylistic choices, as well as
-`rustfmt` for automatic code formatting. Install both components for your
-current Rust toolchain using `rustup`:
-
-```
-rustup component add clippy rustfmt
-```
+`rustfmt` for automatic code formatting.
 
 Additionally, our project utilizes [`cargo-insta`][] for snapshot testing, and
 we recommend [`cargo-nextest`][] as an enhanced test runner. It displays each
 test's execution time by default, and can help to identify performance outliers
-in the test suite. Install both tools via `cargo`:
-
-```
-cargo install cargo-insta cargo-nextest
-```
+in the test suite.
 
 [components]: https://rust-lang.github.io/rustup/concepts/components.html
 [`cargo-insta`]: https://insta.rs/
 [`cargo-nextest`]: https://nexte.st/
+
+#### Automated Installation
+
+We've provided an xtask script to automatically install all required toolchain
+components and cargo dependencies. To use this, simply run the following
+command:
+
+```
+cargo xtask install
+```
+
+#### Manual Installation
+
+If you prefer to install the required tools manually, or need more control over
+the installation process, follow these steps:
+
+1. Install the required toolchain components:
+
+   ```
+   rustup component add clippy rustfmt
+   ```
+
+2. Install the cargo dependencies:
+
+   ```
+   cargo install cargo-insta cargo-nextest
+   ```
 
 ### Install Additional Tools
 
