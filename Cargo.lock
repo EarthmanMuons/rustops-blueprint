@@ -61,12 +61,14 @@ name = "mybin"
 version = "0.1.0"
 dependencies = [
  "mylib",
- "rand",
 ]
 
 [[package]]
 name = "mylib"
 version = "0.1.0"
+dependencies = [
+ "rand",
+]
 
 [[package]]
 name = "once_cell"

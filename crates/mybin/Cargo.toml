@@ -15,4 +15,3 @@ license.workspace = true
 
 [dependencies]
 mylib = { path = "../mylib" }
-rand = "0.8.5"
