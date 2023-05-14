@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use anyhow::Result;
 use xshell::{cmd, Shell};
 
-use crate::utils::{find_files, project_root, verbose_cd};
+use crate::utils::{find_files, project_root, to_relative_paths, verbose_cd};
 
 pub fn everything() -> Result<()> {
     spelling()?; // affects all file types; run this first
@@ -30,8 +30,9 @@ fn format_markdown() -> Result<()> {
     verbose_cd(&sh, project_root());
 
     let markdown_files = find_files(sh.current_dir(), "md")?;
+    let relative_paths = to_relative_paths(markdown_files, sh.current_dir());
     cmd!(sh, "prettier --prose-wrap always --write")
-        .args(markdown_files)
+        .args(relative_paths)
         .run()?;
 
     Ok(())

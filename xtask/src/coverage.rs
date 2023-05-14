@@ -1,3 +1,5 @@
+use std::fs;
+
 use anyhow::{Context, Result};
 use xshell::{cmd, Shell};
 
@@ -32,7 +34,9 @@ pub fn html_report() -> Result<()> {
     let profile_files = find_files(sh.current_dir(), "profraw")?;
     if !profile_files.is_empty() {
         eprintln!("Cleaning up LLVM profile files");
-        cmd!(sh, "rm").args(profile_files).run()?;
+        for file in profile_files {
+            fs::remove_file(&file)?;
+        }
     }
 
     let report = project_root().join("target/debug/coverage/index.html");
