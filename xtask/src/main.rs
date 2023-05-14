@@ -3,6 +3,7 @@ use std::env;
 use anyhow::Result;
 
 mod fixup;
+mod install;
 mod utils;
 
 const HELP: &str = "\
@@ -19,6 +20,7 @@ COMMANDS
     fixup.markdown         Format Markdown files in-place.
     fixup.rust             Fix lints and format Rust files in-place.
     fixup.spelling         Fix common misspellings across all files in-place.
+    install                Install required Rust components and cargo dependencies
 ";
 
 fn main() -> Result<()> {
@@ -45,6 +47,7 @@ fn main() -> Result<()> {
                     "fixup.markdown" => fixup::markdown()?,
                     "fixup.rust" => fixup::rust()?,
                     "fixup.spelling" => fixup::spelling()?,
+                    "install" => install::rust_dependencies()?,
                     value => {
                         anyhow::bail!("unknown command '{}'", value);
                     }
