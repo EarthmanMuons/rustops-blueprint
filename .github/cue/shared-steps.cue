@@ -39,7 +39,7 @@ _#checkoutCode: _#step & {
 // https://github.com/codespell-project/actions-codespell/releases
 _#codespell: _#step & {
 	name: "Check common misspellings"
-	uses: "codespell-project/actions-codespell@22ff5a2e4b591290baf82d47c9feadac31c65441"
+	uses: "codespell-project/actions-codespell@94259cd8be02ad2903ba34a22d9c13de21a74461"
 }
 
 // https://github.com/actions/deploy-pages/releases
