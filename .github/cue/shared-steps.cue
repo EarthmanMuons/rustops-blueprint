@@ -18,7 +18,7 @@ _#step: uses?: #pinned
 // https://github.com/Swatinem/rust-cache/releases
 _#cacheRust: _#step & {
 	name: "Cache dependencies"
-	uses: "Swatinem/rust-cache@6fd3edff6979b79f87531400ad694fb7f2c84b1f"
+	uses: "Swatinem/rust-cache@060bda31e0be4f453bb6ed2d7e5427b31734ad01"
 
 	// share the cache across all workflow jobs instead of keying on job_id 
 	with: "shared-key": *"stable-\(defaultRunner)" | string
