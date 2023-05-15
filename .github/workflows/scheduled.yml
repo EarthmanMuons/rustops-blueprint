@@ -42,3 +42,18 @@ jobs:
         run: cargo nextest run --locked --all-targets --all-features
       - name: Run doctests
         run: cargo test --locked --doc
+  miri:
+    name: test / miri
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      - name: Install nightly Rust toolchain
+        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        with:
+          toolchain: nightly
+          components: miri
+      - name: Setup Miri environment
+        run: cargo miri setup
+      - name: Run tests with Miri
+        run: cargo miri test
