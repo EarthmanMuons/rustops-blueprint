@@ -16,7 +16,8 @@ SYNOPSIS
     cargo xtask [COMMAND...]
 
 COMMANDS
-    coverage               Generate and open an HTML code coverage report.
+    coverage               Generate and print a code coverage report summary.
+    coverage.html          Generate and open an HTML code coverage report.
     fixup                  Run all fixup xtasks, editing files in-place.
     fixup.github-actions   Format CUE files in-place and regenerate CI YAML files.
     fixup.markdown         Format Markdown files in-place.
@@ -44,7 +45,8 @@ fn main() -> Result<()> {
             Value(value) => {
                 let value = value.string()?;
                 match value.as_str() {
-                    "coverage" => coverage::html_report()?,
+                    "coverage" => coverage::report_summary()?,
+                    "coverage.html" => coverage::html_report()?,
                     "fixup" => fixup::everything()?,
                     "fixup.github-actions" => fixup::github_actions()?,
                     "fixup.markdown" => fixup::markdown()?,

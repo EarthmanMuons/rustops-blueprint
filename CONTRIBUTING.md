@@ -76,22 +76,20 @@ git remote add upstream https://github.com/EarthmanMuons/rustops-blueprint.git
 ### Install Rust Dependencies
 
 The project is developed using the latest stable release of Rust, but it also
-requires a few additional toolchain [components][]. We use the lint tool
-[`clippy`][] for extra checks on common mistakes and stylistic choices,
-[`llvm-tools-preview`][] to process coverage data and generate reports, as well
+requires a couple of additional toolchain [components][]. We use the lint tool
+[`clippy`][] for extra checks on common mistakes and stylistic choices, as well
 as [`rustfmt`][] for automatic code formatting.
 
-Additionally, our project utilizes [`grcov`][] to aggregate code coverage data,
-[`cargo-insta`][] for snapshot testing, and we recommend [`cargo-nextest`][] as
-an enhanced test runner. It displays each test's execution time by default, and
-can help to identify performance outliers in the test suite.
+Additionally, our project utilizes [`cargo-insta`][] for snapshot testing,
+[`cargo-llvm-cov`][] to generate code coverage reports, and [`cargo-nextest`][]
+as an enhanced test runner. It displays each test's execution time by default,
+and can help to identify performance outliers in the test suite.
 
 [components]: https://rust-lang.github.io/rustup/concepts/components.html
 [`clippy`]: https://doc.rust-lang.org/clippy/
-[`llvm-tools-preview`]: https://github.com/rust-lang/rust/issues/85658
 [`rustfmt`]: https://github.com/rust-lang/rustfmt
-[`grcov`]: https://github.com/mozilla/grcov
 [`cargo-insta`]: https://insta.rs/
+[`cargo-llvm-cov`]: https://github.com/taiki-e/cargo-llvm-cov
 [`cargo-nextest`]: https://nexte.st/
 
 #### Automated Installation
@@ -111,13 +109,13 @@ the installation process, follow these steps:
 1. Install the required toolchain components:
 
    ```
-   rustup component add clippy llvm-tools-preview rustfmt
+   rustup component add clippy rustfmt
    ```
 
 2. Install the required cargo dependencies:
 
    ```
-   cargo install grcov cargo-insta cargo-nextest
+   cargo install cargo-insta cargo-llvm-cov cargo-nextest
    ```
 
 ### Install Additional Tools
@@ -235,6 +233,14 @@ commands by running:
 ```
 cargo xtask --help
 ```
+
+For example:
+
+- Generate and open an HTML code coverage report
+
+  ```
+  cargo xtask coverage.html
+  ```
 
 [xtask]: https://github.com/matklad/cargo-xtask
 

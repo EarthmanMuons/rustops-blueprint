@@ -7,7 +7,7 @@ pub fn rust_dependencies() -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
 
-    cmd!(sh, "rustup component add clippy llvm-tools-preview rustfmt").run()?;
-    cmd!(sh, "cargo install cargo-insta cargo-nextest grcov").run()?;
+    cmd!(sh, "rustup component add clippy rustfmt").run()?;
+    cmd!(sh, "cargo install cargo-insta cargo-llvm-cov cargo-nextest").run()?;
     Ok(())
 }
