@@ -81,8 +81,8 @@ rust: _#useMergeQueue & {
 		}
 
 		// Minimum Supported Rust Version
-		check_msrv: {
-			name: "check / msrv"
+		test_msrv: {
+			name: "test / msrv"
 			needs: ["check", "format", "lint"]
 			"runs-on": defaultRunner
 			if:        "always() && needs.changes.outputs.rust == 'true'"
@@ -93,16 +93,25 @@ rust: _#useMergeQueue & {
 					name: "Get MSRV from package metadata"
 					run:  "awk -F '\"' '/rust-version/{ print \"version=\" $2 }' Cargo.toml >> $GITHUB_OUTPUT"
 				},
-				_#installRust & {with: toolchain:  "${{ steps.msrv.outputs.version }}"},
+				_#installRust & {with: toolchain: "${{ steps.msrv.outputs.version }}"},
+				_#installRust & {with: toolchain: "nightly"},
+				{
+					name: "Resolve minimal dependency versions instead of maximum"
+					run:  "cargo +nightly update -Z direct-minimal-versions"
+				},
+				{
+					name: "Default to MSRV Rust"
+					run:  "rustup default ${{ steps.msrv.outputs.version }}"
+				},
 				_#cacheRust & {with: "shared-key": "msrv-\(defaultRunner)"},
-				_#cargoCheck,
+				for step in _testRust {step},
 			]
 		}
 
 		merge_queue: needs: [
 			"changes",
 			"test_stable",
-			"check_msrv",
+			"test_msrv",
 		]
 	}
 }
