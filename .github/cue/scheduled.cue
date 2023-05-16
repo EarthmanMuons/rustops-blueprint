@@ -40,6 +40,10 @@ scheduled: {
 					run:  "cargo miri setup"
 				},
 				{
+					name: "Compile tests with Miri"
+					run:  "cargo miri test --no-run"
+				},
+				{
 					name: "Run tests with Miri"
 					run:  "cargo miri test"
 				},
