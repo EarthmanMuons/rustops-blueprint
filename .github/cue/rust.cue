@@ -60,7 +60,7 @@ rust: _#useMergeQueue & {
 
 		test_stable: {
 			name: "test / stable"
-			needs: ["check", "format", "lint"]
+			needs: ["changes", "check", "format", "lint"]
 			defaults: run: shell: "bash"
 			strategy: {
 				"fail-fast": false
@@ -83,7 +83,7 @@ rust: _#useMergeQueue & {
 		// Minimum Supported Rust Version
 		test_msrv: {
 			name: "test / msrv"
-			needs: ["check", "format", "lint"]
+			needs: ["changes", "check", "format", "lint"]
 			"runs-on": defaultRunner
 			if:        "always() && needs.changes.outputs.rust == 'true'"
 			steps: [

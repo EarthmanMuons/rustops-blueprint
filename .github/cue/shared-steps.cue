@@ -15,6 +15,12 @@ _sha1: =~"^[0-9a-fA-F]{40}$"
 // all third-party actions must be pinned to a specific commit id
 _#step: uses?: #pinned
 
+// https://github.com/raven-actions/actionlint/releases
+_#actionlint: _#step & {
+	name: "Check lints"
+	uses: "raven-actions/actionlint@a143169aa718a5c056297c13a123fa1fb0cb6040"
+}
+
 // https://github.com/Swatinem/rust-cache/releases
 _#cacheRust: _#step & {
 	name: "Cache dependencies"
