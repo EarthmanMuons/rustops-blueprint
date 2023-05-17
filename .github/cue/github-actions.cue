@@ -82,10 +82,20 @@ githubActions: _#useMergeQueue & {
 			]
 		}
 
+		lint: {
+			name: "lint"
+			needs: ["cue_synced"]
+			"runs-on": defaultRunner
+			steps: [
+				_#checkoutCode,
+				_#actionlint,
+			]
+		}
+
 		merge_queue: needs: [
 			"changes",
 			"cue_format",
-			"cue_synced",
+			"lint",
 		]
 	}
 }

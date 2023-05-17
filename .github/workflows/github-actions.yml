@@ -114,12 +114,22 @@ jobs:
               echo "Run 'cargo xtask fixup.github-actions' locally to regenerate the YAML from CUE."
               exit 1
           fi
+  lint:
+    name: lint
+    needs:
+      - cue_synced
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      - name: Check lints
+        uses: raven-actions/actionlint@a143169aa718a5c056297c13a123fa1fb0cb6040
   merge_queue:
     name: github-actions workflow ready
     needs:
       - changes
       - cue_format
-      - cue_synced
+      - lint
     runs-on: ubuntu-latest
     if: always()
     steps:
@@ -143,9 +153,9 @@ jobs:
               echo "Error: The required job did not pass."
               exit 1
           fi
-      - name: 'Check status of job_id: cue_synced'
+      - name: 'Check status of job_id: lint'
         run: |-
-          RESULT="${{ needs.cue_synced.result }}";
+          RESULT="${{ needs.lint.result }}";
           if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
               exit 0
           else
