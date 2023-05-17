@@ -87,15 +87,27 @@ jobs:
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - id: msrv
         name: Get MSRV from package metadata
-        run: awk -F '"' '/rust-version/{ print "version=" $2 }' Cargo.toml >> $GITHUB_OUTPUT
+        run: awk -F '"' '/rust-version/{ print "version=" $2 }' Cargo.toml >> "$GITHUB_OUTPUT"
       - name: Install ${{ steps.msrv.outputs.version }} Rust toolchain
         uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
         with:
           toolchain: ${{ steps.msrv.outputs.version }}
+      - name: Install nightly Rust toolchain
+        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        with:
+          toolchain: nightly
+      - name: Resolve minimal dependency versions instead of maximum
+        run: cargo +nightly update -Z direct-minimal-versions
+      - name: Default to MSRV Rust
+        run: rustup default ${{ steps.msrv.outputs.version }}
       - name: Cache dependencies
         uses: Swatinem/rust-cache@060bda31e0be4f453bb6ed2d7e5427b31734ad01
         with:
           shared-key: msrv-ubuntu-latest
         timeout-minutes: 5
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@97bdefc2d9c284a0a0e620f6d484dd156d256e81
+        with:
+          tool: cargo-nextest
       - name: Check packages and dependencies for errors
         run: cargo check --locked --all-targets --all-features
