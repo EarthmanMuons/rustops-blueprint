@@ -24,6 +24,17 @@ scheduled: {
 	}
 
 	jobs: {
+		// Surface any rustc regressions early.
+		beta: {
+			name:      "test / beta"
+			"runs-on": defaultRunner
+			steps: [
+				_#checkoutCode,
+				_#installRust & {with: toolchain: "beta"},
+				for step in _testRust {step},
+			]
+		}
+
 		// https://github.com/rust-lang/miri
 		// Detect certain classes of undefined behavior.
 		miri: {
