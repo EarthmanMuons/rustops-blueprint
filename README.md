@@ -1,4 +1,4 @@
-# RustOps Blueprint &emsp; [![CI Status]][actions] [[!MSRV]][rust-version]
+# RustOps Blueprint &emsp; [![CI Status]][actions] [![MSRV]][rust-version]
 
 [CI Status]:
   https://img.shields.io/github/actions/workflow/status/EarthmanMuons/rustops-blueprint/rust.yml?event=merge_group&label=CI&logo=github
