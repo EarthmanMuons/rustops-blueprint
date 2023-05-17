@@ -88,21 +88,7 @@ rust: _#useMergeQueue & {
 			if:        "always() && needs.changes.outputs.rust == 'true'"
 			steps: [
 				_#checkoutCode,
-				{
-					id:   "msrv"
-					name: "Get MSRV from package metadata"
-					run:  "awk -F '\"' '/rust-version/{ print \"version=\" $2 }' Cargo.toml >> $GITHUB_OUTPUT"
-				},
-				_#installRust & {with: toolchain: "${{ steps.msrv.outputs.version }}"},
-				_#installRust & {with: toolchain: "nightly"},
-				{
-					name: "Resolve minimal dependency versions instead of maximum"
-					run:  "cargo +nightly update -Z direct-minimal-versions"
-				},
-				{
-					name: "Default to MSRV Rust"
-					run:  "rustup default ${{ steps.msrv.outputs.version }}"
-				},
+				for step in _setupMsrv {step},
 				_#cacheRust & {with: "shared-key": "msrv-\(defaultRunner)"},
 				for step in _testRust {step},
 			]

@@ -95,6 +95,24 @@ _#prettier: _#step & {
 	with: prettier_version: "2.8.8"
 }
 
+_setupMsrv: [
+	{
+		id:   "msrv"
+		name: "Get MSRV from package metadata"
+		run:  "awk -F '\"' '/rust-version/{ print \"version=\" $2 }' Cargo.toml >> \"$GITHUB_OUTPUT\""
+	},
+	_#installRust & {with: toolchain: "${{ steps.msrv.outputs.version }}"},
+	_#installRust & {with: toolchain: "nightly"},
+	{
+		name: "Resolve minimal dependency versions instead of maximum"
+		run:  "cargo +nightly update -Z direct-minimal-versions"
+	},
+	{
+		name: "Default to MSRV Rust"
+		run:  "rustup default ${{ steps.msrv.outputs.version }}"
+	},
+]
+
 _testRust: [
 	_#installTool & {with: tool: "cargo-nextest"},
 	_#step & {
