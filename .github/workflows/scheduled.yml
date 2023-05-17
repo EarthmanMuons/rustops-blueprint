@@ -14,6 +14,26 @@ env:
   RUST_BACKTRACE: 1
   RUSTFLAGS: -D warnings
 jobs:
+  beta:
+    name: test / beta
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+      - name: Install beta Rust toolchain
+        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
+        with:
+          toolchain: beta
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@97bdefc2d9c284a0a0e620f6d484dd156d256e81
+        with:
+          tool: cargo-nextest
+      - name: Compile tests
+        run: cargo test --locked --no-run
+      - name: Run tests
+        run: cargo nextest run --locked --all-targets --all-features
+      - name: Run doctests
+        run: cargo test --locked --doc
   miri:
     name: test / miri
     runs-on: ubuntu-latest
