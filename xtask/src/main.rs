@@ -108,7 +108,7 @@ fn parse_args() -> Result<Config> {
     }
 
     if run_tasks.is_empty() {
-        anyhow::bail!("missing task");
+        anyhow::bail!("no task given");
     }
 
     Ok(Config {
