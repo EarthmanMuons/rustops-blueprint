@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use anyhow::Result;
 use xshell::Shell;
 
-use crate::commands::{cargo_cmd, codespell_cmd, cue_cmd, prettier_cmd};
+use crate::commands::{actionlint_cmd, cargo_cmd, codespell_cmd, cue_cmd, prettier_cmd};
 use crate::utils::{find_files, project_root, to_relative_paths, verbose_cd};
 use crate::Config;
 
@@ -32,6 +32,7 @@ pub fn github_actions(config: &Config) -> Result<()> {
     lint_cue(config)?;
     format_cue(config)?;
     regenerate_ci_yaml(config)?;
+    lint_workflows(config)?;
     Ok(())
 }
 
@@ -97,6 +98,18 @@ fn regenerate_ci_yaml(config: &Config) -> Result<()> {
 
 fn cue_dir() -> PathBuf {
     project_root().join(".github/cue")
+}
+
+fn lint_workflows(config: &Config) -> Result<()> {
+    let sh = Shell::new()?;
+    verbose_cd(&sh, project_root());
+
+    let cmd_option = actionlint_cmd(config, &sh)?;
+    if let Some(cmd) = cmd_option {
+        cmd.run()?;
+    }
+
+    Ok(())
 }
 
 fn lint_rust(config: &Config) -> Result<()> {
