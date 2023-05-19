@@ -12,5 +12,6 @@ publish = false
 anyhow = "1.0.71"
 is_ci = "1.1.1"
 lexopt = "0.3.0"
+miniserde = "0.1.30"
 which = "4.4.0"
 xshell = "0.2.2"
