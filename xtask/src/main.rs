@@ -4,6 +4,7 @@ use anyhow::Result;
 
 mod commands;
 mod coverage;
+mod dist;
 mod fixup;
 mod install;
 mod utils;
@@ -21,6 +22,7 @@ OPTIONS:
 TASKS:
     coverage               Generate and print a code coverage report summary
     coverage.html          Generate and open an HTML code coverage report
+    dist                   Package project assets into distributable artifacts
     fixup                  Run all fixup xtasks, editing files in-place
     fixup.github-actions   Format CUE files in-place and regenerate CI YAML files
     fixup.markdown         Format Markdown files in-place
@@ -32,6 +34,7 @@ TASKS:
 enum Task {
     Coverage,
     CoverageHtml,
+    Dist,
     Fixup,
     FixupGithubActions,
     FixupMarkdown,
@@ -57,6 +60,7 @@ fn main() -> Result<()> {
         match task {
             Task::Coverage => coverage::report_summary(&config)?,
             Task::CoverageHtml => coverage::html_report(&config)?,
+            Task::Dist => dist::dist(&config)?,
             Task::Fixup => fixup::everything(&config)?,
             Task::FixupGithubActions => fixup::github_actions(&config)?,
             Task::FixupMarkdown => fixup::markdown(&config)?,
@@ -91,6 +95,7 @@ fn parse_args() -> Result<Config> {
                 let task = match value.as_str() {
                     "coverage" => Task::Coverage,
                     "coverage.html" => Task::CoverageHtml,
+                    "dist" => Task::Dist,
                     "fixup" => Task::Fixup,
                     "fixup.github-actions" => Task::FixupGithubActions,
                     "fixup.markdown" => Task::FixupMarkdown,
