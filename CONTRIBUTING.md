@@ -124,10 +124,12 @@ To maintain consistency and avoid bikeshedding, our project also uses automated
 tools to enforce formatting and style conventions for non-Rust files. Ensure
 that you have the following tools installed:
 
+- [actionlint][] for linting GitHub Actions workflow files
 - [codespell][] for spell checking all files
 - [CUE][] for generating and validating YAML files
 - [Prettier][] for formatting Markdown files
 
+[actionlint]: https://github.com/rhysd/actionlint
 [codespell]: https://github.com/codespell-project/codespell
 [CUE]: https://cuelang.org/
 [Prettier]: https://prettier.io/

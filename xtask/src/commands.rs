@@ -4,6 +4,15 @@ use xshell::{cmd, Cmd, Shell};
 
 use crate::Config;
 
+pub(crate) fn actionlint_cmd<'a>(config: &Config, sh: &'a Shell) -> Result<Option<Cmd<'a>>> {
+    create_cmd(
+        "actionlint",
+        "https://github.com/rhysd/actionlint",
+        config,
+        sh,
+    )
+}
+
 pub(crate) fn cargo_cmd<'a>(config: &Config, sh: &'a Shell) -> Result<Option<Cmd<'a>>> {
     create_cmd(
         "cargo",
