@@ -3,26 +3,26 @@ use std::fs;
 use std::path::PathBuf;
 
 use anyhow::Result;
-use miniserde::{json, Deserialize};
+use nanoserde::DeJson;
 use xshell::Shell;
 
 use crate::commands::cargo_cmd;
 use crate::utils::{project_root, verbose_cd};
 use crate::Config;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, DeJson)]
 struct Metadata {
     packages: Vec<Package>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, DeJson)]
 struct Package {
     #[allow(dead_code)]
     name: String,
     targets: Vec<Target>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, DeJson)]
 struct Target {
     kind: Vec<String>,
     name: String,
@@ -80,7 +80,7 @@ fn project_binaries(config: &Config) -> Result<Vec<String>> {
         let output = cmd.args(args).output()?;
 
         let metadata_json = String::from_utf8(output.stdout)?;
-        let metadata: Metadata = json::from_str(&metadata_json)?;
+        let metadata: Metadata = DeJson::deserialize_json(&metadata_json)?;
 
         for package in metadata.packages {
             for target in &package.targets {
