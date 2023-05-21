@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use anyhow::Result;
 use xshell::Shell;
 
-pub(crate) fn find_files<P: AsRef<Path>>(dir: P, extension: &str) -> Result<Vec<PathBuf>> {
+pub fn find_files<P: AsRef<Path>>(dir: P, extension: &str) -> Result<Vec<PathBuf>> {
     let mut result = Vec::new();
     let dir_path = dir.as_ref();
     find_files_recursive(dir_path, extension, &mut result)?;
@@ -24,14 +24,14 @@ fn find_files_recursive(dir: &Path, extension: &str, result: &mut Vec<PathBuf>) 
     Ok(())
 }
 
-pub(crate) fn project_root() -> PathBuf {
+pub fn project_root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
         .parent()
         .expect("Failed to find project root")
         .to_path_buf()
 }
 
-pub(crate) fn to_relative_paths<P: AsRef<Path>>(paths: Vec<PathBuf>, base_dir: P) -> Vec<PathBuf> {
+pub fn to_relative_paths<P: AsRef<Path>>(paths: Vec<PathBuf>, base_dir: P) -> Vec<PathBuf> {
     let base_path = base_dir.as_ref();
     paths
         .into_iter()
@@ -39,7 +39,7 @@ pub(crate) fn to_relative_paths<P: AsRef<Path>>(paths: Vec<PathBuf>, base_dir: P
         .collect()
 }
 
-pub(crate) fn verbose_cd<P: AsRef<Path>>(sh: &Shell, dir: P) {
+pub fn verbose_cd<P: AsRef<Path>>(sh: &Shell, dir: P) {
     sh.change_dir(dir);
     eprintln!(
         "\n$ cd {}{}",
