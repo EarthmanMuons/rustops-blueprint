@@ -4,7 +4,7 @@ use xshell::{cmd, Cmd, Shell};
 
 use crate::Config;
 
-pub fn actionlint_cmd<'a>(config: &Config, sh: &'a Shell) -> Result<Option<Cmd<'a>>> {
+pub fn actionlint_cmd<'a>(config: &Config, sh: &'a Shell) -> Option<Cmd<'a>> {
     create_cmd(
         "actionlint",
         "https://github.com/rhysd/actionlint",
@@ -13,7 +13,7 @@ pub fn actionlint_cmd<'a>(config: &Config, sh: &'a Shell) -> Result<Option<Cmd<'
     )
 }
 
-pub fn cargo_cmd<'a>(config: &Config, sh: &'a Shell) -> Result<Option<Cmd<'a>>> {
+pub fn cargo_cmd<'a>(config: &Config, sh: &'a Shell) -> Option<Cmd<'a>> {
     let cargo = std::env::var("CARGO").unwrap_or_else(|_| "cargo".to_string());
     create_cmd(
         cargo.as_str(),
@@ -23,7 +23,7 @@ pub fn cargo_cmd<'a>(config: &Config, sh: &'a Shell) -> Result<Option<Cmd<'a>>> 
     )
 }
 
-pub fn codespell_cmd<'a>(config: &Config, sh: &'a Shell) -> Result<Option<Cmd<'a>>> {
+pub fn codespell_cmd<'a>(config: &Config, sh: &'a Shell) -> Option<Cmd<'a>> {
     create_cmd(
         "codespell",
         "https://github.com/codespell-project/codespell",
@@ -32,11 +32,11 @@ pub fn codespell_cmd<'a>(config: &Config, sh: &'a Shell) -> Result<Option<Cmd<'a
     )
 }
 
-pub fn cue_cmd<'a>(config: &Config, sh: &'a Shell) -> Result<Option<Cmd<'a>>> {
+pub fn cue_cmd<'a>(config: &Config, sh: &'a Shell) -> Option<Cmd<'a>> {
     create_cmd("cue", "https://cuelang.org/", config, sh)
 }
 
-pub fn prettier_cmd<'a>(config: &Config, sh: &'a Shell) -> Result<Option<Cmd<'a>>> {
+pub fn prettier_cmd<'a>(config: &Config, sh: &'a Shell) -> Option<Cmd<'a>> {
     create_cmd("prettier", "https://prettier.io", config, sh)
 }
 
@@ -45,14 +45,14 @@ fn create_cmd<'a>(
     install_url: &str,
     config: &Config,
     sh: &'a Shell,
-) -> Result<Option<Cmd<'a>>> {
+) -> Option<Cmd<'a>> {
     if check_command(cmd_name, install_url, config).is_err() {
-        return Ok(None);
+        return None;
     }
 
     let cmd = cmd!(sh, "{cmd_name}");
 
-    Ok(Some(cmd))
+    Some(cmd)
 }
 
 fn check_command(cmd_name: &str, install_url: &str, config: &Config) -> Result<()> {

@@ -19,7 +19,7 @@ pub fn spelling(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
 
-    let cmd_option = codespell_cmd(config, &sh)?;
+    let cmd_option = codespell_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         let args = vec!["--write-changes"];
         cmd.args(args).run()?;
@@ -40,7 +40,7 @@ pub fn markdown(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
 
-    let cmd_option = prettier_cmd(config, &sh)?;
+    let cmd_option = prettier_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         let args = vec!["--prose-wrap", "always", "--write"];
         let markdown_files = find_files(sh.current_dir(), "md")?;
@@ -61,7 +61,7 @@ fn lint_cue(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, cue_dir());
 
-    let cmd_option = cue_cmd(config, &sh)?;
+    let cmd_option = cue_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         let args = vec!["vet", "--concrete"];
         cmd.args(args).run()?;
@@ -74,7 +74,7 @@ fn format_cue(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, cue_dir());
 
-    let cmd_option = cue_cmd(config, &sh)?;
+    let cmd_option = cue_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         let args = vec!["fmt", "--simplify"];
         cmd.args(args).run()?;
@@ -87,7 +87,7 @@ fn regenerate_ci_yaml(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, cue_dir());
 
-    let cmd_option = cue_cmd(config, &sh)?;
+    let cmd_option = cue_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         let args = vec!["cmd", "regen-ci-yaml"];
         cmd.args(args).run()?;
@@ -104,7 +104,7 @@ fn lint_workflows(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
 
-    let cmd_option = actionlint_cmd(config, &sh)?;
+    let cmd_option = actionlint_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         cmd.run()?;
     }
@@ -116,7 +116,7 @@ fn lint_rust(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
 
-    let cmd_option = cargo_cmd(config, &sh)?;
+    let cmd_option = cargo_cmd(config, &sh);
     if let Some(_cmd) = cmd_option {
         let args = vec![
             "fix",
@@ -124,7 +124,7 @@ fn lint_rust(config: &Config) -> Result<()> {
             "--all-features",
             "--edition-idioms",
         ];
-        cargo_cmd(config, &sh)?.unwrap().args(args).run()?;
+        cargo_cmd(config, &sh).unwrap().args(args).run()?;
 
         let args = vec![
             "clippy",
@@ -133,7 +133,7 @@ fn lint_rust(config: &Config) -> Result<()> {
             "--fix",
             "--allow-no-vcs",
         ];
-        cargo_cmd(config, &sh)?.unwrap().args(args).run()?;
+        cargo_cmd(config, &sh).unwrap().args(args).run()?;
 
         let args = vec![
             "clippy",
@@ -143,7 +143,7 @@ fn lint_rust(config: &Config) -> Result<()> {
             "-D",
             "warnings",
         ];
-        cargo_cmd(config, &sh)?.unwrap().args(args).run()?;
+        cargo_cmd(config, &sh).unwrap().args(args).run()?;
     }
 
     Ok(())
@@ -153,7 +153,7 @@ fn format_rust(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
 
-    let cmd_option = cargo_cmd(config, &sh)?;
+    let cmd_option = cargo_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         let args = vec!["fmt"];
         cmd.args(args).run()?;
