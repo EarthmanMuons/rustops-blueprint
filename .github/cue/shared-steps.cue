@@ -18,7 +18,8 @@ _#step: uses?: #pinned
 // https://github.com/raven-actions/actionlint/releases
 _#actionlint: _#step & {
 	name: "Check lints"
-	uses: "raven-actions/actionlint@a143169aa718a5c056297c13a123fa1fb0cb6040"
+	uses: "raven-actions/actionlint@d6c9e3222b489401880e866bc6715049773b63a3"
+	with: "group-result": false
 }
 
 // https://github.com/Swatinem/rust-cache/releases
