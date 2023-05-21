@@ -29,7 +29,7 @@ jobs:
       - name: Build docs
         env:
           RUSTDOCFLAGS: --enable-index-page -Z unstable-options
-        run: cargo doc --no-deps
+        run: cargo +nightly doc --no-deps
       - name: Upload github-pages artifact
         uses: actions/upload-pages-artifact@64bcae551a7b18bcb9a09042ddf1960979799187
         with:

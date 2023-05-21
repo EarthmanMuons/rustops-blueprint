@@ -98,8 +98,8 @@ jobs:
           toolchain: nightly
       - name: Resolve minimal dependency versions instead of maximum
         run: cargo +nightly update -Z direct-minimal-versions
-      - name: Default to MSRV Rust
-        run: rustup default ${{ steps.msrv.outputs.version }}
+      - name: Set override to MSRV Rust
+        run: rustup override set ${{ steps.msrv.outputs.version }}
       - name: Cache dependencies
         uses: Swatinem/rust-cache@060bda31e0be4f453bb6ed2d7e5427b31734ad01
         with:
