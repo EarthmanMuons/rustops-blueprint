@@ -29,7 +29,7 @@ struct Target {
 }
 
 pub fn dist(config: &Config) -> Result<()> {
-    let _ = fs::remove_dir_all(dist_dir());
+    fs::remove_dir_all(dist_dir())?;
     fs::create_dir_all(dist_dir())?;
 
     dist_binary(config)?;
