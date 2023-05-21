@@ -56,7 +56,7 @@ fn dist_binary(config: &Config) -> Result<()> {
         }
 
         let binary_filename = if cfg!(target_os = "windows") {
-            format!("{}.exe", binary)
+            format!("{binary}.exe")
         } else {
             binary.to_string()
         };
@@ -85,7 +85,7 @@ fn project_binaries(config: &Config) -> Result<Vec<String>> {
         for package in metadata.packages {
             for target in &package.targets {
                 if target.kind.contains(&"bin".to_string()) {
-                    eprintln!("{:?}", package);
+                    eprintln!("{package:?}");
                     binaries.push(target.name.clone());
                 }
             }

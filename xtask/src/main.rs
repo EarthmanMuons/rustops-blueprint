@@ -51,7 +51,7 @@ pub struct Config {
 fn main() -> Result<()> {
     // print help when no arguments are given
     if env::args().len() == 1 {
-        print!("{}", HELP);
+        print!("{HELP}");
         std::process::exit(1);
     }
 
@@ -84,7 +84,7 @@ fn parse_args() -> Result<Config> {
     while let Some(arg) = parser.next()? {
         match arg {
             Short('h') | Long("help") => {
-                print!("{}", HELP);
+                print!("{HELP}");
                 std::process::exit(0);
             }
             Short('i') | Long("ignore-missing") => {

@@ -64,21 +64,18 @@ fn check_command(cmd_name: &str, install_url: &str, config: &Config) -> Result<(
             Ok(())
         }
         Err(_) if config.ignore_missing_commands && is_local => {
-            println!("Warning: command not found `{}`", cmd_name);
-            println!("Install: {}", install_url);
+            println!("Warning: command not found `{cmd_name}`");
+            println!("Install: {install_url}");
             Err(anyhow::Error::msg("command is missing, but ignored"))
         }
         Err(_) if is_ci::cached() => {
-            println!("Error: command not found `{}`", cmd_name);
-            println!("Install: {}", install_url);
+            println!("Error: command not found `{cmd_name}`");
+            println!("Install: {install_url}");
             std::process::exit(1);
         }
         Err(_) => {
-            println!(
-                "Error: command not found `{}`; skip this task with --ignore-missing",
-                cmd_name
-            );
-            println!("Install: {}", install_url);
+            println!("Error: command not found `{cmd_name}`; skip this task with --ignore-missing");
+            println!("Install: {install_url}");
             std::process::exit(1);
         }
     }
