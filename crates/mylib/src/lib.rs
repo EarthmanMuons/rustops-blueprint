@@ -1,3 +1,6 @@
+#![deny(clippy::all)]
+#![warn(clippy::nursery, clippy::pedantic)]
+
 use rand::seq::SliceRandom;
 
 #[must_use]

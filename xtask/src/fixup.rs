@@ -121,6 +121,7 @@ fn lint_rust(config: &Config) -> Result<()> {
         let args = vec![
             "fix",
             "--allow-no-vcs",
+            "--all-targets",
             "--all-features",
             "--edition-idioms",
         ];
@@ -128,10 +129,10 @@ fn lint_rust(config: &Config) -> Result<()> {
 
         let args = vec![
             "clippy",
-            "--all-targets",
-            "--all-features",
             "--fix",
             "--allow-no-vcs",
+            "--all-targets",
+            "--all-features",
         ];
         cargo_cmd(config, &sh).unwrap().args(args).run()?;
 
