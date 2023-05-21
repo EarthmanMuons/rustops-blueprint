@@ -1,5 +1,6 @@
 use rand::seq::SliceRandom;
 
+#[must_use]
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
