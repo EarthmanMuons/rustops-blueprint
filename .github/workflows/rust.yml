@@ -49,26 +49,6 @@ jobs:
               - '**/*.rs'
               - '**/Cargo.*'
               - .github/workflows/rust.yml
-  check:
-    name: check
-    needs:
-      - changes
-    runs-on: ubuntu-latest
-    if: needs.changes.outputs.rust == 'true'
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-      - name: Install stable Rust toolchain
-        uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
-        with:
-          toolchain: stable
-      - name: Cache dependencies
-        uses: Swatinem/rust-cache@060bda31e0be4f453bb6ed2d7e5427b31734ad01
-        with:
-          shared-key: stable-ubuntu-latest
-        timeout-minutes: 5
-      - name: Check packages and dependencies for errors
-        run: cargo check --locked --all-targets --all-features
   format:
     name: format
     needs:
@@ -110,12 +90,11 @@ jobs:
           shared-key: stable-ubuntu-latest
         timeout-minutes: 5
       - name: Check lints
-        run: cargo clippy --all-targets --all-features -- -D warnings
+        run: cargo clippy --locked --all-targets --all-features -- -D warnings
   test_stable:
     name: test / stable
     needs:
       - changes
-      - check
       - format
       - lint
     defaults:
@@ -156,7 +135,6 @@ jobs:
     name: test / msrv
     needs:
       - changes
-      - check
       - format
       - lint
     runs-on: ubuntu-latest
