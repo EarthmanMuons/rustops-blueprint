@@ -1,3 +1,6 @@
+#![deny(clippy::all)]
+#![warn(clippy::nursery, clippy::pedantic)]
+
 use mylib::shuffle_array;
 
 #[test]
