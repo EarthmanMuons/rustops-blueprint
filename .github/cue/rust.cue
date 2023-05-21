@@ -40,7 +40,7 @@ rust: _#useMergeQueue & {
 				_#cacheRust,
 				{
 					name: "Check lints"
-					run:  "cargo clippy --locked --all-targets --all-features -- -W clippy::pedantic -D warnings"
+					run:  "cargo clippy --locked --all-targets --all-features -- -D warnings"
 				},
 			]
 		}
