@@ -11,7 +11,7 @@ pub fn rust_dependencies(config: &Config) -> Result<()> {
 
     cmd!(sh, "rustup component add clippy rustfmt").run()?;
 
-    let cmd_option = cargo_cmd(config, &sh)?;
+    let cmd_option = cargo_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         let args = vec!["install", "cargo-insta", "cargo-llvm-cov", "cargo-nextest"];
         cmd.args(args).run()?;

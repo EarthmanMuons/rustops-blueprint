@@ -9,7 +9,7 @@ pub fn html_report(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
 
-    let cmd_option = cargo_cmd(config, &sh)?;
+    let cmd_option = cargo_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         let args = vec![
             "llvm-cov",
@@ -28,7 +28,7 @@ pub fn report_summary(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
 
-    let cmd_option = cargo_cmd(config, &sh)?;
+    let cmd_option = cargo_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         let args = vec!["llvm-cov", "nextest", "--ignore-filename-regex", "xtask"];
         cmd.args(args).run()?;
