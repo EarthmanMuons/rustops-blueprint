@@ -17,7 +17,7 @@ rust: _#useMergeQueue & {
 			name: "format"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			if:        "github.event_name == 'pull_request' && needs.changes.outputs.rust == 'true'"
+			if:        "needs.changes.outputs.rust == 'true'"
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "rustfmt"},
@@ -33,7 +33,7 @@ rust: _#useMergeQueue & {
 			name: "lint"
 			needs: ["changes"]
 			"runs-on": defaultRunner
-			if:        "github.event_name == 'pull_request' && needs.changes.outputs.rust == 'true'"
+			if:        "needs.changes.outputs.rust == 'true'"
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: components: "clippy"},
@@ -47,7 +47,7 @@ rust: _#useMergeQueue & {
 
 		test_stable: {
 			name: "test / stable"
-			needs: ["changes", "format", "lint"]
+			needs: ["format", "lint"]
 			defaults: run: shell: "bash"
 			strategy: {
 				"fail-fast": false
@@ -58,7 +58,6 @@ rust: _#useMergeQueue & {
 				]
 			}
 			"runs-on": "${{ matrix.platform }}"
-			if:        "always() && needs.changes.outputs.rust == 'true'"
 			steps: [
 				_#checkoutCode,
 				_#installRust,
@@ -70,9 +69,8 @@ rust: _#useMergeQueue & {
 		// Minimum Supported Rust Version
 		test_msrv: {
 			name: "test / msrv"
-			needs: ["changes", "format", "lint"]
+			needs: ["format", "lint"]
 			"runs-on": defaultRunner
-			if:        "always() && needs.changes.outputs.rust == 'true'"
 			steps: [
 				_#checkoutCode,
 				for step in _setupMsrv {step},
@@ -83,6 +81,8 @@ rust: _#useMergeQueue & {
 
 		merge_queue: needs: [
 			"changes",
+			"format",
+			"lint",
 			"test_stable",
 			"test_msrv",
 		]

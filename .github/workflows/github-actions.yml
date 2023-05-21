@@ -114,8 +114,8 @@ jobs:
               echo "Run 'cargo xtask fixup.github-actions' locally to regenerate the YAML from CUE."
               exit 1
           fi
-  lint:
-    name: lint
+  workflows_lint:
+    name: workflows / lint
     needs:
       - cue_synced
     runs-on: ubuntu-latest
@@ -128,14 +128,26 @@ jobs:
     name: github-actions workflow ready
     needs:
       - changes
+      - cue_vet
       - cue_format
-      - lint
+      - cue_synced
+      - workflows_lint
     runs-on: ubuntu-latest
     if: always()
     steps:
       - name: 'Check status of job_id: changes'
         run: |-
           RESULT="${{ needs.changes.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi
+      - name: 'Check status of job_id: cue_vet'
+        run: |-
+          RESULT="${{ needs.cue_vet.result }}";
           if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
               exit 0
           else
@@ -153,9 +165,19 @@ jobs:
               echo "Error: The required job did not pass."
               exit 1
           fi
-      - name: 'Check status of job_id: lint'
+      - name: 'Check status of job_id: cue_synced'
         run: |-
-          RESULT="${{ needs.lint.result }}";
+          RESULT="${{ needs.cue_synced.result }}";
+          if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
+              exit 0
+          else
+              echo "***"
+              echo "Error: The required job did not pass."
+              exit 1
+          fi
+      - name: 'Check status of job_id: workflows_lint'
+        run: |-
+          RESULT="${{ needs.workflows_lint.result }}";
           if [[ $RESULT == "success" || $RESULT == "skipped" ]]; then
               exit 0
           else

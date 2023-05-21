@@ -82,8 +82,8 @@ githubActions: _#useMergeQueue & {
 			]
 		}
 
-		lint: {
-			name: "lint"
+		workflows_lint: {
+			name: "workflows / lint"
 			needs: ["cue_synced"]
 			"runs-on": defaultRunner
 			steps: [
@@ -94,8 +94,10 @@ githubActions: _#useMergeQueue & {
 
 		merge_queue: needs: [
 			"changes",
+			"cue_vet",
 			"cue_format",
-			"lint",
+			"cue_synced",
+			"workflows_lint",
 		]
 	}
 }
