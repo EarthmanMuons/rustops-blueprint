@@ -85,12 +85,18 @@ Additionally, our project utilizes [`cargo-insta`][] for snapshot testing,
 as an enhanced test runner. It displays each test's execution time by default,
 and can help to identify performance outliers in the test suite.
 
+For faster feedback loops during development, we recommend using
+[`cargo-watch`][]. This tool watches for changes in project files and
+automatically triggers specified Cargo commands when they occur. See
+`cargo xtask dev` for an example usage.
+
 [components]: https://rust-lang.github.io/rustup/concepts/components.html
 [`clippy`]: https://doc.rust-lang.org/clippy/
 [`rustfmt`]: https://github.com/rust-lang/rustfmt
 [`cargo-insta`]: https://insta.rs/
 [`cargo-llvm-cov`]: https://github.com/taiki-e/cargo-llvm-cov
 [`cargo-nextest`]: https://nexte.st/
+[`cargo-watch`]: https://github.com/watchexec/cargo-watch
 
 #### Automated Installation
 
