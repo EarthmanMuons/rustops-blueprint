@@ -31,6 +31,10 @@ scheduled: {
 			steps: [
 				_#checkoutCode,
 				_#installRust & {with: toolchain: "beta"},
+				{
+					name: "Set override to beta Rust"
+					run:  "rustup override set beta"
+				},
 				for step in _testRust {step},
 			]
 		}

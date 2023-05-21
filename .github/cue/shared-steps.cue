@@ -114,8 +114,8 @@ _setupMsrv: [
 		run:  "cargo +nightly update -Z direct-minimal-versions"
 	},
 	{
-		name: "Default to MSRV Rust"
-		run:  "rustup default ${{ steps.msrv.outputs.version }}"
+		name: "Set override to MSRV Rust"
+		run:  "rustup override set ${{ steps.msrv.outputs.version }}"
 	},
 ]
 

@@ -36,7 +36,7 @@ githubPages: {
 				{
 					name: "Build docs"
 					env: RUSTDOCFLAGS: "--enable-index-page -Z unstable-options"
-					run: "cargo doc --no-deps"
+					run: "cargo +nightly doc --no-deps"
 				},
 				_#uploadPagesArtifact & {with: path: "target/doc"},
 			]
