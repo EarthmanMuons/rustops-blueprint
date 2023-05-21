@@ -18,7 +18,7 @@ command: "import-jsonschema": {
 		url: "https://raw.githubusercontent.com/SchemaStore/schemastore/\(_commit)/src/schemas/json/github-workflow.json"
 	}
 	import: exec.Run & {
-		_outpath: path.FromSlash("../cue.mod/pkg/json.schemastore.org/github/github-workflow.cue", path.Unix)
+		_outpath: path.FromSlash("cue.mod/pkg/json.schemastore.org/github/github-workflow.cue", path.Unix)
 		stdin:    getJSONSchema.response.body
 		cmd:      "cue import -f -p github -l #Workflow: -o \(_outpath) jsonschema: -"
 	}
