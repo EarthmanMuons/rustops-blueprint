@@ -13,19 +13,6 @@ rust: _#useMergeQueue & {
 	jobs: {
 		changes: _#detectFileChanges
 
-		check: {
-			name: "check"
-			needs: ["changes"]
-			"runs-on": defaultRunner
-			if:        "needs.changes.outputs.rust == 'true'"
-			steps: [
-				_#checkoutCode,
-				_#installRust,
-				_#cacheRust,
-				_#cargoCheck,
-			]
-		}
-
 		format: {
 			name: "format"
 			needs: ["changes"]
@@ -53,14 +40,14 @@ rust: _#useMergeQueue & {
 				_#cacheRust,
 				{
 					name: "Check lints"
-					run:  "cargo clippy --all-targets --all-features -- -D warnings"
+					run:  "cargo clippy --locked --all-targets --all-features -- -D warnings"
 				},
 			]
 		}
 
 		test_stable: {
 			name: "test / stable"
-			needs: ["changes", "check", "format", "lint"]
+			needs: ["changes", "format", "lint"]
 			defaults: run: shell: "bash"
 			strategy: {
 				"fail-fast": false
@@ -83,7 +70,7 @@ rust: _#useMergeQueue & {
 		// Minimum Supported Rust Version
 		test_msrv: {
 			name: "test / msrv"
-			needs: ["changes", "check", "format", "lint"]
+			needs: ["changes", "format", "lint"]
 			"runs-on": defaultRunner
 			if:        "always() && needs.changes.outputs.rust == 'true'"
 			steps: [
