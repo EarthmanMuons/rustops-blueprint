@@ -7,7 +7,7 @@ fn test_shuffle_array() {
     shuffle_array(&mut nums);
 
     assert_eq!(nums.len(), original.len());
-    for num in original.iter() {
+    for num in &original {
         assert!(nums.contains(num));
     }
 }
