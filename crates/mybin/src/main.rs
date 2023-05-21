@@ -6,7 +6,7 @@ fn main() {
     println!("Hello, world! {left} plus {right} is {}!", add(left, right));
 
     let mut nums = [1, 2, 3, 4, 5];
-    println!("Unshuffled: {:?}", nums);
+    println!("Unshuffled: {nums:?}");
     shuffle_array(&mut nums);
-    println!("Shuffled:   {:?}", nums);
+    println!("Shuffled:   {nums:?}");
 }
