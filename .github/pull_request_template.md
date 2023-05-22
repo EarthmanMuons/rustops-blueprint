@@ -4,7 +4,7 @@
 
 # Checklist
 
-- [ ] Ran `cargo xtask fixup` for project formatting and style
+- [ ] Ran `cargo xtask fixup` for formatting and linting
 - [ ] Modified all relevant documentation
 - [ ] Updated `CHANGELOG.md` per "Keep a Changelog" format
-- [ ] Added tests covering my changes
+- [ ] Added tests covering any code changes
