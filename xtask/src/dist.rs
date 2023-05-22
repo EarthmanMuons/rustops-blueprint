@@ -1,9 +1,8 @@
 #![deny(clippy::all)]
 #![warn(clippy::nursery, clippy::pedantic)]
 
-use std::env;
-use std::fs;
 use std::path::PathBuf;
+use std::{env, fs};
 
 use anyhow::Result;
 use nanoserde::DeJson;

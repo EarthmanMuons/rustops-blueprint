@@ -27,7 +27,8 @@ pub fn install_rust_deps(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
 
-    cmd!(sh, "rustup component add clippy rustfmt").run()?;
+    cmd!(sh, "rustup toolchain add stable --component clippy").run()?;
+    cmd!(sh, "rustup toolchain add nightly --component rustfmt").run()?;
 
     let cmd_option = cargo_cmd(config, &sh);
     if let Some(cmd) = cmd_option {

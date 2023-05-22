@@ -20,11 +20,13 @@ rust: _#useMergeQueue & {
 			if:        "needs.changes.outputs.rust == 'true'"
 			steps: [
 				_#checkoutCode,
-				_#installRust & {with: components: "rustfmt"},
-				_#cacheRust,
+				_#installRust & {with: {
+					toolchain:  "nightly"
+					components: "rustfmt"
+				}},
 				{
 					name: "Check formatting"
-					run:  "cargo fmt --check"
+					run:  "cargo +nightly fmt --check"
 				},
 			]
 		}
