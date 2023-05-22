@@ -10,7 +10,6 @@ mod coverage;
 mod dev;
 mod dist;
 mod fixup;
-mod install;
 mod utils;
 
 const HELP: &str = "\
@@ -33,7 +32,8 @@ TASKS:
     fixup.markdown         Format Markdown files in-place
     fixup.rust             Fix lints and format Rust files in-place
     fixup.spelling         Fix common misspellings across all files in-place
-    install                Install required Rust components and cargo dependencies
+    install                Install required Rust components and Cargo dependencies
+    test                   Run all tests via Nextest and generate/review snapshots
 ";
 
 enum Task {
@@ -47,6 +47,7 @@ enum Task {
     FixupRust,
     FixupSpelling,
     Install,
+    Test,
 }
 
 pub struct Config {
@@ -73,7 +74,8 @@ fn main() -> Result<()> {
             Task::FixupMarkdown => fixup::markdown(&config)?,
             Task::FixupRust => fixup::rust(&config)?,
             Task::FixupSpelling => fixup::spelling(&config)?,
-            Task::Install => install::rust_dependencies(&config)?,
+            Task::Install => dev::install_rust_deps(&config)?,
+            Task::Test => dev::test_with_snapshots(&config)?,
         }
     }
 
@@ -110,6 +112,7 @@ fn parse_args() -> Result<Config> {
                     "fixup.rust" => Task::FixupRust,
                     "fixup.spelling" => Task::FixupSpelling,
                     "install" => Task::Install,
+                    "test" => Task::Test,
                     value => {
                         anyhow::bail!("unknown task '{}'", value);
                     }

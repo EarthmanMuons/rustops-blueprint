@@ -251,6 +251,12 @@ For example:
   cargo xtask coverage.html
   ```
 
+- Run all tests via Nextest and generate/review snapshots
+
+  ```
+  cargo xtask test
+  ```
+
 [xtask]: https://github.com/matklad/cargo-xtask
 
 Most other commands are the same as any standard Rust project:
@@ -267,10 +273,10 @@ Most other commands are the same as any standard Rust project:
   cargo fmt
   ```
 
-- Run all tests and doctests
+- Run tests and doctests
 
   ```
-  cargo nextest run --all-targets --all-features
+  cargo nextest run
   cargo test --doc
   ```
 
