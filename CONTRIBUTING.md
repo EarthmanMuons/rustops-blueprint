@@ -1,9 +1,10 @@
 # Contributing to RustOps Blueprint
 
-Thank you for your interest in contributing to our project! This document will
-guide you through the process. To maintain a respectful and welcoming community,
-please adhere to the [Code of Conduct][CoC].
+Thank you for your interest in contributing to our [open source][] project! This
+document will guide you through the process. To maintain a respectful and
+welcoming community, please adhere to the [Code of Conduct][CoC].
 
+[open source]: https://opensource.guide/
 [CoC]: CODE_OF_CONDUCT.md
 
 ## Getting Started
