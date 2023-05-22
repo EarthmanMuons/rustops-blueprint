@@ -122,7 +122,7 @@ the installation process, follow these steps:
 2. Install the required cargo dependencies:
 
    ```
-   cargo install cargo-insta cargo-llvm-cov cargo-nextest
+   cargo install cargo-insta cargo-llvm-cov cargo-nextest cargo-watch
    ```
 
 ### Install Additional Tools
