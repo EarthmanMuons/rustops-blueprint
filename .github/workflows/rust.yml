@@ -58,18 +58,13 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-      - name: Install stable Rust toolchain
+      - name: Install nightly Rust toolchain
         uses: dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d
         with:
-          toolchain: stable
+          toolchain: nightly
           components: rustfmt
-      - name: Cache dependencies
-        uses: Swatinem/rust-cache@988c164c3d0e93c4dbab36aaf5bbeb77425b2894
-        with:
-          shared-key: stable-ubuntu-latest
-        timeout-minutes: 5
       - name: Check formatting
-        run: cargo fmt --check
+        run: cargo +nightly fmt --check
   lint:
     name: lint
     needs:

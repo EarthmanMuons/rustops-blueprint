@@ -156,7 +156,7 @@ fn format_rust(config: &Config) -> Result<()> {
 
     let cmd_option = cargo_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
-        let args = vec!["fmt"];
+        let args = vec!["+nightly", "fmt"];
         cmd.args(args).run()?;
     }
 

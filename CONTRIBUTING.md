@@ -79,7 +79,7 @@ git remote add upstream https://github.com/EarthmanMuons/rustops-blueprint.git
 The project is developed using the latest stable release of Rust, but it also
 requires a couple of additional toolchain [components][]. We use the lint tool
 [`clippy`][] for extra checks on common mistakes and stylistic choices, as well
-as [`rustfmt`][] for automatic code formatting.
+as the _nightly_ version of [`rustfmt`][] for automatic code formatting.
 
 Additionally, our project utilizes [`cargo-insta`][] for snapshot testing,
 [`cargo-llvm-cov`][] to generate code coverage reports, and [`cargo-nextest`][]
@@ -113,10 +113,11 @@ cargo xtask install
 If you prefer to install the required tools manually, or need more control over
 the installation process, follow these steps:
 
-1. Install the required toolchain components:
+1. Install the required toolchains and components:
 
    ```
-   rustup component add clippy rustfmt
+   rustup toolchain add stable --component clippy
+   rustup toolchain add nightly --component rustfmt
    ```
 
 2. Install the required cargo dependencies:
@@ -270,7 +271,7 @@ Most other commands are the same as any standard Rust project:
 - Format the code
 
   ```
-  cargo fmt
+  cargo +nightly fmt
   ```
 
 - Run tests and doctests

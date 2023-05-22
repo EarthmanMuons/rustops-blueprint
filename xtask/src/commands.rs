@@ -14,9 +14,8 @@ pub fn actionlint_cmd<'a>(config: &Config, sh: &'a Shell) -> Option<Cmd<'a>> {
 }
 
 pub fn cargo_cmd<'a>(config: &Config, sh: &'a Shell) -> Option<Cmd<'a>> {
-    let cargo = std::env::var("CARGO").unwrap_or_else(|_| "cargo".to_string());
     create_cmd(
-        cargo.as_str(),
+        "cargo",
         "https://www.rust-lang.org/learn/get-started",
         config,
         sh,
