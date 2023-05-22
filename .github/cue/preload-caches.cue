@@ -61,8 +61,19 @@ preloadCaches: {
 			]
 		}
 
-		cache_stable: {
-			name: "cache / stable"
+		actionlint: {
+			name: "actionlint"
+			needs: ["flush_caches"]
+			if:        "always()"
+			"runs-on": defaultRunner
+			steps: [
+				_#checkoutCode,
+				_#actionlint & {with: flags: "-version"},
+			]
+		}
+
+		rust_stable: {
+			name: "rust / stable"
 			needs: ["flush_caches"]
 			if: "always()"
 			defaults: run: shell: "bash"
@@ -85,8 +96,8 @@ preloadCaches: {
 		}
 
 		// Minimum Supported Rust Version
-		cache_msrv: {
-			name: "cache / msrv"
+		rust_msrv: {
+			name: "rust / msrv"
 			needs: ["flush_caches"]
 			if:        "always()"
 			"runs-on": defaultRunner
