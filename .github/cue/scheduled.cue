@@ -51,6 +51,10 @@ scheduled: {
 					components: "miri"
 				}},
 				{
+					name: "Set override to nightly Rust"
+					run:  "rustup override set nightly"
+				},
+				{
 					name: "Setup Miri environment"
 					run:  "cargo miri setup"
 				},
