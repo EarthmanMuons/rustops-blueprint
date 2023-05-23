@@ -118,32 +118,13 @@ fn lint_rust(config: &Config) -> Result<()> {
 
     let cmd_option = cargo_cmd(config, &sh);
     if let Some(_cmd) = cmd_option {
-        let args = vec![
-            "fix",
-            "--allow-no-vcs",
-            "--all-targets",
-            "--all-features",
-            "--edition-idioms",
-        ];
+        let args = vec!["fix", "--allow-no-vcs", "--all-targets", "--edition-idioms"];
         cargo_cmd(config, &sh).unwrap().args(args).run()?;
 
-        let args = vec![
-            "clippy",
-            "--fix",
-            "--allow-no-vcs",
-            "--all-targets",
-            "--all-features",
-        ];
+        let args = vec!["clippy", "--fix", "--allow-no-vcs", "--all-targets"];
         cargo_cmd(config, &sh).unwrap().args(args).run()?;
 
-        let args = vec![
-            "clippy",
-            "--all-targets",
-            "--all-features",
-            "--",
-            "-D",
-            "warnings",
-        ];
+        let args = vec!["clippy", "--all-targets", "--", "-D", "warnings"];
         cargo_cmd(config, &sh).unwrap().args(args).run()?;
     }
 

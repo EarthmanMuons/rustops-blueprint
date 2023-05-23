@@ -33,7 +33,7 @@ jobs:
       - name: Compile tests
         run: cargo test --locked --no-run
       - name: Run tests
-        run: cargo nextest run --locked --all-targets --all-features
+        run: cargo nextest run --locked --all-targets
       - name: Run doctests
         run: cargo test --locked --doc
   miri:

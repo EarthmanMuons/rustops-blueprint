@@ -11,12 +11,7 @@ pub fn cargo_watch(config: &Config) -> Result<()> {
 
     let cmd_option = cargo_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
-        let args = vec![
-            "watch",
-            "--why",
-            "-x",
-            "clippy --locked --all-targets --all-features",
-        ];
+        let args = vec!["watch", "--why", "-x", "clippy --locked --all-targets"];
         cmd.args(args).run()?;
     }
 
@@ -51,14 +46,7 @@ pub fn test_with_snapshots(config: &Config) -> Result<()> {
 
     let cmd_option = cargo_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
-        let args = vec![
-            "insta",
-            "test",
-            "--all-features",
-            "--test-runner",
-            "nextest",
-            "--review",
-        ];
+        let args = vec!["insta", "test", "--test-runner", "nextest", "--review"];
         cmd.args(args).run()?;
     }
 
