@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use anyhow::Result;
 use xshell::Shell;
 
-use crate::commands::{actionlint_cmd, cargo_cmd, codespell_cmd, cue_cmd, prettier_cmd};
+use crate::commands::{actionlint_cmd, cargo_cmd, cue_cmd, prettier_cmd, typos_cmd};
 use crate::utils::{find_files, project_root, to_relative_paths, verbose_cd};
 use crate::Config;
 
@@ -19,7 +19,7 @@ pub fn spelling(config: &Config) -> Result<()> {
     let sh = Shell::new()?;
     verbose_cd(&sh, project_root());
 
-    let cmd_option = codespell_cmd(config, &sh);
+    let cmd_option = typos_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
         let args = vec!["--write-changes"];
         cmd.args(args).run()?;
