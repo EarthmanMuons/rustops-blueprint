@@ -23,9 +23,9 @@ OPTIONS:
     -h, --help             Prints help information
 
 TASKS:
+    check                  Watch for file changes and auto-trigger clippy linting
     coverage               Generate and print a code coverage report summary
     coverage.html          Generate and open an HTML code coverage report
-    dev                    Watch for file changes and auto-trigger clippy linting
     dist                   Package project assets into distributable artifacts
     fixup                  Run all fixup xtasks, editing files in-place
     fixup.github-actions   Format CUE files in-place and regenerate CI YAML files
@@ -37,9 +37,9 @@ TASKS:
 ";
 
 enum Task {
+    Check,
     Coverage,
     CoverageHtml,
-    Dev,
     Dist,
     Fixup,
     FixupGithubActions,
@@ -65,9 +65,9 @@ fn main() -> Result<()> {
     let config = parse_args()?;
     for task in &config.run_tasks {
         match task {
+            Task::Check => dev::watch_clippy(&config)?,
             Task::Coverage => coverage::report_summary(&config)?,
             Task::CoverageHtml => coverage::html_report(&config)?,
-            Task::Dev => dev::cargo_watch(&config)?,
             Task::Dist => dist::dist(&config)?,
             Task::Fixup => fixup::everything(&config)?,
             Task::FixupGithubActions => fixup::github_actions(&config)?,
@@ -102,9 +102,9 @@ fn parse_args() -> Result<Config> {
             Value(value) => {
                 let value = value.string()?;
                 let task = match value.as_str() {
+                    "check" => Task::Check,
                     "coverage" => Task::Coverage,
                     "coverage.html" => Task::CoverageHtml,
-                    "dev" => Task::Dev,
                     "dist" => Task::Dist,
                     "fixup" => Task::Fixup,
                     "fixup.github-actions" => Task::FixupGithubActions,
