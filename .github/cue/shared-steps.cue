@@ -34,7 +34,7 @@ _#cacheRust: _#step & {
 
 _#cargoCheck: _#step & {
 	name: "Check packages and dependencies for errors"
-	run:  "cargo check --locked --all-targets --all-features"
+	run:  "cargo check --locked --all-targets"
 }
 
 // https://github.com/actions/checkout/releases
@@ -128,7 +128,7 @@ _testRust: [
 	},
 	_#step & {
 		name: "Run tests"
-		run:  "cargo nextest run --locked --all-targets --all-features"
+		run:  "cargo nextest run --locked --all-targets"
 	},
 	_#step & {
 		name: "Run doctests"

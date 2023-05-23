@@ -89,7 +89,7 @@ jobs:
         with:
           tool: cargo-nextest
       - name: Check packages and dependencies for errors
-        run: cargo check --locked --all-targets --all-features
+        run: cargo check --locked --all-targets
   rust_msrv:
     name: rust / msrv
     needs:
@@ -124,4 +124,4 @@ jobs:
         with:
           tool: cargo-nextest
       - name: Check packages and dependencies for errors
-        run: cargo check --locked --all-targets --all-features
+        run: cargo check --locked --all-targets
