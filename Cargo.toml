@@ -19,4 +19,11 @@ license = "MIT OR Apache-2.0"
 debug = 0
 
 [profile.release]
+lto = "thin"
+
+[profile.production]
+inherits = "release"
+codegen-units = 1
+lto = true
+panic = "abort"
 strip = true

@@ -46,7 +46,7 @@ fn dist_binary(config: &Config) -> Result<()> {
 
     let cmd_option = cargo_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
-        let args = vec!["build", "--release", "--bins"];
+        let args = vec!["build", "--profile", "production", "--bins"];
         cmd.args(args).run()?;
     }
 
