@@ -133,14 +133,14 @@ tools to enforce formatting and style conventions for non-Rust files. Ensure
 that you have the following tools installed:
 
 - [actionlint][] for linting GitHub Actions workflow files
-- [codespell][] for spell checking all files
 - [CUE][] for generating and validating YAML files
 - [Prettier][] for formatting Markdown files
+- [typos][] for spell checking all files
 
 [actionlint]: https://github.com/rhysd/actionlint
-[codespell]: https://github.com/codespell-project/codespell
 [CUE]: https://cuelang.org/
 [Prettier]: https://prettier.io/
+[typos]: https://github.com/crate-ci/typos
 
 ## Contribution Guidelines
 
@@ -244,6 +244,8 @@ commands by running:
 cargo xtask --help
 ```
 
+[xtask]: https://github.com/matklad/cargo-xtask
+
 For example:
 
 - Generate and open an HTML code coverage report
@@ -257,8 +259,6 @@ For example:
   ```
   cargo xtask test
   ```
-
-[xtask]: https://github.com/matklad/cargo-xtask
 
 Most other commands are the same as any standard Rust project:
 

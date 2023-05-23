@@ -43,12 +43,6 @@ _#checkoutCode: _#step & {
 	uses: "actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab"
 }
 
-// https://github.com/codespell-project/actions-codespell/releases
-_#codespell: _#step & {
-	name: "Check common misspellings"
-	uses: "codespell-project/actions-codespell@94259cd8be02ad2903ba34a22d9c13de21a74461"
-}
-
 // https://github.com/actions/deploy-pages/releases
 _#deployPages: _#step & {
 	id:   "deployment"
@@ -135,6 +129,12 @@ _testRust: [
 		run:  "cargo test --locked --doc"
 	},
 ]
+
+// https://github.com/crate-ci/typos/releases
+_#typos: _#step & {
+	name: "Check common misspellings"
+	uses: "crate-ci/typos@38a1b194811847c93a72ab95f06d55b33806a160"
+}
 
 // https://github.com/actions/upload-pages-artifact/releases
 _#uploadPagesArtifact: _#step & {

@@ -23,21 +23,21 @@ wordsmith: _#useMergeQueue & {
 			]
 		}
 
-		spellcheck: {
-			name: "spellcheck"
+		spell_check: {
+			name: "spell check"
 			needs: ["changes"]
 			"runs-on": defaultRunner
 			if:        "github.event_name == 'pull_request'"
 			steps: [
 				_#checkoutCode,
-				_#codespell,
+				_#typos,
 			]
 		}
 
 		merge_queue: needs: [
 			"changes",
 			"markdown_format",
-			"spellcheck",
+			"spell_check",
 		]
 	}
 }
