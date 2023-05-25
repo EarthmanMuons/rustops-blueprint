@@ -13,6 +13,7 @@ workflows: [
 	{workflow: githubActions},
 	{workflow: githubPages},
 	{workflow: preloadCaches},
+	{workflow: labeler},
 	{workflow: rust},
 	{workflow: scheduled},
 	{workflow: wordsmith},
