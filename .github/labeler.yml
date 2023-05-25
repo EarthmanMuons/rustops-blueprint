@@ -1,0 +1,8 @@
+dependencies:
+  - Cargo.lock
+
+documentation:
+  - "**/*.md"
+
+github_actions:
+  - .github/workflows/*.yml

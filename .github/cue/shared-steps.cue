@@ -83,6 +83,12 @@ _#installTool: _#step & {
 	with: tool: string
 }
 
+// https://github.com/actions/labeler/releases
+_#labeler: _#step & {
+	name: "Label pull request based on paths of changed files"
+	uses: "actions/labeler@0776a679364a9a16110aac8d0f40f5e11009e327"
+}
+
 // https://github.com/dorny/paths-filter/releases
 _#pathsFilter: _#step & {
 	name: "Filter changed repository files"
