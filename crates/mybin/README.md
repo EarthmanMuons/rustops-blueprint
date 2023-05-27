@@ -8,7 +8,7 @@ To build the binary and install it on your system under the `~/.cargo/bin`
 directory, run the following command:
 
 ```
-cargo install --git https://github.com/EarthmanMuons/rustops-blueprint/ mybin
+cargo install --locked --git https://github.com/EarthmanMuons/rustops-blueprint/ mybin
 ```
 
 ## Usage

@@ -1,1 +1,1 @@
-module: "github.com/elasticdog/rustops-blueprint"
+module: "github.com/EarthmanMuons/rustops-blueprint"
