@@ -33,7 +33,7 @@ pub fn test_with_snapshots(config: &Config) -> Result<()> {
 
     let cmd_option = cargo_cmd(config, &sh);
     if let Some(cmd) = cmd_option {
-        let args = vec!["insta", "test", "--test-runner", "nextest", "--review"];
+        let args = vec!["insta", "test", "--test-runner", "nextest"];
         cmd.args(args).run()?;
     }
 

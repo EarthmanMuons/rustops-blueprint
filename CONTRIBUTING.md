@@ -254,7 +254,7 @@ For example:
   cargo xtask coverage.html
   ```
 
-- Run all tests via Nextest and generate/review snapshots
+- Run all tests/doctests and generate Insta snapshots
 
   ```
   cargo xtask test
@@ -274,15 +274,20 @@ Most other commands are the same as any standard Rust project:
   cargo +nightly fmt
   ```
 
-- Run tests and doctests
+- Run the tests
 
   ```
   cargo nextest run
+  ```
+
+- Run the doctests
+
+  ```
   cargo test --doc
   ```
 
-- Build and run the release version:
+- Build and run the binary:
 
   ```
-  cargo run --release --bin mybin
+  cargo run --bin mybin --
   ```
