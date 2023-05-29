@@ -33,7 +33,7 @@ TASKS:
     fixup.rust             Fix lints and format Rust files in-place
     fixup.spelling         Fix common misspellings across all files in-place
     install                Install required Rust components and Cargo dependencies
-    test                   Run all tests via Nextest and generate/review snapshots
+    test                   Run all tests/doctests and generate Insta snapshots
 ";
 
 enum Task {
