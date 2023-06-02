@@ -54,3 +54,21 @@ pub fn watch_clippy(config: &Config) -> Result<()> {
 
     Ok(())
 }
+
+pub fn watch_doc(config: &Config) -> Result<()> {
+    let sh = Shell::new()?;
+    verbose_cd(&sh, project_root());
+
+    let cmd_option = cargo_cmd(config, &sh);
+    if let Some(_cmd) = cmd_option {
+        let args = vec!["doc", "--no-deps", "--open"];
+        cargo_cmd(config, &sh).unwrap().args(args).run()?;
+
+        println!("\nPress Ctrl-C to stop the program.");
+
+        let args = vec!["watch", "--postpone", "--why", "-x", "doc --no-deps"];
+        cargo_cmd(config, &sh).unwrap().args(args).run()?;
+    }
+
+    Ok(())
+}

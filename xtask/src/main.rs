@@ -27,6 +27,7 @@ TASKS:
     coverage               Generate and print a code coverage report summary
     coverage.html          Generate and open an HTML code coverage report
     dist                   Package project assets into distributable artifacts
+    doc                    Watch for file changes and auto-trigger doc generation
     fixup                  Run all fixup xtasks, editing files in-place
     fixup.github-actions   Format CUE files in-place and regenerate CI YAML files
     fixup.markdown         Format Markdown files in-place
@@ -41,6 +42,7 @@ enum Task {
     Coverage,
     CoverageHtml,
     Dist,
+    Doc,
     Fixup,
     FixupGithubActions,
     FixupMarkdown,
@@ -69,6 +71,7 @@ fn main() -> Result<()> {
             Task::Coverage => coverage::report_summary(&config)?,
             Task::CoverageHtml => coverage::html_report(&config)?,
             Task::Dist => dist::dist(&config)?,
+            Task::Doc => dev::watch_doc(&config)?,
             Task::Fixup => fixup::everything(&config)?,
             Task::FixupGithubActions => fixup::github_actions(&config)?,
             Task::FixupMarkdown => fixup::markdown(&config)?,
@@ -106,6 +109,7 @@ fn parse_args() -> Result<Config> {
                     "coverage" => Task::Coverage,
                     "coverage.html" => Task::CoverageHtml,
                     "dist" => Task::Dist,
+                    "doc" => Task::Doc,
                     "fixup" => Task::Fixup,
                     "fixup.github-actions" => Task::FixupGithubActions,
                     "fixup.markdown" => Task::FixupMarkdown,
