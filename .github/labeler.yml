@@ -1,3 +1,5 @@
+# See https://github.com/marketplace/actions/labeler for more information.
+
 dependencies:
   - Cargo.lock
 
