@@ -19,6 +19,7 @@ struct Package {
     #[allow(dead_code)]
     name: String,
     targets: Vec<Target>,
+    version: String,
 }
 
 #[derive(Debug, DeJson)]
@@ -35,8 +36,8 @@ pub fn dist(config: &Config) -> Result<()> {
     }
     let binaries = project_binaries(config)?;
 
-    for binary in &binaries {
-        let dest_dir = dist_dir().join(binary);
+    for (binary, version) in &binaries {
+        let dest_dir = dist_dir().join(format!("{binary}-{version}"));
         fs::create_dir_all(&dest_dir)?;
 
         build_binary(config, binary, &dest_dir)?;
@@ -88,7 +89,7 @@ fn copy_docs(dest_dir: &Path) -> Result<()> {
     Ok(())
 }
 
-fn project_binaries(config: &Config) -> Result<Vec<String>> {
+fn project_binaries(config: &Config) -> Result<Vec<(String, String)>> {
     let sh = Shell::new()?;
     let mut binaries = Vec::new();
 
@@ -103,7 +104,7 @@ fn project_binaries(config: &Config) -> Result<Vec<String>> {
         for package in metadata.packages {
             for target in &package.targets {
                 if target.name != "xtask" && target.kind.contains(&"bin".to_string()) {
-                    binaries.push(target.name.clone());
+                    binaries.push((target.name.clone(), package.version.clone()));
                 }
             }
         }
