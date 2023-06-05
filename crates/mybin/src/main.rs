@@ -9,4 +9,10 @@ fn main() {
     println!("Unshuffled: {nums:?}");
     shuffle_array(&mut nums);
     println!("Shuffled:   {nums:?}");
+
+    println!("mybin {}", get_version());
+}
+
+fn get_version() -> &'static str {
+    option_env!("MYBIN_VERSION").unwrap_or(env!("CARGO_PKG_VERSION"))
 }
