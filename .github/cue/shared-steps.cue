@@ -140,7 +140,7 @@ _testRust: [
 // https://github.com/crate-ci/typos/releases
 _#typos: _#step & {
 	name: "Check common misspellings"
-	uses: "crate-ci/typos@38a1b194811847c93a72ab95f06d55b33806a160"
+	uses: "crate-ci/typos@20b36ca07fa1bfe124912287ac8502cf12f140e6"
 }
 
 // https://github.com/actions/upload-pages-artifact/releases
