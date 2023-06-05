@@ -1,6 +1,3 @@
-#![deny(clippy::all)]
-#![warn(clippy::nursery, clippy::pedantic)]
-
 use std::path::PathBuf;
 use std::{env, fs};
 

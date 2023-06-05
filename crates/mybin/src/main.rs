@@ -1,3 +1,6 @@
+#![deny(clippy::all)]
+#![warn(clippy::nursery, clippy::pedantic)]
+
 use mylib::{add, shuffle_array};
 
 fn main() {
