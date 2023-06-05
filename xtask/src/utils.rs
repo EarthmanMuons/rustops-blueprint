@@ -12,8 +12,9 @@ pub fn find_files<P: AsRef<Path>>(dir: P, extension: &str) -> Result<Vec<PathBuf
 }
 
 fn find_files_recursive(dir: &Path, extension: &str, result: &mut Vec<PathBuf>) -> Result<()> {
-    for entry in fs::read_dir(dir)? {
-        let path = entry?.path();
+    for entry_result in fs::read_dir(dir)? {
+        let entry = entry_result?;
+        let path = entry.path();
 
         if path.is_dir() {
             find_files_recursive(&path, extension, result)?;
