@@ -70,7 +70,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - name: Check common misspellings
-        uses: crate-ci/typos@38a1b194811847c93a72ab95f06d55b33806a160
+        uses: crate-ci/typos@27c9fe7c7948486ff5013a8a5a5c7f0587323f18
   merge_queue:
     name: wordsmith workflow ready
     needs:
