@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::{env, fs};
 
 use anyhow::Result;
@@ -6,7 +6,7 @@ use nanoserde::DeJson;
 use xshell::Shell;
 
 use crate::commands::cargo_cmd;
-use crate::utils::{project_root, verbose_cd};
+use crate::utils::project_root;
 use crate::Config;
 
 #[derive(Debug, DeJson)]
@@ -28,44 +28,63 @@ struct Target {
 }
 
 pub fn dist(config: &Config) -> Result<()> {
-    fs::remove_dir_all(dist_dir())?;
-    fs::create_dir_all(dist_dir())?;
+    env::set_current_dir(project_root())?;
 
-    dist_binary(config)?;
-    // TODO: dist_manpage()?;
+    if dist_dir().exists() {
+        fs::remove_dir_all(dist_dir())?;
+    }
+    let binaries = project_binaries(config)?;
+
+    for binary in &binaries {
+        let dest_dir = dist_dir().join(binary);
+        fs::create_dir_all(&dest_dir)?;
+
+        build_binary(config, binary, &dest_dir)?;
+        copy_docs(&dest_dir)?;
+        // TODO: generate_assets(config, binary, &dest_dir)?;
+    }
+    Ok(())
+}
+
+fn build_binary(config: &Config, binary: &str, dest_dir: &Path) -> Result<()> {
+    let sh = Shell::new()?;
+
+    let cmd_option = cargo_cmd(config, &sh);
+    if let Some(cmd) = cmd_option {
+        let args = vec!["build", "--profile", "production", "--bin", binary];
+        cmd.args(args).run()?;
+    }
+
+    let binary_filename = if cfg!(target_os = "windows") {
+        format!("{binary}.exe")
+    } else {
+        binary.to_string()
+    };
+    let src = production_dir().join(&binary_filename);
+    let dest = dest_dir.join(&binary_filename);
+
+    fs::copy(&src, &dest)?;
+    eprintln!("Copied {} to {}", src.display(), dest.display());
 
     Ok(())
 }
 
-fn dist_binary(config: &Config) -> Result<()> {
-    let sh = Shell::new()?;
-    verbose_cd(&sh, project_root());
+fn copy_docs(dest_dir: &Path) -> Result<()> {
+    for file in [
+        "CHANGELOG.md",
+        "LICENSE",
+        "LICENSE-APACHE",
+        "LICENSE-MIT",
+        "README.md",
+    ] {
+        let src = PathBuf::from(file);
+        if src.exists() {
+            let dest = dest_dir.join(file);
 
-    let cmd_option = cargo_cmd(config, &sh);
-    if let Some(cmd) = cmd_option {
-        let args = vec!["build", "--profile", "production", "--bins"];
-        cmd.args(args).run()?;
-    }
-
-    let binaries = project_binaries(config)?;
-    for binary in &binaries {
-        if binary == "xtask" {
-            eprintln!("Ignoring xtask binary");
-            continue;
+            fs::copy(&src, &dest)?;
+            eprintln!("Copied {} to {}", src.display(), dest.display());
         }
-
-        let binary_filename = if cfg!(target_os = "windows") {
-            format!("{binary}.exe")
-        } else {
-            binary.to_string()
-        };
-        let src = release_dir().join(&binary_filename);
-        let dest = dist_dir().join(&binary_filename);
-
-        eprintln!("Copying {} to {}", src.display(), dest.display());
-        fs::copy(&src, &dest)?;
     }
-
     Ok(())
 }
 
@@ -83,14 +102,12 @@ fn project_binaries(config: &Config) -> Result<Vec<String>> {
 
         for package in metadata.packages {
             for target in &package.targets {
-                if target.kind.contains(&"bin".to_string()) {
-                    eprintln!("{package:?}");
+                if target.name != "xtask" && target.kind.contains(&"bin".to_string()) {
                     binaries.push(target.name.clone());
                 }
             }
         }
     }
-
     Ok(binaries)
 }
 
@@ -98,8 +115,8 @@ fn dist_dir() -> PathBuf {
     target_dir().join("dist")
 }
 
-fn release_dir() -> PathBuf {
-    target_dir().join("release")
+fn production_dir() -> PathBuf {
+    target_dir().join("production")
 }
 
 fn target_dir() -> PathBuf {
