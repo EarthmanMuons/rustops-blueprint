@@ -79,7 +79,7 @@ _#installRust: _#step & {
 // https://github.com/taiki-e/install-action/releases
 _#installTool: _#step & {
 	name: "Install \(with.tool)"
-	uses: "taiki-e/install-action@1d74f337f279f52e54c352ebe5b96eaa36c948d3"
+	uses: "taiki-e/install-action@835cdc15ee7680334982c900847bcafb86487299"
 	with: tool: string
 }
 
