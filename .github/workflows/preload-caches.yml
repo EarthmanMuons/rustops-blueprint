@@ -80,7 +80,7 @@ jobs:
         with:
           toolchain: stable
       - name: Cache dependencies
-        uses: Swatinem/rust-cache@988c164c3d0e93c4dbab36aaf5bbeb77425b2894
+        uses: Swatinem/rust-cache@2656b87321093db1cb55fbd73183d195214fdfd1
         with:
           shared-key: stable-${{ matrix.platform }}
         timeout-minutes: 5
@@ -115,7 +115,7 @@ jobs:
       - name: Set override to MSRV Rust
         run: rustup override set ${{ steps.msrv.outputs.version }}
       - name: Cache dependencies
-        uses: Swatinem/rust-cache@988c164c3d0e93c4dbab36aaf5bbeb77425b2894
+        uses: Swatinem/rust-cache@2656b87321093db1cb55fbd73183d195214fdfd1
         with:
           shared-key: msrv-ubuntu-latest
         timeout-minutes: 5
