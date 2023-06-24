@@ -25,7 +25,7 @@ _#actionlint: _#step & {
 // https://github.com/Swatinem/rust-cache/releases
 _#cacheRust: _#step & {
 	name: "Cache dependencies"
-	uses: "Swatinem/rust-cache@988c164c3d0e93c4dbab36aaf5bbeb77425b2894"
+	uses: "Swatinem/rust-cache@2656b87321093db1cb55fbd73183d195214fdfd1"
 
 	// share the cache across all workflow jobs instead of keying on job_id 
 	with: "shared-key": *"stable-\(defaultRunner)" | string
