@@ -28,7 +28,7 @@ jobs:
       rust_files: ${{ steps.filter.outputs.rust_files }}
     steps:
       - name: Checkout source code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
         with:
           fetch-depth: 20
       - name: Filter changed repository files
@@ -54,7 +54,7 @@ jobs:
     if: github.event_name == 'pull_request' && needs.changes.outputs.markdown == 'true'
     steps:
       - name: Checkout source code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
       - name: Check formatting
         uses: creyD/prettier_action@31355f8eef017f8aeba2e0bc09d8502b13dbbad1
         with:
@@ -68,7 +68,7 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout source code
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
       - name: Check common misspellings
         uses: crate-ci/typos@20b36ca07fa1bfe124912287ac8502cf12f140e6
   merge_queue:

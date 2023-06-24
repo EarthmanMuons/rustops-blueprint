@@ -40,7 +40,7 @@ _#cargoCheck: _#step & {
 // https://github.com/actions/checkout/releases
 _#checkoutCode: _#step & {
 	name: "Checkout source code"
-	uses: "actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab"
+	uses: "actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9"
 }
 
 // https://github.com/actions/deploy-pages/releases
