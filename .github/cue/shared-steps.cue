@@ -47,7 +47,7 @@ _#checkoutCode: _#step & {
 _#deployPages: _#step & {
 	id:   "deployment"
 	name: "Deploy to GitHub Pages"
-	uses: "actions/deploy-pages@af48cf94a42f2c634308b1c9dc0151830b6f190a"
+	uses: "actions/deploy-pages@ee48c7b82e077d7b8ef30b50a719e6a792a50c9a"
 }
 
 // https://github.com/dorny/paths-filter/releases
