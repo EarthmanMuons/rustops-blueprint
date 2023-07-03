@@ -69,7 +69,7 @@ _#installRust: _#step & {
 	name: "Install \(with.toolchain) Rust toolchain"
 
 	// NOTE: upstream does not tag releases, so this won't be updated by dependabot
-	uses: "dtolnay/rust-toolchain@b44cb146d03e8d870c57ab64b80f04586349ca5d"
+	uses: "dtolnay/rust-toolchain@0e66bd3e6b38ec0ad5312288c83e47c143e6b09e"
 	with: {
 		toolchain:   *"stable" | string
 		components?: string
