@@ -86,7 +86,7 @@ _#installTool: _#step & {
 // https://github.com/actions/labeler/releases
 _#labeler: _#step & {
 	name: "Label pull request based on paths of changed files"
-	uses: "actions/labeler@9fcb2c2f5584144ca754f8bfe8c6f81e77753375"
+	uses: "actions/labeler@0967ca812e7fdc8f5f71402a1b486d5bd061fe20"
 	with: dot: true
 }
 
