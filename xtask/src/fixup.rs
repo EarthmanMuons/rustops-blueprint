@@ -1,9 +1,7 @@
-use std::path::PathBuf;
-
 use anyhow::Result;
 use xshell::Shell;
 
-use crate::commands::{actionlint_cmd, cargo_cmd, cue_cmd, prettier_cmd, typos_cmd};
+use crate::commands::{actionlint_cmd, cargo_cmd, prettier_cmd, typos_cmd};
 use crate::utils::{find_files, project_root, to_relative_paths, verbose_cd};
 use crate::Config;
 
@@ -29,9 +27,6 @@ pub fn spelling(config: &Config) -> Result<()> {
 }
 
 pub fn github_actions(config: &Config) -> Result<()> {
-    lint_cue(config)?;
-    format_cue(config)?;
-    regenerate_ci_yaml(config)?;
     lint_workflows(config)?;
     Ok(())
 }
@@ -55,49 +50,6 @@ pub fn rust(config: &Config) -> Result<()> {
     lint_rust(config)?;
     format_rust(config)?;
     Ok(())
-}
-
-fn lint_cue(config: &Config) -> Result<()> {
-    let sh = Shell::new()?;
-    verbose_cd(&sh, cue_dir());
-
-    let cmd_option = cue_cmd(config, &sh);
-    if let Some(cmd) = cmd_option {
-        let args = vec!["vet", "--concrete"];
-        cmd.args(args).run()?;
-    }
-
-    Ok(())
-}
-
-fn format_cue(config: &Config) -> Result<()> {
-    let sh = Shell::new()?;
-    verbose_cd(&sh, cue_dir());
-
-    let cmd_option = cue_cmd(config, &sh);
-    if let Some(cmd) = cmd_option {
-        let args = vec!["fmt", "--simplify"];
-        cmd.args(args).run()?;
-    }
-
-    Ok(())
-}
-
-fn regenerate_ci_yaml(config: &Config) -> Result<()> {
-    let sh = Shell::new()?;
-    verbose_cd(&sh, cue_dir());
-
-    let cmd_option = cue_cmd(config, &sh);
-    if let Some(cmd) = cmd_option {
-        let args = vec!["cmd", "regen-ci-yaml"];
-        cmd.args(args).run()?;
-    }
-
-    Ok(())
-}
-
-fn cue_dir() -> PathBuf {
-    project_root().join(".github/cue")
 }
 
 fn lint_workflows(config: &Config) -> Result<()> {

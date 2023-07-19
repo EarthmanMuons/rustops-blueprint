@@ -29,7 +29,7 @@ TASKS:
     dist                   Package project assets into distributable artifacts
     doc                    Watch for file changes and auto-trigger doc generation
     fixup                  Run all fixup xtasks, editing files in-place
-    fixup.github-actions   Format CUE files in-place and regenerate CI YAML files
+    fixup.github-actions   Lint CI YAML files using actionlint static checker
     fixup.markdown         Format Markdown files in-place
     fixup.rust             Fix lints and format Rust files in-place
     fixup.spelling         Fix common misspellings across all files in-place

@@ -133,12 +133,10 @@ tools to enforce formatting and style conventions for non-Rust files. Ensure
 that you have the following tools installed:
 
 - [actionlint][] for linting GitHub Actions workflow files
-- [CUE][] for generating and validating YAML files
 - [Prettier][] for formatting Markdown files
 - [typos][] for spell checking all files
 
 [actionlint]: https://github.com/rhysd/actionlint
-[CUE]: https://cuelang.org/
 [Prettier]: https://prettier.io/
 [typos]: https://github.com/crate-ci/typos
 

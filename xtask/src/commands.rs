@@ -22,10 +22,6 @@ pub fn cargo_cmd<'a>(config: &Config, sh: &'a Shell) -> Option<Cmd<'a>> {
     )
 }
 
-pub fn cue_cmd<'a>(config: &Config, sh: &'a Shell) -> Option<Cmd<'a>> {
-    create_cmd("cue", "https://cuelang.org/", config, sh)
-}
-
 pub fn prettier_cmd<'a>(config: &Config, sh: &'a Shell) -> Option<Cmd<'a>> {
     create_cmd("prettier", "https://prettier.io", config, sh)
 }
