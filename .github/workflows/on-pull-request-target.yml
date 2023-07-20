@@ -1,22 +1,20 @@
-name: labeler
-"on":
+name: pull request target
+
+on:
   pull_request_target:
     types:
       - opened
       - synchronize
       - reopened
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
+
 jobs:
-  label_pr:
-    name: label pr
+  labeler:
+    name: labeler
     permissions:
       contents: read
       pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: Label pull request based on paths of changed files
-        uses: actions/labeler@0967ca812e7fdc8f5f71402a1b486d5bd061fe20
-        with:
-          dot: true
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/labeler.yml@main
