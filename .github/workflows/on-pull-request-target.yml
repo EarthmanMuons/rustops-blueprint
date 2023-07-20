@@ -1,4 +1,4 @@
-name: pull request target
+name: on pull request target
 
 on:
   pull_request_target:
