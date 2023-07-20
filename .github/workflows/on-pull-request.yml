@@ -1,0 +1,62 @@
+name: pull request
+
+on:
+  pull_request:
+    branches:
+      - main
+  merge_group:
+    types:
+      - checks_requested
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  detect_changed_files:
+    name: detect changed files
+    permissions:
+      pull-requests: read
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/detect-changed-files.yml@main
+
+  check_github_actions:
+    name: check github actions
+    needs: detect_changed_files
+    if: needs.detect_changed_files.outputs.github_actions == 'true'
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/check-github-actions.yml@main
+
+  check_markdown:
+    name: check markdown
+    needs: detect_changed_files
+    if: needs.detect_changed_files.outputs.markdown == 'true'
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/check-markdown.yml@main
+    with:
+      files: ${{ needs.detect_changed_files.outputs.markdown_files }}
+      prettier_version: "3.0.0"
+
+  check_rust:
+    name: check rust
+    needs: detect_changed_files
+    if: needs.detect_changed_files.outputs.rust == 'true'
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/check-rust.yml@main
+
+  check_spelling:
+    name: check spelling
+    needs: detect_changed_files
+    if: needs.detect_changed_files.outputs.added_or_modified == 'true'
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/check-spelling.yml@main
+    with:
+      files: ${{ needs.detect_changed_files.outputs.added_or_modified_files }}
+
+  ready_to_merge:
+    name: ready to merge
+    needs:
+      - detect_changed_files
+      - check_github_actions
+      - check_markdown
+      - check_rust
+      - check_spelling
+    if: always()
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/ready-to-merge.yml@main
+    with:
+      needs_context: ${{ toJson(needs) }}
