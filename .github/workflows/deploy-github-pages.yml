@@ -1,0 +1,20 @@
+name: deploy github pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.rs"
+
+  # Allow manually running this workflow.
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  rustdoc:
+    name: rustdoc
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/github-pages-rust.yml@main
