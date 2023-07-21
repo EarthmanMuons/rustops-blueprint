@@ -17,4 +17,7 @@ concurrency:
 jobs:
   rustdoc:
     name: rustdoc
+    permissions:
+      id-token: write
+      pages: write
     uses: EarthmanMuons/reusable-workflows/.github/workflows/github-pages-rust.yml@main
