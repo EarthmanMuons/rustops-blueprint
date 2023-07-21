@@ -5,7 +5,7 @@
 [![CI status](https://img.shields.io/github/actions/workflow/status/EarthmanMuons/rustops-blueprint/on-pull-request.yml?event=merge_group&label=ci&logo=github)](https://github.com/EarthmanMuons/rustops-blueprint/actions?query=event%3Amerge_group)
 [![crates.io](https://img.shields.io/crates/v/mylib)](https://crates.io/crates/mylib/)
 [![docs.rs](https://img.shields.io/docsrs/mylib)](https://docs.rs/spellabet/0.1.0/mylib/)
-[![MSRV](https://img.shields.io/badge/rust-1.64%2B-blue)](https://doc.rust-lang.org/cargo/reference/manifest.html#the-rust-version-field)
+[![MSRV](https://img.shields.io/badge/rust-1.65%2B-blue)](https://doc.rust-lang.org/cargo/reference/manifest.html#the-rust-version-field)
 
 ---
 
