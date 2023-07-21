@@ -14,9 +14,9 @@ concurrency:
 
 jobs:
   check_rust_beta:
-    name: check rust beta
+    name: check rust / beta
     uses: EarthmanMuons/reusable-workflows/.github/workflows/check-rust-beta.yml@main
 
   check_rust_miri:
-    name: check rust miri
+    name: check rust / miri
     uses: EarthmanMuons/reusable-workflows/.github/workflows/check-rust-miri.yml@main
