@@ -1,4 +1,4 @@
-name: preload cache
+name: preload caches
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - "**/Cargo.*"
-      - .github/workflows/*.yml
 
   schedule:
     # Run every Monday at 7:45am UTC.
@@ -22,8 +21,8 @@ concurrency:
 jobs:
   cache_actionlint:
     name: cache actionlint
-    uses: EarthmanMuons/reusable-workflows/.github/workflows/preload-cache-actionlint.yml@main
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/preload-caches-actionlint.yml@main
 
   cache_rust:
     name: cache rust
-    uses: EarthmanMuons/reusable-workflows/.github/workflows/preload-cache-rust.yml@main
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/preload-caches-rust.yml@main
