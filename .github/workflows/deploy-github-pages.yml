@@ -15,9 +15,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  rustdoc:
-    name: rustdoc
+  rust:
+    name: rust
     permissions:
       id-token: write
       pages: write
-    uses: EarthmanMuons/reusable-workflows/.github/workflows/github-pages-rust.yml@main
+    uses: EarthmanMuons/reusable-workflows/.github/workflows/deploy-github-pages-rust.yml@main
