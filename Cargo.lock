@@ -65,18 +65,18 @@ dependencies = [
 
 [[package]]
 name = "nanoserde"
-version = "0.1.32"
+version = "0.1.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "755e7965536bc54d7c9fba2df5ada5bf835b0443fd613f0a53fa199a301839d3"
+checksum = "efd70383f6928f4cc1df3736278cd4e7ea467e8c6848336b36ecdf0a89f38666"
 dependencies = [
  "nanoserde-derive",
 ]
 
 [[package]]
 name = "nanoserde-derive"
-version = "0.1.19"
+version = "0.1.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed7a94da6c6181c35d043fc61c43ac96d3a5d739e7b8027f77650ba41504d6ab"
+checksum = "86b53c5a09a773c60df71fa6f41b8631f80a3406e6766e7f5ee773b2ec419e08"
 
 [[package]]
 name = "once_cell"
